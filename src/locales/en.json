@@ -1,0 +1,25 @@
+{
+  "links": [
+    {
+      "title": "HOME"
+    },
+    {
+      "title": "ARTWORKS"
+    },
+    {
+      "title": "EXHIBITIONS"
+    },
+    {
+      "title": "BIOGRAPHY"
+    },
+    {
+      "title": "CONTACT"
+    }
+  ],
+  "home" : {
+    "subtitle": "Visual and ceramic artist"
+  },
+  "contact": {
+    "subtitle": "SOCIAL NETWORK LINKS:"
+  }
+}

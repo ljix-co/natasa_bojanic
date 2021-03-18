@@ -6,11 +6,11 @@
     <h1><b class="f-letter">B</b>ojanić</h1>
    </div>
    <div class="web-subtitle">
-   <p class="subtitle">Visual and ceramic artist</p>
+   <p class="subtitle">{{$t('home.subtitle')}}</p>
    </div>
    </div>
    <div class="r-side">
-   <PhotoSlider :images="images"></PhotoSlider>
+     <PhotoSlider :images="images"></PhotoSlider>
    </div>
   </div>
 </template>
@@ -25,9 +25,23 @@ export default {
   },
   data() {
     return{
-      images: []
+      images: [
+        {
+          id: 1,
+          path: require('../../public/images/kamenje.jpg')
+        },
+          {
+          id: 2,
+          path: require('../../public/images/čajnik.jpg')
+        },
+          {
+          id: 3,
+          path: require('../../public/images/kada.jpg')
+        }
+      ]
     }
-  }
+  },
+
 }
 </script>
 <style scoped>
@@ -55,8 +69,6 @@ h1{
 .r-side{
   width: 70vw;
   height: 80vh;
-
-  border: 3px solid white;
 }
 .web-title{
   display: flex;

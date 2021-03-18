@@ -1,0 +1,26 @@
+{
+    "links": [
+      {
+        "title": "POČETNA"
+      },
+      {
+        "title": "RADOVI"
+      },
+      {
+        "title": "IZLOŽBE"
+      },
+      {
+        "title": "BIOGRAFIJA"
+      },
+      {
+        "title": "KONTAKT"
+      }
+    ],
+    "home" : {
+        "subtitle": "Vizuelna umetnica i keramičarka"
+      },
+      "contact": {
+        "subtitle": "LINKOVI KA DRUŠTVENIM MREŽAMA:"
+      }
+  }
+  
