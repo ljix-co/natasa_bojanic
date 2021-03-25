@@ -15,6 +15,7 @@
   </div>
 </template>
 <script>
+import {mapState, mapActions} from 'vuex';
 export default {
   name: "locale-changer",
   data() {
@@ -27,13 +28,18 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["changeCurLanguage"]),
     switchLocal(lang) {
       if (this.$i18n.locale !== lang.lang.toLowerCase()) {
         this.$i18n.locale = lang.lang.toLowerCase();
         this.currentLang = lang.lang;
+        this.changeCurLanguage(lang.lang);
       }
     },
   },
+  computed: {
+    ...mapState(["curLanguage"])
+  }
 };
 </script>
 <style scoped>

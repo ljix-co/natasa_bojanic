@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="soc-contact">
-    <h1>{{ $t("contact.subtitle") }}</h1>
+   
     <div class="links">
       <a href="https://www.facebook.com/poznatasrpskakeramicarka"> <i class="fab fa-facebook"></i></a>
       <a href="https://www.instagram.com/strahitrepett/?hl=sr"><i class="fab fa-instagram"></i></a>
@@ -63,9 +63,10 @@ p {
 }
 .links{
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     align-items: center;
     justify-content: center;
+    align-self: center;
 }
 .soc-contact{
     align-self: center;

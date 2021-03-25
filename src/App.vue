@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <div id="nav">
+    <div class="nav">
       <router-link class="link" to="/">{{ $t('links[0].title') }}</router-link> 
       <router-link class="link" to="/artworks">{{ $t('links[1].title') }}</router-link>
       <router-link class="link" to="/exhibitions">{{ $t('links[2].title') }}</router-link>
       <router-link class="link" to="/biography">{{ $t('links[3].title') }}</router-link>
       <router-link class="link" to="/contact">{{ $t('links[4].title') }}</router-link>
       <LocalSwitcher/>
+      </div>
     </div>
     <router-view class="view"/>
     <Footer class="footer"></Footer>
@@ -29,6 +31,9 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+button{
+  cursor: pointer;
+}
 #app {
   font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -42,6 +47,7 @@ export default {
 
 #nav {
   padding: 30px;
+ 
 }
 
 #nav a {
@@ -54,7 +60,8 @@ export default {
 #nav a.router-link-exact-active {
   color: #FF6B00;
 }
-
+.nav{
+}
 .link{
   margin-left: 1.5rem;
 }

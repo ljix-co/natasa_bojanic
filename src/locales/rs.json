@@ -1,26 +1,78 @@
 {
-    "links": [
-      {
-        "title": "POČETNA"
-      },
-      {
-        "title": "RADOVI"
-      },
-      {
-        "title": "IZLOŽBE"
-      },
-      {
-        "title": "BIOGRAFIJA"
-      },
-      {
-        "title": "KONTAKT"
-      }
-    ],
-    "home" : {
-        "subtitle": "Vizuelna umetnica i keramičarka"
-      },
-      "contact": {
-        "subtitle": "LINKOVI KA DRUŠTVENIM MREŽAMA:"
-      }
+  "links": [
+    {
+      "title": "POČETNA"
+    },
+    {
+      "title": "RADOVI"
+    },
+    {
+      "title": "IZLOŽBE"
+    },
+    {
+      "title": "BIOGRAFIJA"
+    },
+    {
+      "title": "KONTAKT"
+    }
+  ],
+  "home": {
+    "subtitle": "Vizuelna umetnica i keramičarka"
+  },
+  "admin": [
+    {
+      "title": "LIČNE INFORMACIJE"
+    },
+    {
+      "title": "RADOVI"
+    },
+    {
+      "title": "IZLOŽBE"
+    }
+  ],
+  "author": {
+    "password": "lozinka",
+    "old_password": "stara lozinka"
+  },
+  "button": {
+    "submit": "POTVRDI",
+    "group": "GRUPNE",
+    "solo": "SAMOSTALNE"
+  },
+  "add_edit": [
+    {
+      "type": "RAD",
+      "cover": "GLAVNU FOTOGRAFIJU",
+      "images": "FOTOGRAFIJE DETALJA"
+    },
+    {
+      "type": "IZLOŽBU",
+      "cover": "PLAKAT",
+      "images": "FOTOGRAFIJE"
+    }
+  ],
+  "frq_words": {
+    "add": "DODAJ",
+    "bio": "BIOGRAFIJA",
+    "change": "PROMENI",
+    "date": "Datum",
+    "details": "DETALJE",
+    "description": "OPIS",
+    "dimensions": "Dimenzije",
+    "edit": "UREDI",
+    "for_sale": "Za prodaju",
+    "group" : "GRUPNA",
+    "images": "SLIKE",
+    "material": "Materijal",
+    "no": "NE",
+    "price" : "Cena",
+    "place": "Mesto",
+    "review": "RECENZIJA",
+    "solo": "SAMOSTALNA",
+    "title": "Naziv",
+    "technique": "Tehnika",
+    "type" : "Tip",
+    "year": "Godina",
+    "yes": "DA"
   }
-  
+}

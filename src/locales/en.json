@@ -16,10 +16,63 @@
       "title": "CONTACT"
     }
   ],
-  "home" : {
+  "home": {
     "subtitle": "Visual and ceramic artist"
   },
-  "contact": {
-    "subtitle": "SOCIAL NETWORK LINKS:"
+  "admin": [
+    {
+      "title": "PERSONAL INFO"
+    },
+    {
+      "title": "ARTWORKS"
+    },
+    {
+      "title": "EXHIBITIONS"
+    }
+  ],
+  "author": {
+    "password": "password",
+    "old_password": "old password"
+  },
+  "button": {
+    "submit": "SUBMIT",
+    "group": "GROUP",
+    "solo": "SOLO"
+  },
+  "add_edit": [
+    {
+      "type": "ARTWORK",
+      "cover": "MAIN IMAGE",
+      "images": "IMAGES OF DETAILS"
+    },
+    {
+      "type": "EXHIBITION",
+      "cover": "COVER",
+      "images": "IMAGES"
+    }
+  ],
+  "frq_words": {
+    "add": "ADD",
+    "bio": "BIOGRAPHY",
+    "change": "CHANGE",
+    "date": "Date",
+    "details": "DETAILS",
+    "description": "DESCRIPTION",
+    "dimensions": "Dimensions",
+    "edit": "EDIT",
+    "for_sale": "For sale",
+    "group": "GROUP",
+    "images": "IMAGES",
+    "material": "Material",
+    "no": "NO",
+    "price": "Price",
+    "place": "Place",
+    "review": "REVIEW",
+    "solo": "SOLO",
+    "title": "Title",
+    "technique": "Technique",
+    "type": "Type",
+    "year": "Year",
+    "yes": "YES"
   }
 }

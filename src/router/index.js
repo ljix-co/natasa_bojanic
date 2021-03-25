@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Exhibitions from '../views/Exhibitions.vue';
 import Biography from '../views/Biography.vue';
 import Contact from '../views/Contact.vue';
+import Admin from '../views/Admin.vue';
 
 
 Vue.use(VueRouter)
@@ -37,6 +38,11 @@ const routes = [
     name: 'Contact',
     component: Contact
   },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: Admin
+  }
 ]
 
 const router = new VueRouter({
