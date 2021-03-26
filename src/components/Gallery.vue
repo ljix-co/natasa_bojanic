@@ -1,17 +1,30 @@
 <template>
-  <div class="gallery">
-    <div class="list-items">
-      <div
-        class="item"
-        v-for="(object, index) in object_array"
-        :key="index"
-        v-lazyload
-      >
+  <div
+    class="gallery"
+    :class="{
+      'gallery-admin': admin_page,
+      'gallery-guest': admin_page === false,
+    }"
+  >
+    <div
+      class="list-items"
+      :class="{
+        'list-items-admin': admin_page,
+        'list-items-guest': admin_page === false,
+      }"
+    >
+      <div class="item" v-for="(object, index) in object_array" :key="index">
         <div class="delete-img-div" v-if="admin_page">
           <i class="far fa-trash-alt delete" @click="deleteObject(object)"></i>
         </div>
-        <img :data-url="object.cover_path" src="../../public/images/placeholder.gif" alt="" @click="chooseObject(object)"/>
-
+        <div v-lazyload>
+          <img
+            :data-url="object.cover_path"
+            src="../../public/images/placeholder.gif"
+            alt=""
+            @click="chooseObject(object)"
+          />
+        </div>
         <div class="item-dtls">
           <div class="dtl">
             <p>{{ $t("frq_words.title") }}:</p>
@@ -66,9 +79,8 @@
   </div>
 </template>
 <script>
-// import PhotoSlider from "./PhotoSlider.vue";
 import { mapState } from "vuex";
-// import axios from "axios";
+
 export default {
   components: {},
   props: {
@@ -91,8 +103,10 @@ export default {
     checkIfAdmin() {
       if (this.$route.name === "Admin") {
         this.admin_page = true;
+        console.log(this.admin_page);
       }
     },
+
     chooseObject(object) {
       if (this.$route.name === "Admin") {
         if (this.type === "artwork") {
@@ -101,12 +115,14 @@ export default {
         if (this.type === "exhibition") {
           this.$emit("choose-exh", object);
         }
+      } else {
+        this.$emit('choose-object', object);
       }
     },
-    deleteObject(object){
-      console.log(object)
-      this.$emit('delete-object', object);
-    }
+    deleteObject(object) {
+      console.log(object);
+      this.$emit("delete-object", object);
+    },
   },
   computed: {
     ...mapState(["curLanguage", "baseUrl"]),
@@ -121,6 +137,8 @@ img {
   width: 20vw;
   height: 30vh;
   object-fit: contain;
+  background-color: #474646;
+  cursor: pointer;
 }
 .delete {
   cursor: pointer;
@@ -143,6 +161,18 @@ img {
   font-size: 1.2rem;
   color: #343333;
 }
+.gallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gallery-admin {
+  width: 50vw;
+}
+.gallery-guest {
+  width: 80vw;
+  margin-left: 10vw;
+}
 .item {
   width: 20vw;
   height: fit-content;
@@ -151,7 +181,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  
 }
 .item-dtls {
   display: flex;
@@ -167,12 +197,22 @@ img {
   width: 20vw;
 }
 .list-items {
+}
+.list-items-admin {
+  width: 50vw;
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 50vw;
+}
+.list-items-guest {
+  width: 80vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
 }
 .photo-slider {
   top: 10vh;

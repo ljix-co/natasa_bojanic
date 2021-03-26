@@ -56,6 +56,7 @@ h1{
   display: flex;
   align-items: center;
   justify-content: center;
+ 
 }
 .l-side{
   width: 30vw;
@@ -65,10 +66,11 @@ h1{
   margin-left: 2rem;
   align-items: center;
   justify-content: center;
+  height: 85vh;
 }
 .r-side{
   width: 70vw;
-  height: 80vh;
+  height: 85vh;
 }
 .web-title{
   display: flex;

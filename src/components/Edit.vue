@@ -198,7 +198,7 @@
     <add-images
       :img_id="img_id"
       :type="type"
-      :id="edit_object_id"
+      :edit_object_id="edit_object_id"
       v-if="add_images"
       @exit-editor="exitEditor"
       @add-images="addNewImages()"
@@ -222,7 +222,7 @@ export default {
   props: {
     type: String,
     rerender: Boolean,
-    object_array: Array
+    object_array: Array,
   },
   data() {
     return {
@@ -273,19 +273,40 @@ export default {
       this.add_images = true;
     },
     addNewImages() {
-      axios
-        .get(this.baseUrl + "dtls_images", { params: { img_id: this.img_id } })
-        .then((res) => {
-          this.images = [];
-          for (let i = 0; i < res.data.data.length; i++) {
-            this.images.push({
-              path: res.data.data[i].img_path,
-              id: res.data.data[i].dimg_id,
-            });
-          }
-          this.forceRerender();
-          this.add_images = false;
-        });
+      if (this.type === "artwork") {
+        axios
+          .get(this.baseUrl + "dtls_images", {
+            params: { img_id: this.img_id },
+          })
+          .then((res) => {
+            this.images = [];
+            for (let i = 0; i < res.data.data.length; i++) {
+              this.images.push({
+                path: res.data.data[i].img_path,
+                id: res.data.data[i].dimg_id,
+              });
+            }
+            this.forceRerender();
+            this.add_images = false;
+          });
+      }
+      if (this.type === "exhibition") {
+        axios
+          .get(this.baseUrl + "exh_images", {
+            params: { exh_id: this.edit_object_id },
+          })
+          .then((res) => {
+            this.images = [];
+            for (let i = 0; i < res.data.data.length; i++) {
+              this.images.push({
+                path: res.data.data[i].img_path,
+                id: res.data.data[i].img_id,
+              });
+            }
+            this.forceRerender();
+            this.add_images = false;
+          });
+      }
     },
     addRev(review) {
       this.rev_en = review.rev_en;
@@ -315,10 +336,26 @@ export default {
             }
           });
       }
+      if (this.type === "exhibition") {
+        axios
+          .delete(this.baseUrl + "main_images", {
+            params: { img_id: image_id },
+          })
+          .then((res) => {
+            console.log(res);
+
+            for (let i = 0; i < this.images.length; i++) {
+              if (image_id == this.images[i].id) {
+                this.images.splice(i, 1);
+                this.forceRerender();
+              }
+            }
+          });
+      }
     },
     deleteObject(object) {
-      console.log(object)
-      this.$emit('delete-object', object);
+      console.log(object);
+      this.$emit("delete-object", object);
     },
     forceRerender() {
       this.componentKey += 1;
@@ -338,7 +375,7 @@ export default {
         cover_id: object.img_id,
         cover_path: object.cover_path,
       };
-   
+
       axios
         .get(this.baseUrl + "dtls_images", { params: { img_id: this.img_id } })
         .then((res) => {
@@ -437,7 +474,7 @@ export default {
         dsc_en: this.dsc_en,
         dsc_rs: this.dsc_rs,
         rev_en: this.rev_en,
-        rev_rs: this.rev_rs
+        rev_rs: this.rev_rs,
       };
       this.$emit("submit-edit-object", editedObject);
     },
@@ -445,16 +482,12 @@ export default {
   computed: {
     ...mapState(["baseUrl"]),
   },
-  mounted() {
- 
-  },
+  mounted() {},
   watch: {
-   
     rerender: {
       deep: true,
       immediate: true,
       handler() {
-        
         this.edit_object = false;
         this.forceRerender();
       },
@@ -620,7 +653,6 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
 }
 .sbmt {
   font-family: "Open Sans", sans-serif;
