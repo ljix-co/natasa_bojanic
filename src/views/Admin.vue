@@ -20,7 +20,8 @@
         @edit-group="editGroupExh"
       ></edit-exhibitions>
       <edit-workshops
-        :key="componentWrkKey"
+        class="component"
+        :key=" 'w' + componentWrkKey"
         :componentWrkKey="componentWrkKey"
         :calendar_info="calendar_info"
         :object_array="object_array"
@@ -40,7 +41,7 @@
     ></add>
     <edit
       class="component-window"
-      :key="componentEditKey"
+      :key="'e' + componentEditKey"
       v-if="edit"
       :type="type"
       :artworks="artworks"
@@ -190,18 +191,16 @@ export default {
       });
     },
     addNewWorkshop(new_wrk_day) {
-      
-        let formData = new FormData();
-        formData.append("wrk_date", new_wrk_day.date);
-        formData.append("wrk_max_students", new_wrk_day.max_students);
-        formData.append("wrk_signed_students", new_wrk_day.signed_students);
-        formData.append("wrk_time", new_wrk_day.time);
-        formData.append("wrks_id", new_wrk_day.wrks_id);
-        axios.post(this.baseUrl + "workshop", formData).then((res) => {
-          console.log(res);
-          this.getWorkshopDateInfo();
-        });
-      
+      let formData = new FormData();
+      formData.append("wrk_date", new_wrk_day.date);
+      formData.append("wrk_max_students", new_wrk_day.max_students);
+      formData.append("wrk_signed_students", new_wrk_day.signed_students);
+      formData.append("wrk_time", new_wrk_day.time);
+      formData.append("wrks_id", new_wrk_day.wrks_id);
+      axios.post(this.baseUrl + "workshop", formData).then((res) => {
+        console.log(res);
+        this.getWorkshopDateInfo();
+      });
     },
     cancelWorkshop(wrk_date) {
       let formData = new FormData();
@@ -237,7 +236,7 @@ export default {
           if (changedWorkDay.time !== this.calendar_info[i].wrk_time) {
             formData.append("wrk_time", changedWorkDay.time);
           }
-          if(changedWorkDay.wrks_id !== this.calendar_info[i].wrks_id) {
+          if (changedWorkDay.wrks_id !== this.calendar_info[i].wrks_id) {
             formData.append("wrks_id", changedWorkDay.wrks_id);
           }
           axios.patch(this.baseUrl + "workshop", formData).then((res) => {

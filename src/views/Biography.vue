@@ -56,7 +56,7 @@ export default {
 </script>
 <style scoped>
 img {
-  width: 55vw;
+  width: 50vw;
   margin-top: 15vh;
 }
 .author {
@@ -67,7 +67,7 @@ img {
   gap: 10vw;
 }
 .bio {
-  width: 35vw;
+  width: 40vw;
   text-align: justify;
   margin-top: 15vh;
   margin-left: 10vw;

@@ -15,7 +15,7 @@
         'list-items-exh': exh_page,
       }"
     >
-      <div class="item" v-for="(object, index) in object_array" :key="index">
+      <div class="item" v-for="(object, index) in object_array" :key="'item' + index">
         <div class="delete-img-div" v-if="admin_page">
           <i class="far fa-trash-alt delete" @click="deleteObject(object)"></i>
         </div>
@@ -67,14 +67,13 @@
           </div>
           <div class="dtl" v-if="type === 'exhibition'">
             <p>{{ $t("frq_words.date") }}:</p>
-            <p class="dtl-txt">{{ object.exh_date_start }}</p>
-            <p>-</p>
-            <p class="dtl-txt">{{ object.exh_date_finish }}</p>
+            <div class="date">
+            <p class="dtl-date">{{ object.exh_date_start }} </p>
+          
+            <p class="dtl-date">{{ object.exh_date_finish }}</p>
+            </div>
           </div>
-          <div class="dtl" v-if="type === 'exhibition'">
-            <p>{{ $t("frq_words.type") }}:</p>
-            <p class="dtl-txt">{{ object.type }}</p>
-          </div>
+        
         </div>
       </div>
     </div>
@@ -153,6 +152,11 @@ p{
 width: 5vw;
 text-align: start;
 }
+.date{
+display: flex;
+flex-direction: column;
+align-items: center;
+}
 .delete {
   cursor: pointer;
 }
@@ -162,7 +166,7 @@ text-align: start;
   margin-left: -5rem;
   width: 25vw;
   text-align: end;
-  margin-top: 2rem;
+  
 }
 .dtl {
   display: flex;

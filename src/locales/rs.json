@@ -179,6 +179,7 @@
     "signed_students": "Broj polaznika koji su već upisani po času:",
     "admin_instr_mssg": "Izaberite vreme kako biste menjali detalje radionice ili izbrišite radionicu zakazanu za odbrano vreme:",
     "admin_time_title": "Detalji za vreme:",
+    "admin_add_time": "Dodaj vreme:",
     "workshop_type": "Tip radionice:"
     
   }

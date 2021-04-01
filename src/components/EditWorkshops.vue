@@ -6,10 +6,10 @@
       </div>
       <div class="sqrs">
         <div class="show-selected" v-if="show_selected">
+          <div class="date">
+            <h1>{{ day }}.{{ month }}.{{ year }}</h1>
+          </div>
           <div class="add-new-wrk-day" v-if="new_date !== null">
-            <div class="date">
-              <h1>{{ day }}.{{ month }}.{{ year }}</h1>
-            </div>
             <div class="inpts">
               <h3>{{ $t("workshops.max_students") }}</h3>
               <input type="number" v-model="max_students" />
@@ -25,8 +25,8 @@
                   {{ wrkshop.wrks_type }}
                 </option>
               </select>
-            
-              <h3>{{ $t("workshops.time") }}</h3>
+
+              <h3>{{ $t("workshops.admin_add_time") }}</h3>
               <div class="time">
                 <input class="time-inpt" type="text" v-model="hours" />
                 <p>h :</p>
@@ -34,12 +34,16 @@
                 <p>m :</p>
                 <input class="time-inpt" type="text" v-model="seconds" />
                 <p>s</p>
-                <i class="fas fa-plus icon" @click="addTime()"></i>
+                <i
+                  v-if="new_time === null"
+                  class="fas fa-plus icon"
+                  @click="addTime()"
+                ></i>
               </div>
               <div class="list-time">
                 <p>{{ $t("workshops.time") }}</p>
                 <p class="orng-txt">{{ new_time }}</p>
-                <i class="far fa-trash-alt icon" @click="deleteTime(time)"></i>
+                <i class="far fa-trash-alt icon" @click="deleteTime()"></i>
               </div>
               <div class="btns">
                 <button class="sbmt" @click="addWorkDay()">
@@ -49,9 +53,7 @@
             </div>
           </div>
           <div class="edit-wrk-day" v-if="date !== null">
-            <div class="date">
-              <h1>{{ day }}.{{ month }}.{{ year }}</h1>
-            </div>
+            <h3>{{ $t("workshops.admin_add_time") }}</h3>
             <div class="time">
               <input class="time-inpt" type="text" v-model="hours" />
               <p>h :</p>
@@ -86,8 +88,8 @@
               <input type="number" v-model="max_students" />
               <h3>{{ $t("workshops.signed_students") }}</h3>
               <input type="number" v-model="signed_students" />
-             
-               <select name="" id="" v-model="wrks_id">
+
+              <select name="" id="" v-model="wrks_id">
                 <option
                   v-for="(wrkshop, index) in object_array"
                   :key="'e-w' + index"
@@ -111,12 +113,13 @@
         </div>
         <div class="calendar">
           <calendar
-            :key="componentKey"
+            :key="componentCalendarKey"
             :calendar_info="calendar_info"
             @show-selected="showSelected"
             @add-to-selected="addNewWrkDay"
           ></calendar>
         </div>
+        
       </div>
     </div>
   </div>
@@ -147,7 +150,7 @@ export default {
       minutes: "00",
       seconds: "00",
       time_array: [],
-      componentKey: 0,
+      componentCalendarKey: 0,
       new_time: null,
       chosen_time: null,
       wrk_id: null,
@@ -209,29 +212,34 @@ export default {
       this.chosen_time = time.existing_time;
     },
     deleteTime(time) {
-      for (let i = 0; i < this.time_array.length; i++) {
-        if (this.time_array[i] === time) {
-          this.time_array.splice(i, 1);
-          if (time.existing_time) {
-            axios
-              .delete(this.baseUrl + "workshop", {
-                params: { wrk_id: time.wrk_id },
-              })
-              .then((res) => {
-                console.log(res);
-                if (this.wrk_id == time.wrk_id) {
-                  this.chosen_time = null;
-                  this.wrk_id = null;
-                  this.signed_students = 0;
-                  this.max_students = 0;
-                }
-              });
+      if (this.new_time !== null) {
+        this.new_time = null;
+      } else {
+        for (let i = 0; i < this.time_array.length; i++) {
+          if (this.time_array[i] === time) {
+            // this.time_array.splice(i, 1);
+            if (time.existing_time) {
+              axios
+                .delete(this.baseUrl + "workshop", {
+                  params: { wrk_id: time.wrk_id },
+                })
+                .then((res) => {
+                  console.log(res);
+                  if (this.wrk_id == time.wrk_id) {
+                    this.chosen_time = null;
+                    this.wrk_id = null;
+                    this.signed_students = 0;
+                    this.max_students = 0;
+                  }
+                  this.time_array.splice(i, 1);
+                });
+            }
           }
         }
       }
     },
     forceRerender() {
-      this.componentKey++;
+      this.componentCalendarKey++;
     },
     showSelected(wrk_day) {
       this.time_array = [];
@@ -331,7 +339,6 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -20vh;
 }
 .icon {
   font-size: 1.5rem;
@@ -388,7 +395,7 @@ input:focus {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  
   margin-top: 5vh;
 }
 .sqr {
@@ -406,7 +413,7 @@ input:focus {
   width: 80vw;
   gap: 5vw;
   margin-left: 18vw;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   margin-top: 20vh;
 }
