@@ -41,13 +41,21 @@
         <button @click="changeAuthor()">{{ $t("button.submit") }}</button>
       </div>
       <div class="bio">
-      <div class="btns">
-        <button class="btn-bio" @click="showBioEn()">{{ $t("frq_words.bio") }}(EN)</button>
-        <button class="btn-bio" @click="showBioRs()">{{ $t("frq_words.bio") }}(RS)</button>
+        <div class="btns">
+          <button class="btn-bio" @click="showBioEn()">
+            {{ $t("frq_words.bio") }}(EN)
+          </button>
+          <button class="btn-bio" @click="showBioRs()">
+            {{ $t("frq_words.bio") }}(RS)
+          </button>
         </div>
         <div v-if="showEn">
           <h1>EN</h1>
-          <vue-editor class="vue_editor" v-model="bio_en" />
+          <vue-editor
+            class="vue_editor"
+            v-model="bio_en"
+            :editor-toolbar="customToolbar"
+          />
         </div>
         <div v-if="showRs">
           <h1>RS</h1>
@@ -58,9 +66,13 @@
   </div>
 </template>
 <script>
+import { VueEditor } from "vue2-editor";
 export default {
   props: {
     aut_info: Object,
+  },
+  components: {
+    VueEditor,
   },
   data() {
     return {
@@ -73,6 +85,31 @@ export default {
       url: "",
       showEn: false,
       showRs: false,
+      customToolbar: [
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        ["bold", "italic", "underline"],
+        [{ list: "ordered" }, { list: "bullet" }],
+
+        [
+          { align: "" },
+          { align: "center" },
+          { align: "right" },
+          { align: "justify" },
+        ],
+        ["link", "image"],
+        [
+          {
+            color: [
+              "#ff6b00",
+              "#777674",
+              "#343333",
+              "#a7a6a7",
+              "#d9d9d9",
+              "white",
+            ],
+          },
+        ],
+      ],
     };
   },
   methods: {
@@ -170,12 +207,12 @@ img {
   width: 40vw;
   margin-left: 3rem;
 }
-.btn-bio{
+.btn-bio {
   width: 14vw;
   color: #ff6b00;
   font-weight: 800;
 }
-.btns{
+.btns {
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,0 +1,466 @@
+<template>
+  <div class="workshops">
+    <div class="wrk-details">
+      <div class="wrk" v-for="(wrk, index) in workshops" :key="index">
+        <div class="image" v-lazyload>
+          <img
+            :data-url="wrk.cover_path"
+            src="../../public/images/placeholder.gif"
+            alt=""
+          />
+          <h1 :class="{ en: curLanguage === 'EN', rs: curLanguage === 'RS' }">
+            {{ wrk.type.toUpperCase() }}
+          </h1>
+          <p :class="{ en: curLanguage === 'EN', rs: curLanguage === 'RS' }">
+            {{ wrk.dsc }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="wrk-date-info">
+      <div class="calendar">
+        <calendar
+          :key="componentKey"
+          v-if="calendar_info.length > 0"
+          :calendar_info="calendar_info"
+          @show-selected="showSelected"
+        ></calendar>
+      </div>
+      <div class="wrk-manager">
+      <div
+        class="choose-time"
+        v-if="
+          selected_wrk === null &&
+          selected_date.length > 0 &&
+          success_message === false
+        "
+      >
+        <div class="instr-mssg">
+          <h2>{{ $t("workshops.instr_mssg") }}</h2>
+        </div>
+        <div class="list-time">
+          <p class="orng-txt">
+            {{ selected_date[0].date_day }}.{{ selected_date[0].date_month }}.{{
+              selected_date[0].date_year
+            }}
+          </p>
+          <div
+            class="time"
+            v-for="(time, index) in selected_date"
+            :key="index"
+            @click="chooseWrk(time)"
+          >
+            <p>{{ $t("workshops.time") }}</p>
+            <p class="orng-txt">{{ time.wrk_time }}</p>
+            <p>{{ $t("workshops.info_mssg") }}</p>
+            <p class="orng-txt">{{ time.vacancies }}</p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrk-info"
+        v-if="
+          selected_wrk !== null &&
+          success_message === false &&
+          error_message === false
+        "
+      >
+        <div class="info-mssg">
+          <p class="vacancies">{{ $t("workshops.info_mssg") }}</p>
+          <p class="vacancies">{{ selected_wrk.vacancies }}</p>
+        </div>
+        <div class="sign-div">
+          <div class="sign-form" v-if="selected_wrk.vacancies > 0">
+            <h2>{{ $t("workshops.sign_mssg") }}</h2>
+            <label>{{plcholder_fname}}</label>
+            <input type="text" v-model="student_fullname" />
+            <label>{{plcholder_mail}}</label>
+            <input type="text" v-model="student_mail" />
+
+            <button class="sbmt" @click="submitSignIn()">
+              {{ $t("button.submit") }}
+            </button>
+            <div class="cancel-div">
+              <p>{{ $t("workshops.cancel_arrvl_mssg") }}</p>
+              <label>{{plcholder_fname}}</label>
+              <input type="text" v-model="student_fullname" />
+              <label>{{plcholder_mail}}</label>
+              <input type="text" v-model="student_mail" />
+
+              <button class="cancel" @click="cancelArrival()">
+                {{ $t("button.cancel_arrival") }}
+              </button>
+            </div>
+          </div>
+          <div class="no-room-mssg" v-if="selected_wrk.vacancies == 0">
+            <h2>{{ $t("workshops.no_room_mssg") }}</h2>
+            <p>{{ $t("workshops.cancel_arrvl_mssg") }}</p>
+            <label>{{plcholder_fname}}</label>
+            <input type="text" v-model="student_fullname" />
+            <label>{{plcholder_mail}}</label>
+            <input type="text" v-model="student_mail"/>
+
+            <button class="cancel" @click="cancelArrival()">
+              {{ $t("button.cancel_arrival") }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="sccss-mssg"
+        :class="{
+          'sccss-signin': confirm_index === 1,
+          'sccss-signout': confirm_index === 0,
+        }"
+        v-if="success_message"
+      >
+        <h2>{{ $t(`confirm_mssg[${confirm_index}].mssg`) }}</h2>
+      </div>
+      <div class="error-mssg" v-if="error_message">
+        <h2>{{ $t(`error_mssg[${error_index}].mssg`) }}</h2>
+        <button class="sbmt-error" @click="closeError()">OK</button>
+      </div>
+    </div>
+    </div>
+  </div>
+</template>
+<script>
+import { mapState } from "vuex";
+import axios from "axios";
+import Calendar from "../components/Calendar.vue";
+export default {
+  components: { Calendar },
+  data() {
+    return {
+      calendar_info: [],
+      componentKey: 0,
+      selected_wrk: null,
+      selected_date: [],
+      student_fullname: "", 
+      student_mail: "",
+      plcholder_fname: "Full name",
+      plcholder_mail: "E-mail",
+      workshops: [],
+      time_info: { date: "", time: [] },
+      success_message: false,
+      confirm_index: 0,
+      error_message: false,
+      error_index: 0,
+    };
+  },
+  methods: {
+    cancelArrival() {
+      axios
+        .delete(this.baseUrl + "available_workshops", {
+          params: {
+            wrk_id: this.selected_wrk.wrk_id,
+            wrk_date: this.selected_wrk.wrk_date,
+            student_fullname: this.student_fullname,
+            student_email: this.student_mail,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          this.getWorkshopDateInfo();
+          this.forceRerender();
+          this.selected_date = [];
+          this.success_message = true;
+          this.confirm_index = 0;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.error_message = true;
+          this.error_index = 1;
+        });
+    },
+    checkLanguage() {
+      if (this.curLanguage === "EN") {
+        if (this.plcholder_fname === "Puno ime") {
+          this.plcholder_fname = "Full name";
+        }
+        for (let i = 0; i < this.workshops.length; i++) {
+          this.workshops[i].type = this.workshops[i].wrks_type_en;
+          this.workshops[i].dsc = this.workshops[i].wrks_dsc_en;
+        }
+      }
+      if (this.curLanguage === "RS") {
+        if (this.plcholder_fname === "Full name") {
+          this.plcholder_fname = "Puno ime";
+        }
+        for (let i = 0; i < this.workshops.length; i++) {
+          this.workshops[i].type = this.workshops[i].wrks_type_rs;
+          this.workshops[i].dsc = this.workshops[i].wrks_dsc_rs;
+        }
+      }
+    },
+    chooseWrk(time) {
+      this.selected_wrk = time;
+      this.selected_wrk.vacancies =
+        time.wrk_max_students - time.wrk_signed_students;
+      console.log(this.selected_wrk);
+    },
+    closeError() {
+      this.error_message = false;
+    },
+    forceRerender() {
+      this.componentKey++;
+    },
+    getWorkshops() {
+      axios.get(this.baseUrl + "workshops").then((res) => {
+        console.log(res);
+        this.workshops = res.data.data;
+        this.checkLanguage();
+      });
+    },
+    getWorkshopDateInfo() {
+      axios.get(this.baseUrl + "workshop").then((res) => {
+        console.log(res);
+        this.calendar_info = res.data.data;
+      });
+    },
+    showSelected(wrk_day) {
+      this.selected_wrk = null;
+      this.success_message = false;
+    
+      axios
+        .get(this.baseUrl + "available_workshops", {
+          params: { wrk_date: wrk_day.wrk_date },
+        })
+        .then((res) => {
+          console.log(res);
+          this.selected_date = res.data.data;
+          if (this.selected_date.length > 0) {
+            for (let i = 0; i < this.selected_date.length; i++) {
+              this.selected_date[i].vacancies =
+                this.selected_date[i].wrk_max_students -
+                this.selected_date[i].wrk_signed_students;
+            }
+          }
+           this.scrollToElement("wrk-manager");
+        });
+    },
+    submitSignIn() {
+      let formData = new FormData();
+      formData.append("wrk_id", this.selected_wrk.wrk_id);
+      formData.append("wrk_date", this.selected_wrk.wrk_date);
+      formData.append("student_fullname", this.student_fullname);
+      formData.append("student_email", this.student_mail);
+      axios
+        .patch(this.baseUrl + "available_workshops", formData)
+        .then((res) => {
+          console.log(res);
+          this.getWorkshopDateInfo();
+          this.forceRerender();
+          this.selected_date = [];
+          this.success_message = true;
+          this.confirm_index = 1;
+        }).catch((error) => {
+          console.log(error);
+          this.error_message = true;
+          this.error_index = 0;
+        });
+    },
+    scrollToElement(clss) {
+      const el = this.$el.getElementsByClassName(clss)[0];
+      console.log(el)
+      if(el) {
+        el.scrollIntoView({behavior: 'smooth'});
+      }
+    }
+  },
+  computed: {
+    ...mapState(["baseUrl", "curLanguage"]),
+  },
+  mounted() {
+    this.getWorkshops();
+    this.getWorkshopDateInfo();
+  },
+  watch: {
+    curLanguage: {
+      handler() {
+        this.checkLanguage();
+      },
+    },
+  },
+};
+</script>
+<style scoped>
+img {
+  width: 40vw;
+}
+input {
+  font-family: "Open Sans", sans-serif;
+  border: none;
+  background-color: transparent;
+  border-bottom: 2px solid #343333;
+  color: white;
+  text-align: center;
+  width: 20vw;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+input:focus {
+  outline: none;
+}
+label{
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #343333;
+}
+.cancel {
+  font-family: "Open Sans", sans-serif;
+  background-color: #343333;
+  color: white;
+  width: 10vw;
+  height: 10vh;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border: none;
+  margin-top: 2rem;
+}
+.choose-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30vw;
+  background-color: #777674;
+  margin-top: 5vh;
+}
+.error-mssg {
+  width: 30vw;
+  border: 3px solid rgb(182, 51, 51);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgb(182, 51, 51);
+  height: 30vh;
+  margin-top: 5vh;
+}
+.info-mssg {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #a7a6a7;
+  width: 30vw;
+  height: 5vh;
+
+  margin-top: 5vh;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 100;
+}
+.instr-mssg {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #a7a6a7;
+  width: 30vw;
+  height: 10vh;
+}
+.list-time {
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+.no-room-mssg,
+.cancel-div {
+  height: 70vh;
+  width: 25vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.orng-txt {
+  color: #ff6b00;
+  font-size: 1.5rem;
+}
+.vacancies {
+  margin-left: 1rem;
+}
+.sbmt {
+  font-family: "Open Sans", sans-serif;
+  background-color: #343333;
+  color: white;
+  width: 10vw;
+  height: 7vh;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border: none;
+  margin-top: 2rem;
+}
+.sbmt:focus {
+  outline: 3px solid #ff6b00;
+}
+.sbmt-error {
+  font-family: "Open Sans", sans-serif;
+  background-color: #777674;
+  color: #343333;
+  width: 10vw;
+  height: 7vh;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border: none;
+  margin-top: 2rem;
+}
+.sbmt-error:focus{
+  outline: none;
+}
+.sccss-mssg {
+  width: 30vw;
+  border: 3px solid rgb(105, 150, 105);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(105, 150, 105);
+  height: 30vh;
+  margin-top: 5vh;
+}
+.sign-div {
+  width: 30vw;
+  background-color: #777674;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sign-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  width: 20vw;
+  border-bottom: 2px solid #343333;
+  cursor: pointer;
+}
+.workshops {
+  display: flex;
+}
+.wrk-date-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 10vw;
+}
+.wrk-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 40vw;
+  margin-left: 10vw;
+  margin-top: 10vh;
+}
+</style>

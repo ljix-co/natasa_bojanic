@@ -3,14 +3,16 @@
     class="gallery"
     :class="{
       'gallery-admin': admin_page,
-      'gallery-guest': admin_page === false,
+      'gallery-artworks': art_page,
+      'gallery-exh': exh_page,
     }"
   >
     <div
       class="list-items"
       :class="{
         'list-items-admin': admin_page,
-        'list-items-guest': admin_page === false,
+        'list-items-artworks': art_page,
+        'list-items-exh': exh_page,
       }"
     >
       <div class="item" v-for="(object, index) in object_array" :key="index">
@@ -25,11 +27,11 @@
             @click="chooseObject(object)"
           />
         </div>
-        <div class="item-dtls">
-          <div class="dtl">
-            <p>{{ $t("frq_words.title") }}:</p>
-            <p class="dtl-txt">{{ object.title }}</p>
-          </div>
+        <div class="item-dtls" v-if="exh_page === false">
+          <!-- <div class="dtl"> -->
+            <!-- <p>{{ $t("frq_words.title") }}:</p> -->
+            <h2 class="dtl-txt-title">{{ object.title }}</h2>
+          <!-- </div> -->
           <div class="dtl" v-if="type === 'artwork'">
             <p>{{ $t("frq_words.dimensions") }}:</p>
             <p class="dtl-txt">{{ object.art_dmns }}</p>
@@ -97,13 +99,20 @@ export default {
       review: "",
       place: "",
       admin_page: false,
+      exh_page: false,
+      art_page: false,
     };
   },
   methods: {
-    checkIfAdmin() {
+    checkPage() {
       if (this.$route.name === "Admin") {
         this.admin_page = true;
-        console.log(this.admin_page);
+      }
+      if (this.$route.name === "Exhibitions") {
+        this.exh_page = true;
+      }
+      if (this.$route.name === "Artworks") {
+        this.art_page = true;
       }
     },
 
@@ -116,7 +125,7 @@ export default {
           this.$emit("choose-exh", object);
         }
       } else {
-        this.$emit('choose-object', object);
+        this.$emit("choose-object", object);
       }
     },
     deleteObject(object) {
@@ -128,7 +137,7 @@ export default {
     ...mapState(["curLanguage", "baseUrl"]),
   },
   mounted() {
-    this.checkIfAdmin();
+    this.checkPage();
   },
 };
 </script>
@@ -139,6 +148,10 @@ img {
   object-fit: contain;
   background-color: #474646;
   cursor: pointer;
+}
+p{
+width: 5vw;
+text-align: start;
 }
 .delete {
   cursor: pointer;
@@ -156,10 +169,25 @@ img {
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
+  margin-left: 3rem;
 }
 .dtl-txt {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #343333;
+  width: 10vw;
+  text-align: start;
+  
+}
+.dtl-txt-title{
+font-size: 2rem;
+font-weight: 800;
+color: #474646;
+width: 20vw;
+text-align: center;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-bottom: 2rem;
 }
 .gallery {
   display: flex;
@@ -169,7 +197,7 @@ img {
 .gallery-admin {
   width: 50vw;
 }
-.gallery-guest {
+.gallery-artworks {
   width: 80vw;
   margin-left: 10vw;
 }
@@ -181,7 +209,6 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
 }
 .item-dtls {
   display: flex;
@@ -191,7 +218,7 @@ img {
   justify-content: flex-start;
   color: #d9d9d9;
   font-weight: 300;
-  margin-left: 3rem;
+  
   margin-top: 2rem;
   margin-bottom: 2rem;
   width: 20vw;
@@ -206,13 +233,22 @@ img {
   align-items: flex-start;
   justify-content: flex-start;
 }
-.list-items-guest {
+.list-items-artworks {
   width: 80vw;
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
   align-items: center;
   justify-content: center;
+}
+.list-items-exh {
+  width: 50vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+ 
 }
 .photo-slider {
   top: 10vh;

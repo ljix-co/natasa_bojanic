@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Exhibitions from '../views/Exhibitions.vue';
+import Workshops from '../views/Workshops.vue';
 import Biography from '../views/Biography.vue';
 import Contact from '../views/Contact.vue';
 import Admin from '../views/Admin.vue';
@@ -34,6 +35,11 @@ const routes = [
     component: Biography
   },
   {
+    path: '/workshops',
+    name: 'Workshops',
+    component: Workshops
+  },
+  {
     path: '/contact',
     name: 'Contact',
     component: Contact
@@ -48,7 +54,15 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  // scrollBehavior () {
+   
+  //   
+  // }
+  scrollBehavior() {
+   // document.getElementById('app').scrollIntoView();
+    return {x: 0, y:0}
+}
 })
 
 export default router

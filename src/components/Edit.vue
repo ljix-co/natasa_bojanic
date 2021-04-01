@@ -584,6 +584,7 @@ p {
   justify-content: center;
   border: 10px solid #777674;
   margin-left: 5vw;
+  
 }
 .edit-lang-title {
   margin-left: -10vw;

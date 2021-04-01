@@ -67,10 +67,13 @@ h1{
   align-items: center;
   justify-content: center;
   height: 85vh;
+  align-self: center;
+  
 }
 .r-side{
   width: 70vw;
   height: 85vh;
+  margin-bottom: 5vh;
 }
 .web-title{
   display: flex;

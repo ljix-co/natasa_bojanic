@@ -1,24 +1,4 @@
 {
-  "links": [
-    {
-      "title": "POČETNA"
-    },
-    {
-      "title": "RADOVI"
-    },
-    {
-      "title": "IZLOŽBE"
-    },
-    {
-      "title": "BIOGRAFIJA"
-    },
-    {
-      "title": "KONTAKT"
-    }
-  ],
-  "home": {
-    "subtitle": "Vizuelna umetnica i keramičarka"
-  },
   "admin": [
     {
       "title": "LIČNE INFORMACIJE"
@@ -28,17 +8,11 @@
     },
     {
       "title": "IZLOŽBE"
+    },
+    {
+      "title": "RADIONICE"
     }
   ],
-  "author": {
-    "password": "lozinka",
-    "old_password": "stara lozinka"
-  },
-  "button": {
-    "submit": "POTVRDI",
-    "group": "GRUPNE",
-    "solo": "SAMOSTALNE"
-  },
   "add_edit": [
     {
       "type": "RAD",
@@ -51,6 +25,63 @@
       "images": "FOTOGRAFIJE"
     }
   ],
+  "author": {
+    "password": "lozinka",
+    "old_password": "stara lozinka"
+  },
+  "button": {
+    "submit": "POTVRDI",
+    "group": "GRUPNE",
+    "solo": "SAMOSTALNE",
+    "cancel_arrival": "OTKAŽI DOLAZAK",
+    "cancel": "OTKAŽI RADIONICU"
+  },
+  "calendar": [
+    {
+      "month": "Januar"
+    },
+    {
+      "month": "Februar"
+    },
+    {
+      "month": "Mart"
+    },
+    {
+      "month": "April"
+    },
+    {
+      "month": "Maj"
+    },
+    {
+      "month": "Jun"
+    },
+    {
+      "month": "Jul"
+    },
+    {
+      "month": "Avgust"
+    },
+    {
+      "month": "Septembar"
+    },
+    {
+      "month": "Oktobar"
+    },
+    {
+      "month": "Novembar"
+    },
+    {
+      "month": "Decembar"
+    }
+  ],
+  "exhibitions": [
+    {
+      "title": "SAMOSTALNE"
+    },
+    {
+      "title": "GRUPNE"
+    }
+  ],
   "frq_words": {
     "add": "DODAJ",
     "bio": "BIOGRAFIJA",
@@ -61,18 +92,94 @@
     "dimensions": "Dimenzije",
     "edit": "UREDI",
     "for_sale": "Za prodaju",
-    "group" : "GRUPNA",
+    "group": "GRUPNA",
     "images": "SLIKE",
     "material": "Materijal",
     "no": "NE",
-    "price" : "Cena",
+    "price": "Cena",
     "place": "Mesto",
     "review": "RECENZIJA",
     "solo": "SAMOSTALNA",
     "title": "Naziv",
     "technique": "Tehnika",
-    "type" : "Tip",
+    "type": "Tip",
     "year": "Godina",
     "yes": "DA"
+  },
+  "confirm_mssg": [
+    {
+      "mssg" : "Uspešno ste se odjavili."
+    },
+    {
+      "mssg" : "Uspešno ste se prijavili." 
+    }
+  ],
+  "error_mssg": [
+    {
+      "mssg": "Puno ime i e-mail adresa nisu dobro uneti ili ste već prijavljeni za ovu radionicu."
+    },
+    {
+      "mssg": "Puno ime i e-mail adresa nisu dobro uneti ili niste prijavljeni za ovu radionicu."
+    }
+  ],
+  "home": {
+    "subtitle": "Vizuelna umetnica i keramičarka"
+  },
+  "links": [
+    {
+      "title": "POČETNA"
+    },
+    {
+      "title": "RADOVI"
+    },
+    {
+      "title": "IZLOŽBE"
+    },
+    {
+      "title": "RADIONICE"
+    },
+    {
+      "title": "BIOGRAFIJA"
+    },
+    {
+      "title": "KONTAKT"
+    }
+  ],
+  "week_days": [
+    {
+      "day": "NED"
+    },
+    {
+      "day": "PON"
+    },
+    {
+      "day": "UTO"
+    },
+    {
+      "day": "SRE"
+    },
+    {
+      "day": "ČET"
+    },
+    {
+      "day": "PET"
+    },
+    {
+      "day": "SUB"
+    }
+  ],
+  "workshops": {
+    "info_mssg": "Slobodnih mesta:",
+    "sign_mssg": "Prijavi se za izabranu radionicu:",
+    "no_room_mssg": "Nema više slobodnih mesta za odabrani datum.",
+    "cancel_arrvl_mssg":  "Ako ste se već prijavili za radionicu i želite da otkažete svoj dolazak, molimo Vas da popunite polja i kliknete na dugme ispod.",
+    "time": "Vreme:",
+    "instr_mssg": "Izaberite vreme kako biste se prijavili za radionicu.",
+    "max_students": "Maksimalan broj polaznika po času:",
+    "signed_students": "Broj polaznika koji su već upisani po času:",
+    "admin_instr_mssg": "Izaberite vreme kako biste menjali detalje radionice ili izbrišite radionicu zakazanu za odbrano vreme:",
+    "admin_time_title": "Detalji za vreme:",
+    "workshop_type": "Tip radionice:"
+    
   }
 }

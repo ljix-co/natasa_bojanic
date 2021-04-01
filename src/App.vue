@@ -5,17 +5,20 @@
         <router-link class="link" to="/">{{
           $t("links[0].title")
         }}</router-link>
-        <router-link class="link" to="/artworks">{{
+        <router-link class="link" to="/artworks" >{{
           $t("links[1].title")
         }}</router-link>
         <router-link class="link" to="/exhibitions">{{
           $t("links[2].title")
         }}</router-link>
-        <router-link class="link" to="/biography">{{
+         <router-link class="link" to="/workshops">{{
           $t("links[3].title")
         }}</router-link>
-        <router-link class="link" to="/contact">{{
+        <router-link class="link" to="/biography">{{
           $t("links[4].title")
+        }}</router-link>
+        <router-link class="link" to="/contact">{{
+          $t("links[5].title")
         }}</router-link>
         <LocalSwitcher />
       </div>
@@ -27,11 +30,13 @@
 <script>
 import Footer from "./components/Footer.vue";
 import LocalSwitcher from "./components/LocalSwitcher.vue";
+
 export default {
   components: {
     LocalSwitcher,
     Footer,
   },
+
 };
 </script>
 <style>
@@ -58,6 +63,7 @@ button {
 #nav {
   padding: 30px;
   position: fixed;
+  top: 0;
   background-color: #343333;
   width: 100vw;
   z-index: 2;
@@ -82,6 +88,5 @@ button {
 }
 .view {
   min-height: 70vh;
-  
 }
 </style>

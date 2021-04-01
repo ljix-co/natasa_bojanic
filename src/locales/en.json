@@ -1,24 +1,4 @@
 {
-  "links": [
-    {
-      "title": "HOME"
-    },
-    {
-      "title": "ARTWORKS"
-    },
-    {
-      "title": "EXHIBITIONS"
-    },
-    {
-      "title": "BIOGRAPHY"
-    },
-    {
-      "title": "CONTACT"
-    }
-  ],
-  "home": {
-    "subtitle": "Visual and ceramic artist"
-  },
   "admin": [
     {
       "title": "PERSONAL INFO"
@@ -28,17 +8,11 @@
     },
     {
       "title": "EXHIBITIONS"
+    },
+    {
+      "title": "WORKSHOPS"
     }
   ],
-  "author": {
-    "password": "password",
-    "old_password": "old password"
-  },
-  "button": {
-    "submit": "SUBMIT",
-    "group": "GROUP",
-    "solo": "SOLO"
-  },
   "add_edit": [
     {
       "type": "ARTWORK",
@@ -49,6 +23,79 @@
       "type": "EXHIBITION",
       "cover": "COVER",
       "images": "IMAGES"
+    }
+  ],
+  "author": {
+    "password": "password",
+    "old_password": "old password"
+  },
+  "button": {
+    "submit": "SUBMIT",
+    "group": "GROUP",
+    "solo": "SOLO",
+    "cancel_arrival": "CANCEL ARRIVAL",
+    "cancel": "CANCEL WORKSHOP"
+  },
+  "calendar": [
+    {
+      "month": "January"
+    },
+    {
+      "month": "February"
+    },
+    {
+      "month": "March"
+    },
+    {
+      "month": "April"
+    },
+    {
+      "month": "May"
+    },
+    {
+      "month": "June"
+    },
+    {
+      "month": "July"
+    },
+    {
+      "month": "August"
+    },
+    {
+      "month": "September"
+    },
+    {
+      "month": "October"
+    },
+    {
+      "month": "November"
+    },
+    {
+      "month": "December"
+    }
+  ],
+  "confirm_mssg": [
+    {
+      "mssg" : "You've been signed out successfully."
+    },
+    {
+      "mssg" : "You've been signed in successfully." 
+    }
+  ],
+  "error_mssg": [
+    {
+      "mssg": "Full name and email are incorrect or you are already signed in for this workshop."
+    },
+    {
+      "mssg": "Full name and email are incorrect or you haven't been signed in for this workshop."
+    }
+  ],
+  "exhibitions": [
+    {
+      "title": "SOLO"
+    },
+    {
+      "title": "GROUP"
     }
   ],
   "frq_words": {
@@ -74,5 +121,64 @@
     "type": "Type",
     "year": "Year",
     "yes": "YES"
+  },
+  "home": {
+    "subtitle": "Visual and ceramic artist"
+  },
+  "links": [
+    {
+      "title": "HOME"
+    },
+    {
+      "title": "ARTWORKS"
+    },
+    {
+      "title": "EXHIBITIONS"
+    },
+    {
+      "title": "WORKSHOPS"
+    },
+    {
+      "title": "BIOGRAPHY"
+    },
+    {
+      "title": "CONTACT"
+    }
+  ],
+  "week_days": [
+    {
+      "day": "SUN"
+    },
+    {
+      "day": "MON"
+    },
+    {
+      "day": "TUE"
+    },
+    {
+      "day": "WED"
+    },
+    {
+      "day": "THU"
+    },
+    {
+      "day": "FRI"
+    },
+    {
+      "day": "SAT"
+    }
+  ],
+  "workshops": {
+    "info_mssg": "Vacancies:",
+    "sign_mssg": "Sign in for the selected workshop:",
+    "no_room_mssg": "There are left no vacancies for the selected date.",
+    "cancel_arrvl_mssg":  "If you have already signed for the selected workshop and want to cancel your arrival, please fill in the form and click the button below.",
+    "time": "Time:",
+    "instr_mssg": "Choose time to sign up for the workshop.",
+    "max_students": "Maximum number of students per class:",
+    "signed_students": "Number of students that are already signed per class:",
+    "admin_instr_mssg": "Choose time to edit workshop details or delete workshop appointment for chosen time:",
+    "admin_time_title": "Details for time:",
+    "workshop_type": "Workshop type:"
   }
 }

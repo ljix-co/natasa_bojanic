@@ -33,11 +33,13 @@
           v-if="editor_type === 'review'"
           class="vue_editor"
           v-model="e_rev_en"
+           :editor-toolbar="customToolbar"
         />
         <vue-editor
           v-if="editor_type === 'description'"
           class="vue_editor"
           v-model="e_des_en"
+           :editor-toolbar="customToolbar"
         />
       </div>
       <div class="editor">
@@ -48,18 +50,24 @@
           v-if="editor_type === 'review'"
           class="vue_editor"
           v-model="e_rev_rs"
+           :editor-toolbar="customToolbar"
         />
         <vue-editor
           v-if="editor_type === 'description'"
           class="vue_editor"
           v-model="e_des_rs"
+           :editor-toolbar="customToolbar"
         />
       </div>
     </div>
   </div>
 </template>
 <script>
+import { VueEditor } from "vue2-editor";
 export default {
+  components: {
+    VueEditor,
+  },
   props: {
     editor_type: String,
     rev_en: String,
@@ -73,6 +81,31 @@ export default {
       e_rev_rs: this.rev_rs,
       e_des_en: this.des_en,
       e_des_rs: this.des_rs,
+      customToolbar: [
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        ["bold", "italic", "underline"],
+        [{ list: "ordered" }, { list: "bullet" }],
+
+        [
+          { align: "" },
+          { align: "center" },
+          { align: "right" },
+          { align: "justify" },
+        ],
+        ["link", "image"],
+        [
+          {
+            color: [
+              "#ff6b00",
+              "#777674",
+              "#343333",
+              "#a7a6a7",
+              "#d9d9d9",
+              "white",
+            ],
+          },
+        ],
+      ],
     };
   },
   methods: {
@@ -108,14 +141,14 @@ export default {
 .btn-exit:focus {
   outline: none;
 }
-.editor{
-    width: 40vw;
-    margin-left: 2rem;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   gap: 2rem;
+.editor {
+  width: 40vw;
+  margin-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }
 .exit {
   color: #343333;
@@ -123,11 +156,10 @@ export default {
 }
 .main {
   width: 90vw;
-  margin-top: 10vh;
+  margin-top: 30vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  
 }
 .mid-title {
   font-weight: 400;
@@ -175,6 +207,5 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: #777674;
-  
 }
 </style>

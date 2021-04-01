@@ -3,7 +3,8 @@
     class="photo-slider"
     :class="{
       'slider-admin': admin_route,
-      'slider-guest': admin_route === false && home_page === false,
+      'slider-artworks': artworks_page,
+      'slider-exh': exh_page,
       'slider-home': home_page,
     }"
   >
@@ -14,9 +15,10 @@
       </div>
       <img
         :class="{
-          img: admin_route === false,
+          artwork_img: artworks_page,
           admin_img: admin_route,
           home_img: home_page,
+          exh_img: exh_page,
         }"
         :src="image"
         alt=""
@@ -31,6 +33,7 @@
 export default {
   props: {
     images: Array,
+    chosen_image: Object
   },
   data() {
     return {
@@ -38,6 +41,8 @@ export default {
       index: 0,
       admin_route: false,
       home_page: true,
+      artworks_page: false,
+      exh_page: false,
     };
   },
   methods: {
@@ -49,15 +54,24 @@ export default {
         }
       }
     },
-    firstImage() {
-      this.image = this.images[0].path;
+    checkPage() {
+      console.log(this.$route.name)
       if (this.$route.name === "Admin") {
         this.admin_route = true;
-        this.home_page = false;
       }
       if (this.$route.name !== "Home") {
         this.home_page = false;
       }
+      if (this.$route.name === "Artworks") {
+        this.artworks_page = true;
+      }
+      if (this.$route.name === "Exhibitions") {
+        this.exh_page = true;
+      }
+    },
+    firstImage() {
+      this.image = this.images[0].path;
+      
     },
     nextImg() {
       if (this.index != this.images.length - 1) {
@@ -76,10 +90,27 @@ export default {
       }
       this.image = this.images[this.index].path;
     },
+    showChosenImg() {
+        for(let i = 0; i < this.images.length; i++) {
+          if(this.chosen_image.cover_path === this.images[i].path) {
+            this.image = this.images[i].path;
+            this.index = i;
+          }
+        }
+    }
   },
   mounted() {
     this.firstImage();
+    this.checkPage();
   },
+  watch: {
+    chosen_image: {
+      deep: true,
+      handler() {
+        this.showChosenImg();
+      }
+    }
+  }
 };
 </script>
 <style scoped>
@@ -87,6 +118,14 @@ export default {
   width: 30vw;
   height: 50vh;
   object-fit: contain;
+}
+.artwork_img {
+  width: 70vw;
+  height: 85vh;
+  object-fit: contain;
+  background-color: #474646;
+  margin-top: 10vh;
+  margin-bottom: 5vh;
 }
 .delete {
   cursor: pointer;
@@ -99,19 +138,20 @@ export default {
   text-align: end;
   margin-top: 2rem;
 }
-.img {
-  width: 70vw;
-  height: 85vh;
-  object-fit: contain;
-  background-color: #474646;
-  margin-top: 10vh;
-  margin-bottom: 5vh;
-}
+
 .ctrl {
   font-size: 3rem;
   z-index: 1;
   color: #a7a6a7;
   cursor: pointer;
+}
+.exh_img {
+  width: 45vw;
+  height: 70vh;
+  object-fit: contain;
+  background-color: #474646;
+  margin-top: 10vh;
+  margin-bottom: 5vh;
 }
 .home_img {
   width: 70vw;
@@ -129,10 +169,17 @@ export default {
 .photo-slider {
   display: flex;
   align-items: center;
- 
 }
-.slider-guest {
+.slider-artworks {
   width: 70vw;
   margin-left: 15vw;
+}
+.slider-exh {
+  width: 45vw;
+
+}
+.slider-home{
+  width: 70vw;
+  margin-top: 10vh;
 }
 </style>

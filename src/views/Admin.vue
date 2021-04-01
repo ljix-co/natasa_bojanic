@@ -1,8 +1,14 @@
 <template>
   <div class="admin">
     <div v-if="add === false && edit === false">
-      <edit-author :aut_info="aut_info" :key="componentAutKey" @submit-aut="submitAut"></edit-author>
+      <edit-author
+        class="component"
+        :aut_info="aut_info"
+        :key="componentAutKey"
+        @submit-aut="submitAut"
+      ></edit-author>
       <edit-artworks
+        class="component"
         :artworks="artworks"
         @add="addArtwork"
         @edit="editArtworks"
@@ -13,8 +19,19 @@
         @edit-solo="editSoloExh"
         @edit-group="editGroupExh"
       ></edit-exhibitions>
+      <edit-workshops
+        :key="componentWrkKey"
+        :componentWrkKey="componentWrkKey"
+        :calendar_info="calendar_info"
+        :object_array="object_array"
+        @add-new-wrk-day="addNewWorkshop"
+        @add-time="addNewTime"
+        @cancel-whole-day="cancelWorkshop"
+        @submit-change-workshop="changeWorkshopDtls"
+      ></edit-workshops>
     </div>
     <add
+      class="component-window"
       v-if="add"
       :type="type"
       @exit="exit"
@@ -22,6 +39,7 @@
       @add-exh="addNewExh"
     ></add>
     <edit
+      class="component-window"
       :key="componentEditKey"
       v-if="edit"
       :type="type"
@@ -43,8 +61,16 @@ import Add from "../components/Add.vue";
 import Edit from "../components/Edit.vue";
 import axios from "axios";
 import { mapState } from "vuex";
+import EditWorkshops from "../components/EditWorkshops.vue";
 export default {
-  components: { EditArtworks, EditAuthor, EditExhibitions, Add, Edit },
+  components: {
+    EditArtworks,
+    EditAuthor,
+    EditExhibitions,
+    Add,
+    Edit,
+    EditWorkshops,
+  },
   data() {
     return {
       aut_info: new Object(),
@@ -57,9 +83,12 @@ export default {
       edit: false,
       componentEditKey: 0,
       componentAutKey: 0,
+      componentWrkKey: 0,
       rerender: false,
       object_array: [],
       object_array_type: "",
+      calendar_info: [],
+      workshops: [],
     };
   },
   methods: {
@@ -151,6 +180,73 @@ export default {
         }
       });
     },
+    addNewTime(newTime) {
+      this.calendar_info.push({
+        wrk_id: newTime.wrk_id,
+        wrk_date: newTime.wrk_date,
+        wrk_time: newTime.time,
+        wrk_max_students: newTime.max_students,
+        wrk_signed_students: newTime.signed_students,
+      });
+    },
+    addNewWorkshop(new_wrk_day) {
+      
+        let formData = new FormData();
+        formData.append("wrk_date", new_wrk_day.date);
+        formData.append("wrk_max_students", new_wrk_day.max_students);
+        formData.append("wrk_signed_students", new_wrk_day.signed_students);
+        formData.append("wrk_time", new_wrk_day.time);
+        formData.append("wrks_id", new_wrk_day.wrks_id);
+        axios.post(this.baseUrl + "workshop", formData).then((res) => {
+          console.log(res);
+          this.getWorkshopDateInfo();
+        });
+      
+    },
+    cancelWorkshop(wrk_date) {
+      let formData = new FormData();
+      formData.append("wrk_date", wrk_date);
+      formData.append("wrk_canceled", 1);
+
+      axios.patch(this.baseUrl + "workshop", formData).then((res) => {
+        console.log(res);
+        this.getWorkshopDateInfo();
+        this.forceRerender();
+      });
+    },
+    changeWorkshopDtls(changedWorkDay) {
+      let formData = new FormData();
+      for (let i = 0; i < this.calendar_info.length; i++) {
+        if (changedWorkDay.wrk_id === this.calendar_info[i].wrk_id) {
+          formData.append("wrk_id", changedWorkDay.wrk_id);
+          if (
+            changedWorkDay.max_students !=
+            this.calendar_info[i].wrk_max_students
+          ) {
+            formData.append("wrk_max_students", changedWorkDay.max_students);
+          }
+          if (
+            changedWorkDay.signed_students !=
+            this.calendar_info[i].wrk_signed_students
+          ) {
+            formData.append(
+              "wrk_signed_students",
+              changedWorkDay.signed_students
+            );
+          }
+          if (changedWorkDay.time !== this.calendar_info[i].wrk_time) {
+            formData.append("wrk_time", changedWorkDay.time);
+          }
+          if(changedWorkDay.wrks_id !== this.calendar_info[i].wrks_id) {
+            formData.append("wrks_id", changedWorkDay.wrks_id);
+          }
+          axios.patch(this.baseUrl + "workshop", formData).then((res) => {
+            console.log(res);
+            this.forceRerender();
+          });
+        }
+      }
+    },
     //CHECK LANGUAGE
     checkLanguage() {
       if (this.curLanguage === "RS") {
@@ -167,6 +263,10 @@ export default {
             this.object_array[i].place = this.object_array[i].exh_place_rs;
             this.object_array[i].dsc = this.object_array[i].exh_dsc_rs;
             this.object_array[i].rev = this.object_array[i].exh_rev_rs;
+          }
+          if (this.type === "workshops") {
+            this.object_array[i].wrks_type = this.object_array[i].wrks_type_rs;
+            this.object_array[i].wrks_dsc = this.object_array[i].wrks_dsc_rs;
           }
         }
       }
@@ -185,6 +285,10 @@ export default {
             this.object_array[i].dsc = this.object_array[i].exh_dsc_en;
             this.object_array[i].rev = this.object_array[i].exh_rev_en;
           }
+          if (this.type === "workshops") {
+            this.object_array[i].wrks_type = this.object_array[i].wrks_type_en;
+            this.object_array[i].wrks_dsc = this.object_array[i].wrks_dsc_en;
+          }
         }
       }
     },
@@ -193,7 +297,7 @@ export default {
       this.rerender = false;
       if (this.type === "artwork") {
         let id = object.art_id;
-        console.log(id)
+        console.log(id);
         axios
           .delete(this.baseUrl + "artworks", { params: { art_id: id } })
           .then((res) => {
@@ -259,6 +363,21 @@ export default {
           }
         });
     },
+    getWorkshops() {
+      axios.get(this.baseUrl + "workshops").then((res) => {
+        console.log(res);
+        this.object_array = res.data.data;
+        this.type = "workshops";
+        this.checkLanguage();
+      });
+    },
+    getWorkshopDateInfo() {
+      axios.get(this.baseUrl + "workshop").then((res) => {
+        console.log(res);
+        this.calendar_info = res.data.data;
+        this.forceRerender();
+      });
+    },
     editArtworks() {
       this.type = "artwork";
       this.edit = true;
@@ -292,35 +411,34 @@ export default {
     },
     forceRerender() {
       this.componentEditKey += 1;
+      this.componentWrkKey += 1;
     },
     submitAut(chndAut) {
       let formData = new FormData();
       let id = this.aut_info.aut_id;
-      console.log(id)
-      formData.append('aut_id', id);
-      if(this.aut_info.aut_fname !== chndAut.fname) {
-          formData.append("aut_fname", chndAut.fname);
+      console.log(id);
+      formData.append("aut_id", id);
+      if (this.aut_info.aut_fname !== chndAut.fname) {
+        formData.append("aut_fname", chndAut.fname);
       }
-      if(this.aut_info.aut_bio_en !== chndAut.bio_en) {
+      if (this.aut_info.aut_bio_en !== chndAut.bio_en) {
         formData.append("aut_bio_en", chndAut.bio_en);
-        
       }
-      if(this.aut_info.aut_bio_rs !== chndAut.bio_rs) {
+      if (this.aut_info.aut_bio_rs !== chndAut.bio_rs) {
         formData.append("aut_bio_rs", chndAut.bio_rs);
       }
-      if(chndAut.image) {
+      if (chndAut.image) {
         formData.append("aut_image", chndAut.image);
-        console.log(chndAut.image)
+        console.log(chndAut.image);
       }
-      if(chndAut.pass && chndAut.old_pass) {
+      if (chndAut.pass && chndAut.old_pass) {
         formData.append("aut_pass", chndAut.pass);
         formData.append("old_pass", chndAut.old_pass);
       }
-      axios.patch(this.baseUrl + 'author', formData).then((res) => {
+      axios.patch(this.baseUrl + "author", formData).then((res) => {
         console.log(res);
         this.getAuthor();
-
-      })
+      });
     },
     submitEditedObject(editedObject) {
       this.rerender = false;
@@ -377,7 +495,7 @@ export default {
         if (editedObject.for_sale !== artwork.art_forsale) {
           formData.append("art_forsale", editedObject.for_sale);
         }
-         if (editedObject.price !== artwork.art_price) {
+        if (editedObject.price !== artwork.art_price) {
           formData.append("art_price", editedObject.price);
         }
 
@@ -453,6 +571,8 @@ export default {
     this.getAuthor();
     this.getArtworks();
     this.getExhibitions();
+    this.getWorkshops();
+    this.getWorkshopDateInfo();
   },
   watch: {
     curLanguage: {
@@ -471,5 +591,11 @@ export default {
 <style scoped>
 .admin {
   margin-bottom: 10vw;
+}
+.component {
+  margin-top: 5vh;
+}
+.component-window {
+  margin-top: 8vh;
 }
 </style>
