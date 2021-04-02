@@ -21,13 +21,16 @@
       ></edit-exhibitions>
       <edit-workshops
         class="component"
-        :key=" 'w' + componentWrkKey"
+        :key="'w' + componentWrkKey"
         :componentWrkKey="componentWrkKey"
         :calendar_info="calendar_info"
         :object_array="object_array"
         @add-new-wrk-day="addNewWorkshop"
         @add-time="addNewTime"
+        @add-wrk-type="addWorkshopType"
         @cancel-whole-day="cancelWorkshop"
+        @edit-wrk-type="editWorkshopTypes"
+        @show_selected_wrk="showSelectedWorkshop"
         @submit-change-workshop="changeWorkshopDtls"
       ></edit-workshops>
     </div>
@@ -38,6 +41,7 @@
       @exit="exit"
       @add-artwork="addNewArtwork"
       @add-exh="addNewExh"
+      @add-workshop-type="addNewWorskhopType"
     ></add>
     <edit
       class="component-window"
@@ -105,6 +109,7 @@ export default {
       let art_id = null;
 
       let formData = new FormData();
+      formData.append("sid", localStorage.getItem("sid"));
       formData.append("art_title_en", newArtwork.title_en);
       formData.append("art_title_rs", newArtwork.title_rs);
       formData.append("art_material_en", newArtwork.material_en);
@@ -120,6 +125,7 @@ export default {
         console.log(res);
         art_id = res.data.art_id;
         let imgFormData = new FormData();
+        imgFormData.append('sid', localStorage.getItem('sid'));
         imgFormData.append("img_image", newArtwork.main_img);
         imgFormData.append("art_id", art_id);
         axios.post(this.baseUrl + "main_images", imgFormData).then((res) => {
@@ -128,6 +134,7 @@ export default {
           if (newArtwork.det_images.length > 0) {
             for (let i = 0; i < newArtwork.det_images.length; i++) {
               let detImgFormData = new FormData();
+              detImgFormData.append('sid', localStorage.getItem('sid'));
               detImgFormData.append("img_id", img_id);
               detImgFormData.append(
                 "dimg_image",
@@ -149,6 +156,7 @@ export default {
     },
     addNewExh(newExh) {
       let formData = new FormData();
+      formData.append("sid", localStorage.getItem("sid"));
       formData.append("exh_title_en", newExh.title_en);
       formData.append("exh_title_rs", newExh.title_rs);
       formData.append("exh_place_en", newExh.place_en);
@@ -167,6 +175,7 @@ export default {
         if (newExh.images.length > 0) {
           for (let i = 0; i < newExh.images.length; i++) {
             let imgFormData = new FormData();
+            imgFormData.append('sid', localStorage.getItem('sid'));
             imgFormData.append("exh_id", exh_id);
             imgFormData.append("img_image", newExh.images[i].image);
             axios
@@ -192,6 +201,7 @@ export default {
     },
     addNewWorkshop(new_wrk_day) {
       let formData = new FormData();
+      formData.append("sid", localStorage.getItem("sid"));
       formData.append("wrk_date", new_wrk_day.date);
       formData.append("wrk_max_students", new_wrk_day.max_students);
       formData.append("wrk_signed_students", new_wrk_day.signed_students);
@@ -202,8 +212,27 @@ export default {
         this.getWorkshopDateInfo();
       });
     },
+    addNewWorskhopType(newWorkshopType) {
+      let formData = new FormData();
+      formData.append("sid", localStorage.getItem("sid"));
+      formData.append("wrks_type_en", newWorkshopType.type_en);
+      formData.append("wrks_type_rs", newWorkshopType.type_rs);
+      formData.append("wrks_dsc_en", newWorkshopType.dsc_en);
+      formData.append("wrks_dsc_rs", newWorkshopType.dsc_rs);
+      formData.append("wrks_price_mnth", newWorkshopType.price);
+      formData.append("wrks_image", newWorkshopType.cover);
+      axios.post(this.baseUrl + "workshops", formData).then((res) => {
+        console.log(res);
+        this.$router.go();
+      });
+    },
+    addWorkshopType() {
+      this.type = "workshops";
+      this.add = true;
+    },
     cancelWorkshop(wrk_date) {
       let formData = new FormData();
+      formData.append("sid", localStorage.getItem("sid"));
       formData.append("wrk_date", wrk_date);
       formData.append("wrk_canceled", 1);
 
@@ -215,6 +244,7 @@ export default {
     },
     changeWorkshopDtls(changedWorkDay) {
       let formData = new FormData();
+      formData.append("sid", localStorage.getItem("sid"));
       for (let i = 0; i < this.calendar_info.length; i++) {
         if (changedWorkDay.wrk_id === this.calendar_info[i].wrk_id) {
           formData.append("wrk_id", changedWorkDay.wrk_id);
@@ -265,7 +295,8 @@ export default {
           }
           if (this.type === "workshops") {
             this.object_array[i].wrks_type = this.object_array[i].wrks_type_rs;
-            this.object_array[i].wrks_dsc = this.object_array[i].wrks_dsc_rs;
+            this.object_array[i].dsc = this.object_array[i].wrks_dsc_rs;
+            this.object_array[i].title = this.object_array[i].wrks_type_rs;
           }
         }
       }
@@ -286,7 +317,8 @@ export default {
           }
           if (this.type === "workshops") {
             this.object_array[i].wrks_type = this.object_array[i].wrks_type_en;
-            this.object_array[i].wrks_dsc = this.object_array[i].wrks_dsc_en;
+            this.object_array[i].dsc = this.object_array[i].wrks_dsc_en;
+            this.object_array[i].title = this.object_array[i].wrks_type_en;
           }
         }
       }
@@ -298,7 +330,9 @@ export default {
         let id = object.art_id;
         console.log(id);
         axios
-          .delete(this.baseUrl + "artworks", { params: { art_id: id } })
+          .delete(this.baseUrl + "artworks", {
+            params: { art_id: id, sid: localStorage.getItem("sid") },
+          })
           .then((res) => {
             console.log(res);
             for (let i = 0; i < this.object_array.length; i++) {
@@ -313,7 +347,9 @@ export default {
       if (this.type === "exhibition") {
         let id = object.exh_id;
         axios
-          .delete(this.baseUrl + "exhibitions", { params: { exh_id: id } })
+          .delete(this.baseUrl + "exhibitions", {
+            params: { exh_id: id, sid: localStorage.getItem("sid") },
+          })
           .then((res) => {
             console.log(res);
             for (let i = 0; i < this.object_array.length; i++) {
@@ -325,8 +361,30 @@ export default {
             }
           });
       }
+      if (this.type === "workshops") {
+        let id = object.wrks_id;
+        axios
+          .delete(this.baseUrl + "workshops", {
+            params: { wrks_id: id, sid: localStorage.getItem("sid") },
+          })
+          .then((res) => {
+            console.log(res);
+            for (let i = 0; i < this.object_array.length; i++) {
+              if (this.object_array[i].wrks_id == id) {
+                this.object_array.splice(i, 1);
+                this.forceRerender();
+                this.rerender = true;
+              }
+            }
+          });
+      }
     },
-
+    editWorkshopTypes() {
+      this.object_array = this.workshops;
+      this.edit = true;
+      this.type = "workshops";
+      this.checkLanguage();
+    },
     getAuthor() {
       axios.get(this.baseUrl + "author").then((res) => {
         this.aut_info = res.data.data[0];
@@ -365,8 +423,9 @@ export default {
     getWorkshops() {
       axios.get(this.baseUrl + "workshops").then((res) => {
         console.log(res);
-        this.object_array = res.data.data;
-        this.type = "workshops";
+
+        this.workshops = res.data.data;
+
         this.checkLanguage();
       });
     },
@@ -412,8 +471,15 @@ export default {
       this.componentEditKey += 1;
       this.componentWrkKey += 1;
     },
+    showSelectedWorkshop() {
+      this.object_array = this.workshops;
+      this.type = "workshops";
+      console.log(this.object_array);
+      this.checkLanguage();
+    },
     submitAut(chndAut) {
       let formData = new FormData();
+      formData.append("sid", localStorage.getItem("sid"));
       let id = this.aut_info.aut_id;
       console.log(id);
       formData.append("aut_id", id);
@@ -442,7 +508,7 @@ export default {
     submitEditedObject(editedObject) {
       this.rerender = false;
       let formData = new FormData();
-
+      formData.append("sid", localStorage.getItem("sid"));
       if (this.type === "artwork") {
         let artwork = null;
         let imgFormData = new FormData();
@@ -557,6 +623,42 @@ export default {
         axios.patch(this.baseUrl + "exhibitions", formData).then((res) => {
           console.log(res);
           this.getExhibitions();
+          this.forceRerender();
+          this.rerender = true;
+        });
+      }
+      if (this.type === "workshops") {
+        let wrks = null;
+        for (let i = 0; i < this.workshops.length; i++) {
+          if (this.workshops[i].wrks_id == editedObject.edit_object_id) {
+            wrks = this.workshops[i];
+          }
+        }
+        formData.append("wrks_id", editedObject.edit_object_id);
+        if (editedObject.title_en !== wrks.wrks_type_en) {
+          formData.append("wrks_type_en", editedObject.title_en);
+        }
+        if (editedObject.title_rs !== wrks.wrks_type_rs) {
+          formData.append("wrks_type_rs", editedObject.title_rs);
+        }
+        if (editedObject.dsc_en !== wrks.wrks_dsc_en) {
+          formData.append("wrks_dsc_en", editedObject.dsc_en);
+        }
+        if (editedObject.dsc_rs !== wrks.wrks_dsc_rs) {
+          formData.append("wrks_dsc_rs", editedObject.dsc_rs);
+        }
+        if (editedObject.price !== wrks.wrks_price_mnth) {
+          formData.append("wrks_price_mnth", editedObject.price);
+        }
+        if (
+          editedObject.cover !== wrks.wrks_image &&
+          editedObject.cover != null
+        ) {
+          formData.append("wrks_image", editedObject.cover);
+        }
+        axios.patch(this.baseUrl + "workshops", formData).then((res) => {
+          console.log(res);
+          this.getWorkshops();
           this.forceRerender();
           this.rerender = true;
         });

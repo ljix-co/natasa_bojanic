@@ -77,10 +77,10 @@ export default {
       }
     },
     submit() {
-      
       if (this.type === "artwork") {
         for (let i = 0; i < this.newImages.length; i++) {
           let formData = new FormData();
+          formData.append("sid", localStorage.getItem("sid"));
           formData.append("img_id", this.img_id);
           formData.append("dimg_image", this.newImages[i].file);
           axios.post(this.baseUrl + "dtls_images", formData).then((res) => {
@@ -92,6 +92,7 @@ export default {
       if (this.type === "exhibition") {
         for (let i = 0; i < this.newImages.length; i++) {
           let formData = new FormData();
+          formData.append("sid", localStorage.getItem("sid"));
           formData.append("exh_id", this.edit_object_id);
           formData.append("img_image", this.newImages[i].file);
           axios.post(this.baseUrl + "main_images", formData).then((res) => {

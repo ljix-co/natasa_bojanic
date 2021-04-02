@@ -123,6 +123,9 @@ export default {
         if (this.type === "exhibition") {
           this.$emit("choose-exh", object);
         }
+        if(this.type === "workshops") {
+          this.$emit("choose-workshop", object);
+        }
       } else {
         this.$emit("choose-object", object);
       }

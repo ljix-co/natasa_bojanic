@@ -24,6 +24,7 @@
             :object_array="object_array"
             @choose-artwork="editArtwork"
             @choose-exh="editExhibition"
+            @choose-workshop="editWorkshop"
             @delete-object="deleteObject"
           ></gallery>
         </div>
@@ -96,7 +97,10 @@
                 <p>{{ $t("frq_words.technique") }}:</p>
                 <input class="dtl-inpt" type="text" v-model="technique_en" />
               </div>
-              <div class="inpt" v-if="type === 'artwork'">
+              <div
+                class="inpt"
+                v-if="type === 'artwork' || type === 'workshops'"
+              >
                 <p>{{ $t("frq_words.price") }}:</p>
                 <input class="dtl-inpt" type="text" v-model="price" />
               </div>
@@ -166,11 +170,18 @@
                 <input class="dtl-inpt" type="text" v-model="place_rs" />
               </div>
             </div>
-            <div class="edit-rev-des" v-if="type === 'exhibition'">
+            <div
+              class="edit-rev-des"
+              v-if="type === 'exhibition' || type === 'workshops'"
+            >
               <button class="btn-rev-des" @click="showDesEditor">
                 {{ $t("frq_words.description") }}
               </button>
-              <button class="btn-rev-des" @click="showRevEditor">
+              <button
+                class="btn-rev-des"
+                v-if="type === 'exhibition'"
+                @click="showRevEditor"
+              >
                 {{ $t("frq_words.review") }}
               </button>
             </div>
@@ -323,7 +334,7 @@ export default {
       if (this.type === "artwork") {
         axios
           .delete(this.baseUrl + "dtls_images", {
-            params: { dimg_id: image_id },
+            params: { dimg_id: image_id, sid: localStorage.getItem("sid") },
           })
           .then((res) => {
             console.log(res);
@@ -339,7 +350,7 @@ export default {
       if (this.type === "exhibition") {
         axios
           .delete(this.baseUrl + "main_images", {
-            params: { img_id: image_id },
+            params: { img_id: image_id, sid: localStorage.getItem("sid") },
           })
           .then((res) => {
             console.log(res);
@@ -401,7 +412,7 @@ export default {
     },
     editExhibition(object) {
       this.images = [];
-      console.log(this.images);
+
       this.edit_object_id = object.exh_id;
 
       axios
@@ -433,6 +444,19 @@ export default {
         cover_id: object.img_id,
         cover_path: object.cover_path,
       };
+    },
+    editWorkshop(object) {
+      this.edit_object_id = object.wrks_id;
+      this.title_en = object.wrks_type_en;
+      this.title_rs = object.wrks_type_rs;
+      this.dsc_en = object.wrks_dsc_en;
+      this.dsc_rs = object.wrks_dsc_rs;
+      this.cover = {
+        cover_id: object.wrks_id,
+        cover_path: object.cover_path,
+      };
+      this.price = object.wrks_price_mnth;
+      this.edit_object = true;
     },
     exit() {
       this.$emit("exit");
@@ -584,7 +608,6 @@ p {
   justify-content: center;
   border: 10px solid #777674;
   margin-left: 5vw;
-  
 }
 .edit-lang-title {
   margin-left: -10vw;

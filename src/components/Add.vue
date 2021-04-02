@@ -66,7 +66,7 @@
               <p>{{ $t("frq_words.technique") }}:</p>
               <input class="dtl-inpt" type="text" v-model="technique_en" />
             </div>
-            <div class="inpt" v-if="type === 'artwork'">
+            <div class="inpt" v-if="type === 'artwork' || type === 'workshops'">
               <p>{{ $t("frq_words.price") }}:</p>
               <input class="dtl-inpt" type="text" v-model="price" />
             </div>
@@ -143,11 +143,11 @@
           </div>
         </div>
       </div>
-      <div class="add-rev-des" v-if="type === 'exhibition'">
+      <div class="add-rev-des" v-if="type === 'exhibition' || type === 'workshops'">
         <button class="btn-rev-des" @click="showDesEditor">
           {{ $t("frq_words.description") }}
         </button>
-        <button class="btn-rev-des" @click="showRevEditor">
+        <button class="btn-rev-des" v-if="type === 'exhibition'" @click="showRevEditor">
           {{ $t("frq_words.review") }}
         </button>
       </div>
@@ -335,6 +335,18 @@ export default {
           rev_rs: this.rev_rs,
         };
         this.$emit("add-exh", newExh);
+      }
+      if(this.type === 'workshops') {
+        let newWorkshopType = {
+          type_en: this.title_en,
+          type_rs: this.title_rs,
+          dsc_en: this.dsc_en,
+          dsc_rs: this.dsc_rs,
+          price: this.price,
+          cover: this.newCover,
+          images: this.newImages
+        };
+        this.$emit("add-workshop-type", newWorkshopType);
       }
     },
   },

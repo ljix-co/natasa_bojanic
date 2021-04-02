@@ -108,10 +108,10 @@
   },
   "confirm_mssg": [
     {
-      "mssg" : "Uspešno ste se odjavili."
+      "mssg": "Uspešno ste se odjavili."
     },
     {
-      "mssg" : "Uspešno ste se prijavili." 
+      "mssg": "Uspešno ste se prijavili."
     }
   ],
   "error_mssg": [
@@ -172,7 +172,7 @@
     "info_mssg": "Slobodnih mesta:",
     "sign_mssg": "Prijavi se za izabranu radionicu:",
     "no_room_mssg": "Nema više slobodnih mesta za odabrani datum.",
-    "cancel_arrvl_mssg":  "Ako ste se već prijavili za radionicu i želite da otkažete svoj dolazak, molimo Vas da popunite polja i kliknete na dugme ispod.",
+    "cancel_arrvl_mssg": "Ako ste se već prijavili za radionicu i želite da otkažete svoj dolazak, molimo Vas da popunite polja i kliknete na dugme ispod.",
     "time": "Vreme:",
     "instr_mssg": "Izaberite vreme kako biste se prijavili za radionicu.",
     "max_students": "Maksimalan broj polaznika po času:",
@@ -180,7 +180,8 @@
     "admin_instr_mssg": "Izaberite vreme kako biste menjali detalje radionice ili izbrišite radionicu zakazanu za odbrano vreme:",
     "admin_time_title": "Detalji za vreme:",
     "admin_add_time": "Dodaj vreme:",
-    "workshop_type": "Tip radionice:"
-    
+    "workshop_type": "Tip radionice:",
+    "edit_wrk_type": "Uredi tipove radionica",
+    "add_wrk_type": "Dodaj tip radionice"
   }
 }

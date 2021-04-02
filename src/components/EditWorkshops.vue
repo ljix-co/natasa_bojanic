@@ -1,11 +1,29 @@
 <template>
   <div class="edit">
-    <div>
-      <div class="title">
-        <h1>{{ $t("admin[3].title") }}</h1>
+    <div class="title">
+      <h1>{{ $t("admin[3].title") }}</h1>
+    </div>
+    <div class="sqrs">
+      <div class="section">
+        <div class="edit-types-btns">
+          <button class="edit-add-btn" @click="editWorkshopType">
+            {{ $t("workshops.edit_wrk_type").toUpperCase() }}
+          </button>
+          <button class="edit-add-btn" @click="addWorkshopType">
+            {{ $t("workshops.add_wrk_type").toUpperCase() }}
+          </button>
+        </div>
       </div>
-      <div class="sqrs">
-        <div class="show-selected" v-if="show_selected">
+      <div class="section">
+        <calendar
+          :key="componentCalendarKey"
+          :calendar_info="calendar_info"
+          @show-selected="showSelected"
+          @add-to-selected="addNewWrkDay"
+        ></calendar>
+      </div>
+      <div class="section" v-if="show_selected">
+        <div class="show-selected">
           <div class="date">
             <h1>{{ day }}.{{ month }}.{{ year }}</h1>
           </div>
@@ -111,15 +129,6 @@
             </div>
           </div>
         </div>
-        <div class="calendar">
-          <calendar
-            :key="componentCalendarKey"
-            :calendar_info="calendar_info"
-            @show-selected="showSelected"
-            @add-to-selected="addNewWrkDay"
-          ></calendar>
-        </div>
-        
       </div>
     </div>
   </div>
@@ -128,6 +137,7 @@
 import axios from "axios";
 import { mapState } from "vuex";
 import Calendar from "./Calendar.vue";
+
 export default {
   components: { Calendar },
   props: {
@@ -175,6 +185,7 @@ export default {
       if (this.date !== null) {
         let formData = new FormData();
         let newTime = new Object();
+        formData.append("sid", localStorage.getItem("sid"));
         formData.append("wrk_date", this.date);
         formData.append("wrk_time", time);
         axios.post(this.baseUrl + "workshop", formData).then((res) => {
@@ -201,6 +212,9 @@ export default {
       new_wrk_day.wrks_id = this.wrks_id;
       this.$emit("add-new-wrk-day", new_wrk_day);
     },
+    addWorkshopType() {
+      this.$emit("add-wrk-type");
+    },
     cancelWorkDay() {
       let wrk_date = this.date;
       this.$emit("cancel-whole-day", wrk_date);
@@ -221,7 +235,10 @@ export default {
             if (time.existing_time) {
               axios
                 .delete(this.baseUrl + "workshop", {
-                  params: { wrk_id: time.wrk_id },
+                  params: {
+                    wrk_id: time.wrk_id,
+                    sid: localStorage.getItem("sid"),
+                  },
                 })
                 .then((res) => {
                   console.log(res);
@@ -237,6 +254,9 @@ export default {
           }
         }
       }
+    },
+    editWorkshopType() {
+      this.$emit("edit-wrk-type");
     },
     forceRerender() {
       this.componentCalendarKey++;
@@ -270,6 +290,7 @@ export default {
             });
           }
         });
+      this.$emit("show_selected_wrk");
     },
     submitChangesWorkDay() {
       let changedWorkDay = new Object();
@@ -309,6 +330,9 @@ input {
 input:focus {
   outline: none;
 }
+.edit{
+
+}
 .btns {
   display: flex;
   align-items: center;
@@ -333,10 +357,41 @@ input:focus {
 .date {
   color: #ff6b00;
   margin-bottom: 2rem;
-  width: 30vw;
+  width: 25vw;
   height: 10vh;
   background-color: #535252;
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.edit-add-btn {
+  font-family: "Open Sans", sans-serif;
+  background-color: #777674;
+  color: white;
+  width: 10vw;
+  height: 20vh;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+.edit-add-btn:focus {
+  outline: 3px solid #ff6b00;
+}
+.edit-types-btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5vh;
+
+  height: 40vh;
+  margin-top: 10vw;
+}
+.edit-wrk-day {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   align-items: center;
   justify-content: center;
 }
@@ -388,34 +443,32 @@ input:focus {
 .sbmt:focus {
   outline: 3px solid #ff6b00;
 }
+.section {
+ /* height: 100vh;*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .show-selected {
   background-color: #777674;
-  width: 30vw;
+  width: 25vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
-  margin-top: 5vh;
+
+  margin-top: 20vh;
 }
-.sqr {
-  width: 20vw;
-  height: 20vw;
-  border: 10px solid #ff6b00;
-  margin-top: 10vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
+
 .sqrs {
   display: flex;
+
   width: 80vw;
-  gap: 5vw;
-  margin-left: 18vw;
+  gap: 2rem;
+  margin-left: 25vw;
   align-items: flex-start;
-  justify-content: center;
-  margin-top: 20vh;
+  justify-content: flex-start;
+ /* margin-top: 20vh;*/
 }
 .time {
   display: flex;
@@ -424,7 +477,7 @@ input:focus {
   justify-content: center;
 }
 .time-inpt {
-  width: 5vw;
+  width: 3vw;
 }
 .title {
   transform: rotate(270deg);

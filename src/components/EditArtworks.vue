@@ -73,7 +73,7 @@ gap: 10vw;
 margin-left: 25vw;
 align-items: center;
 justify-content: center;
-
+margin-top: 5vh;
 }
 .title {
   transform: rotate(270deg);

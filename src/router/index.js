@@ -6,6 +6,7 @@ import Workshops from '../views/Workshops.vue';
 import Biography from '../views/Biography.vue';
 import Contact from '../views/Contact.vue';
 import Admin from '../views/Admin.vue';
+import Login from '../views/Login.vue';
 
 
 Vue.use(VueRouter)
@@ -48,6 +49,11 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: Admin
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   }
 ]
 

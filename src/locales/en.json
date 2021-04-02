@@ -180,6 +180,8 @@
     "admin_instr_mssg": "Choose time to edit workshop details or delete workshop appointment for chosen time:",
     "admin_time_title": "Details for time:",
     "admin_add_time": "Add time:",
-    "workshop_type": "Workshop type:"
+    "workshop_type": "Workshop type:",
+    "edit_wrk_type": "Edit workshop types",
+    "add_wrk_type": "Add workshop type"
   }
 }
