@@ -7,6 +7,7 @@ import Biography from '../views/Biography.vue';
 import Contact from '../views/Contact.vue';
 import Admin from '../views/Admin.vue';
 import Login from '../views/Login.vue';
+// import store from '../store';
 
 
 Vue.use(VueRouter)
@@ -48,7 +49,19 @@ const routes = [
   {
     path: '/admin',
     name: 'Admin',
-    component: Admin
+    component: Admin,
+    meta: { requiresLogin: true },
+    beforeEnter(to, from, next) {
+      if (to.meta.requiresLogin) {
+        if (localStorage.getItem('sid')) {
+          next()
+        } else {
+          next({ name: 'Login' })
+        }
+      } else {
+        next();
+      }
+    }
   },
   {
     path: '/login',
@@ -61,14 +74,10 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
-  // scrollBehavior () {
-   
-  //   
-  // }
   scrollBehavior() {
-   // document.getElementById('app').scrollIntoView();
-    return {x: 0, y:0}
-}
+    // document.getElementById('app').scrollIntoView();
+    return { x: 0, y: 0 }
+  }
 })
 
 export default router

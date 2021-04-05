@@ -23,6 +23,11 @@
       "type": "IZLOŽBU",
       "cover": "PLAKAT",
       "images": "FOTOGRAFIJE"
+    },
+    {
+      "type": "RADIONICU",
+      "cover": "GLAVNU FOTOGRAFIJU",
+      "images": "FOTOGRAFIJE DETALJA"
     }
   ],
   "author": {
@@ -74,6 +79,9 @@
       "month": "Decembar"
     }
   ],
+  "contact": {
+    "title_mssg": "Ukoliko imate dodatnih pitanja, slobodno kontaktirajte autora:"
+  },
   "exhibitions": [
     {
       "title": "SAMOSTALNE"
@@ -170,6 +178,7 @@
   ],
   "workshops": {
     "info_mssg": "Slobodnih mesta:",
+    "choose_date": "Kliknite na obeleženi datum na kalendaru kako biste videli detalje i prijavili se za radionicu.",
     "sign_mssg": "Prijavi se za izabranu radionicu:",
     "no_room_mssg": "Nema više slobodnih mesta za odabrani datum.",
     "cancel_arrvl_mssg": "Ako ste se već prijavili za radionicu i želite da otkažete svoj dolazak, molimo Vas da popunite polja i kliknete na dugme ispod.",

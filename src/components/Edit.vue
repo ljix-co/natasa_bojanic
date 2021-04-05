@@ -214,6 +214,13 @@
       @exit-editor="exitEditor"
       @add-images="addNewImages()"
     ></add-images>
+    <Modal
+      v-if="modal_type !== ''"
+      :modal_type="modal_type"
+      :message="message"
+      :confirm_function="confirm_function"
+      @exit-modal="exitModal"
+    ></Modal>
   </div>
 </template>
 <script>
@@ -223,12 +230,14 @@ import PhotoSlider from "./PhotoSlider.vue";
 import axios from "axios";
 import { mapState } from "vuex";
 import AddImages from "./AddImages.vue";
+import Modal from "./Modal.vue";
 export default {
   components: {
     TxtEditor,
     Gallery,
     PhotoSlider,
     AddImages,
+    Modal,
   },
   props: {
     type: String,
@@ -271,6 +280,9 @@ export default {
       new_cover: null,
       img_id: null,
       componentKey: 0,
+      modal_type: "",
+      confirm_function: null,
+      message: "",
     };
   },
   methods: {
@@ -318,6 +330,23 @@ export default {
             this.add_images = false;
           });
       }
+      if (this.type === "workshops") {
+        axios
+          .get(this.baseUrl + "exh_images", {
+            params: { wrks_id: this.edit_object_id },
+          })
+          .then((res) => {
+            this.images = [];
+            for (let i = 0; i < res.data.data.length; i++) {
+              this.images.push({
+                path: res.data.data[i].img_path,
+                id: res.data.data[i].img_id,
+              });
+            }
+            this.forceRerender();
+            this.add_images = false;
+          });
+      }
     },
     addRev(review) {
       this.rev_en = review.rev_en;
@@ -325,7 +354,17 @@ export default {
       this.showEditor = false;
       this.editor_type = "";
     },
-
+    checkType() {
+      if (this.type === "artwork") {
+        this.translate_index = 0;
+      }
+      if (this.type === "exhibition") {
+        this.translate_index = 1;
+      }
+      if (this.type === "workshops") {
+        this.translate_index = 2;
+      }
+    },
     deleteCoverUrl() {
       this.new_cover = null;
       this.cover_url = "";
@@ -347,7 +386,7 @@ export default {
             }
           });
       }
-      if (this.type === "exhibition") {
+      if (this.type === "exhibition" || this.type === "workshops") {
         axios
           .delete(this.baseUrl + "main_images", {
             params: { img_id: image_id, sid: localStorage.getItem("sid") },
@@ -367,6 +406,11 @@ export default {
     deleteObject(object) {
       console.log(object);
       this.$emit("delete-object", object);
+    },
+    exitModal() {
+      this.message = "";
+      this.confirm_function = null;
+      this.modal_type = "";
     },
     forceRerender() {
       this.componentKey += 1;
@@ -409,6 +453,7 @@ export default {
       this.for_sale = object.art_forsale;
       this.price = object.art_price;
       this.edit_object = true;
+      this.scrollToElement("side-editor");
     },
     editExhibition(object) {
       this.images = [];
@@ -444,8 +489,27 @@ export default {
         cover_id: object.img_id,
         cover_path: object.cover_path,
       };
+      this.scrollToElement("side-editor");
     },
     editWorkshop(object) {
+      this.images = [];
+
+      axios
+        .get(this.baseUrl + "wrks_images", {
+          params: {
+            wrks_id: object.wrks_id,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          for (let i = 0; i < res.data.data.length; i++) {
+            this.images.push({
+              path: res.data.data[i].img_path,
+              id: res.data.data[i].img_id,
+            });
+          }
+        });
+
       this.edit_object_id = object.wrks_id;
       this.title_en = object.wrks_type_en;
       this.title_rs = object.wrks_type_rs;
@@ -457,6 +521,7 @@ export default {
       };
       this.price = object.wrks_price_mnth;
       this.edit_object = true;
+      this.scrollToElement("side-editor");
     },
     exit() {
       this.$emit("exit");
@@ -466,7 +531,13 @@ export default {
       this.editor_type = "";
       this.add_images = false;
     },
-
+    scrollToElement(clss) {
+      const el = this.$el.getElementsByClassName(clss)[0];
+      console.log(el);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    },
     showDesEditor() {
       this.showEditor = true;
       this.editor_type = "description";
@@ -506,7 +577,10 @@ export default {
   computed: {
     ...mapState(["baseUrl"]),
   },
-  mounted() {},
+  mounted() {
+    this.checkType();
+    // this.scrollToElement('top');
+  },
   watch: {
     rerender: {
       deep: true,

@@ -230,8 +230,7 @@ margin-bottom: 2rem;
   margin-bottom: 2rem;
   width: 20vw;
 }
-.list-items {
-}
+
 .list-items-admin {
   width: 50vw;
   display: flex;

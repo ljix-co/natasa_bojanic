@@ -10,18 +10,22 @@
     ></div>
 
     <img :src="aut_info.img_path" alt="" />
+    <loader v-if="loader"></loader>
   </div>
 </template>
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
+import Loader from '../components/Loader.vue';
 export default {
+  components: { Loader },
   data() {
     return {
       aut_info: {},
     };
   },
   methods: {
+    ...mapActions(['changeLoader']),
     checkLaguage() {
       if (this.curLanguage === "EN") {
         this.aut_info.bio = this.aut_info.aut_bio_en;
@@ -32,15 +36,17 @@ export default {
       }
     },
     getAutInfo() {
+      this.changeLoader(true)
       axios.get(this.baseUrl + "author").then((res) => {
         console.log(res);
         this.aut_info = res.data.data[0];
         this.checkLaguage();
+        this.changeLoader(false)
       });
     },
   },
   computed: {
-    ...mapState(["baseUrl", "curLanguage"]),
+    ...mapState(["baseUrl", "curLanguage", 'loader']),
   },
   mounted() {
     this.getAutInfo();

@@ -101,6 +101,18 @@ export default {
           });
         }
       }
+      if (this.type === "workshops") {
+        for (let i = 0; i < this.newImages.length; i++) {
+          let formData = new FormData();
+          formData.append("sid", localStorage.getItem("sid"));
+          formData.append("wrks_id", this.edit_object_id);
+          formData.append("img_image", this.newImages[i].file);
+          axios.post(this.baseUrl + "main_images", formData).then((res) => {
+            console.log(res);
+            this.$emit("add-images");
+          });
+        }
+      }
     },
   },
   computed: {
@@ -172,6 +184,9 @@ img {
   font-size: 4rem;
   color: #343333;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .fake-inpt-div {
   width: 10vw;

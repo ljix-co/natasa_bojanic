@@ -1,6 +1,6 @@
 <template>
   <div class="artworks">
-    <PhotoSlider
+    <PhotoSlider 
       :key="componentKey"
       class="photo-slider"
       v-if="images.length > 0"
@@ -11,18 +11,21 @@
       :object_array="object_array"
       @choose-object="chooseObject"
     ></Gallery>
+    <loader v-if="loader"></loader>
   </div>
 </template>
 <script>
 //
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import axios from "axios";
 import PhotoSlider from "../components/PhotoSlider.vue";
 import Gallery from "../components/Gallery.vue";
+import Loader from '../components/Loader.vue';
 export default {
   components: {
     PhotoSlider,
     Gallery,
+    Loader
   },
   data() {
     return {
@@ -33,6 +36,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['changeLoader']),
     checkLanguage() {
       if (this.curLanguage === "RS") {
         for (let i = 0; i < this.object_array.length; i++) {
@@ -76,6 +80,7 @@ export default {
       this.componentKey += 1;
     },
     getArtworks() {
+      this.changeLoader(true)
       axios.get(this.baseUrl + "artworks").then((res) => {
         console.log(res.data.data);
         this.object_array = res.data.data;
@@ -96,6 +101,7 @@ export default {
                 path: res.data.data[i].img_path,
               });
             }
+            this.changeLoader(false);
           });
       });
     },
@@ -112,7 +118,7 @@ export default {
     this.getArtworks();
   },
   computed: {
-    ...mapState(["baseUrl", "curLanguage"]),
+    ...mapState(["baseUrl", "curLanguage", 'loader']),
   },
   watch: {
     curLanguage: {

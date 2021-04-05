@@ -23,6 +23,11 @@
       "type": "EXHIBITION",
       "cover": "COVER",
       "images": "IMAGES"
+    },
+    {
+      "type": "WORKSHOP",
+      "cover": "MAIN IMAGE",
+      "images": "IMAGES OF DETAILS"
     }
   ],
   "author": {
@@ -82,6 +87,9 @@
       "mssg" : "You've been signed in successfully." 
     }
   ],
+  "contact": {
+    "title_mssg": "If you have any questions, feel free to contact the author:"
+  },
   "error_mssg": [
     {
       "mssg": "Full name and email are incorrect or you are already signed in for this workshop."
@@ -170,6 +178,7 @@
   ],
   "workshops": {
     "info_mssg": "Vacancies:",
+    "choose_date": "Click on marked date in calendar to see details and to sign up for the workshop.",
     "sign_mssg": "Sign in for the selected workshop:",
     "no_room_mssg": "There are left no vacancies for the selected date.",
     "cancel_arrvl_mssg":  "If you have already signed for the selected workshop and want to cancel your arrival, please fill in the form and click the button below.",

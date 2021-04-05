@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar">
+  <div class="calendar" :class="{'cal-admin': admin_page, 'cal-guest': admin_page === false}">
     <div class="calendar-dtls">
       <div class="select">
         <div class="month">
@@ -32,7 +32,7 @@
     <div class="list-days">
       <div
         class="day"
-        :class="{ day_now: day.day_now, selected: day.selected }"
+        :class="{ day_now: day.day_now, selected: day.selected, day_admin: admin_page }"
         v-for="(day, index) in days_show"
         :key="index"
         @click="getSelectedDay(day)"
@@ -65,6 +65,11 @@ export default {
     };
   },
   methods: {
+    checkPage() {
+      if(this.$route.name === 'Admin') {
+        this.admin_page = true;
+      }
+    },
     getDateNow() {
       this.month_selected = this.date.getMonth();
       this.year_now = this.date.getFullYear();
@@ -208,7 +213,7 @@ export default {
   },
   mounted() {
     this.getDateNow();
-   
+   this.checkPage();
   },
   watch: {
     year: {
@@ -230,7 +235,7 @@ export default {
   color: #ff6b00;
 }
 .calendar {
-  margin-top: 20vh;
+  
 
   width: 30vw;
 
@@ -238,6 +243,9 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.cal-admin{
+margin-top: 20vh;
 }
 .calendar-dtls {
   width: 28vw;
@@ -251,9 +259,12 @@ export default {
   align-items: center;
   justify-content: center;
 }
+.day_admin{
+cursor: pointer;
+}
 .day_now {
-  color: rgb(164, 209, 164);
-  border: 3px solid rgb(107, 235, 107);
+  color: #a0c1b8;
+  border: 3px solid #a0c1b8;
 }
 .gray {
   opacity: 0.2;
@@ -288,7 +299,8 @@ export default {
 }
 .selected {
   color: white;
-  border: 5px solid #ff6b00;
+ /* border: 5px solid #714288;*/
+ background-color: #003f5c;
   cursor: pointer;
 }
 .week-day {

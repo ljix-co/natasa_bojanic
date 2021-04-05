@@ -26,6 +26,7 @@
         <div class="show-selected">
           <div class="date">
             <h1>{{ day }}.{{ month }}.{{ year }}</h1>
+            <i class="fas fa-times exit" @click="exitSelected"></i>
           </div>
           <div class="add-new-wrk-day" v-if="new_date !== null">
             <div class="inpts">
@@ -154,7 +155,7 @@ export default {
       year: null,
       month: null,
       day: null,
-      max_students: 0,
+      max_students: null,
       signed_students: 0,
       hours: "00",
       minutes: "00",
@@ -258,6 +259,9 @@ export default {
     editWorkshopType() {
       this.$emit("edit-wrk-type");
     },
+    exitSelected() {
+      this.show_selected = false;
+    },
     forceRerender() {
       this.componentCalendarKey++;
     },
@@ -330,9 +334,7 @@ input {
 input:focus {
   outline: none;
 }
-.edit{
 
-}
 .btns {
   display: flex;
   align-items: center;
@@ -363,6 +365,7 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  
 }
 .edit-add-btn {
   font-family: "Open Sans", sans-serif;
@@ -394,6 +397,13 @@ input:focus {
   gap: 1rem;
   align-items: center;
   justify-content: center;
+}
+.exit{
+font-size: 2rem;
+color: #343333;
+position: absolute;
+left: 92vw;
+cursor: pointer;
 }
 .icon {
   font-size: 1.5rem;
@@ -464,8 +474,8 @@ input:focus {
   display: flex;
 
   width: 80vw;
-  gap: 2rem;
-  margin-left: 25vw;
+  gap: 1rem;
+  margin-left: 30vw;
   align-items: flex-start;
   justify-content: flex-start;
  /* margin-top: 20vh;*/

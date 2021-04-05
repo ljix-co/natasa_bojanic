@@ -56,6 +56,15 @@
       @submit-edit-object="submitEditedObject"
       @delete-object="deleteObject"
     ></edit>
+    <Modal
+      class="modal"
+      v-if="modal_type !== ''"
+      :modal_type="modal_type"
+      :confirm_function="confirm_function"
+      :message="message"
+      :object_array="object_array"
+      @exit-modal="exitModal"
+    ></Modal>
   </div>
 </template>
 <script>
@@ -67,6 +76,7 @@ import Edit from "../components/Edit.vue";
 import axios from "axios";
 import { mapState } from "vuex";
 import EditWorkshops from "../components/EditWorkshops.vue";
+import Modal from "../components/Modal.vue";
 export default {
   components: {
     EditArtworks,
@@ -75,6 +85,7 @@ export default {
     Add,
     Edit,
     EditWorkshops,
+    Modal,
   },
   data() {
     return {
@@ -94,6 +105,9 @@ export default {
       object_array_type: "",
       calendar_info: [],
       workshops: [],
+      modal_type: "",
+      confirm_function: null,
+      message: "",
     };
   },
   methods: {
@@ -125,7 +139,7 @@ export default {
         console.log(res);
         art_id = res.data.art_id;
         let imgFormData = new FormData();
-        imgFormData.append('sid', localStorage.getItem('sid'));
+        imgFormData.append("sid", localStorage.getItem("sid"));
         imgFormData.append("img_image", newArtwork.main_img);
         imgFormData.append("art_id", art_id);
         axios.post(this.baseUrl + "main_images", imgFormData).then((res) => {
@@ -134,7 +148,7 @@ export default {
           if (newArtwork.det_images.length > 0) {
             for (let i = 0; i < newArtwork.det_images.length; i++) {
               let detImgFormData = new FormData();
-              detImgFormData.append('sid', localStorage.getItem('sid'));
+              detImgFormData.append("sid", localStorage.getItem("sid"));
               detImgFormData.append("img_id", img_id);
               detImgFormData.append(
                 "dimg_image",
@@ -175,7 +189,7 @@ export default {
         if (newExh.images.length > 0) {
           for (let i = 0; i < newExh.images.length; i++) {
             let imgFormData = new FormData();
-            imgFormData.append('sid', localStorage.getItem('sid'));
+            imgFormData.append("sid", localStorage.getItem("sid"));
             imgFormData.append("exh_id", exh_id);
             imgFormData.append("img_image", newExh.images[i].image);
             axios
@@ -207,10 +221,17 @@ export default {
       formData.append("wrk_signed_students", new_wrk_day.signed_students);
       formData.append("wrk_time", new_wrk_day.time);
       formData.append("wrks_id", new_wrk_day.wrks_id);
-      axios.post(this.baseUrl + "workshop", formData).then((res) => {
-        console.log(res);
-        this.getWorkshopDateInfo();
-      });
+      axios
+        .post(this.baseUrl + "workshop", formData)
+        .then((res) => {
+          console.log(res);
+          this.getWorkshopDateInfo();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.modal_type = "wrong";
+          this.checkLanguage();
+        });
     },
     addNewWorskhopType(newWorkshopType) {
       let formData = new FormData();
@@ -286,18 +307,33 @@ export default {
               i
             ].art_material_rs;
             this.object_array[i].technique = this.object_array[i].art_tech_rs;
+            if (this.modal_type === "delete") {
+              this.message =
+                "Da li ste sigurni da želite da izbrišete ovaj rad?";
+            }
           }
           if (this.type === "exhibition") {
             this.object_array[i].title = this.object_array[i].exh_title_rs;
             this.object_array[i].place = this.object_array[i].exh_place_rs;
             this.object_array[i].dsc = this.object_array[i].exh_dsc_rs;
             this.object_array[i].rev = this.object_array[i].exh_rev_rs;
+            if (this.modal_type === "delete") {
+              this.message =
+                "Da li ste sigurni da želite da izbrišete ovu izložbu?";
+            }
           }
           if (this.type === "workshops") {
             this.object_array[i].wrks_type = this.object_array[i].wrks_type_rs;
             this.object_array[i].dsc = this.object_array[i].wrks_dsc_rs;
             this.object_array[i].title = this.object_array[i].wrks_type_rs;
+            if (this.modal_type === "delete") {
+              this.message =
+                "Da li ste sigurni da želite da izbrišete ovaj tip radionice?";
+            }
           }
+        }
+        if (this.modal_type === "wrong") {
+          this.message = "Neka polja su ostala prazna. Molimo Vas pokušajte ponovo.";
         }
       }
       if (this.curLanguage === "EN") {
@@ -308,18 +344,32 @@ export default {
               i
             ].art_material_en;
             this.object_array[i].technique = this.object_array[i].art_tech_en;
+            if (this.modal_type === "delete") {
+              this.message = "Are you sure you want to delete this artwork?";
+            }
           }
+
           if (this.type === "exhibition") {
             this.object_array[i].title = this.object_array[i].exh_title_en;
             this.object_array[i].place = this.object_array[i].exh_place_en;
             this.object_array[i].dsc = this.object_array[i].exh_dsc_en;
             this.object_array[i].rev = this.object_array[i].exh_rev_en;
+            if (this.modal_type === "delete") {
+              this.message = "Are you sure you want to delete this exhibition?";
+            }
           }
           if (this.type === "workshops") {
             this.object_array[i].wrks_type = this.object_array[i].wrks_type_en;
             this.object_array[i].dsc = this.object_array[i].wrks_dsc_en;
             this.object_array[i].title = this.object_array[i].wrks_type_en;
+            if (this.modal_type === "delete") {
+              this.message =
+                "Are you sure you want to delete this workshop type?";
+            }
           }
+        }
+        if (this.modal_type === "wrong") {
+          this.message = "Some fields are left empty. Please try again.";
         }
       }
     },
@@ -329,61 +379,114 @@ export default {
       if (this.type === "artwork") {
         let id = object.art_id;
         console.log(id);
-        axios
-          .delete(this.baseUrl + "artworks", {
-            params: { art_id: id, sid: localStorage.getItem("sid") },
-          })
-          .then((res) => {
-            console.log(res);
-            for (let i = 0; i < this.object_array.length; i++) {
-              if (this.object_array[i].art_id == id) {
-                this.object_array.splice(i, 1);
-                this.forceRerender();
-                this.rerender = true;
+        this.confirm_function = function () {
+          axios
+            .delete("http://246b122.mars1.mars-hosting.com/api/artworks", {
+              params: { art_id: id, sid: localStorage.getItem("sid") },
+            })
+            .then((res) => {
+              console.log(res);
+              for (let i = 0; i < this.object_array.length; i++) {
+                if (this.object_array[i].art_id == id) {
+                  this.object_array.splice(i, 1);
+                }
               }
-            }
-          });
+            });
+        };
+        this.checkLanguage();
+        this.modal_type = "delete";
       }
       if (this.type === "exhibition") {
         let id = object.exh_id;
-        axios
-          .delete(this.baseUrl + "exhibitions", {
-            params: { exh_id: id, sid: localStorage.getItem("sid") },
-          })
-          .then((res) => {
-            console.log(res);
-            for (let i = 0; i < this.object_array.length; i++) {
-              if (this.object_array[i].exh_id == id) {
-                this.object_array.splice(i, 1);
-                this.forceRerender();
-                this.rerender = true;
+        this.confirm_function = function () {
+          axios
+            .delete("http://246b122.mars1.mars-hosting.com/api/exhibitions", {
+              params: { exh_id: id, sid: localStorage.getItem("sid") },
+            })
+            .then((res) => {
+              console.log(res);
+              for (let i = 0; i < this.object_array.length; i++) {
+                if (this.object_array[i].exh_id == id) {
+                  this.object_array.splice(i, 1);
+                  // this.forceRerender();
+                  // this.rerender = true;
+                }
               }
-            }
-          });
+            });
+        };
+        this.checkLanguage();
+        this.modal_type = "delete";
       }
       if (this.type === "workshops") {
         let id = object.wrks_id;
-        axios
-          .delete(this.baseUrl + "workshops", {
-            params: { wrks_id: id, sid: localStorage.getItem("sid") },
-          })
-          .then((res) => {
-            console.log(res);
-            for (let i = 0; i < this.object_array.length; i++) {
-              if (this.object_array[i].wrks_id == id) {
-                this.object_array.splice(i, 1);
-                this.forceRerender();
-                this.rerender = true;
+        this.confirm_function = function () {
+          axios
+            .delete("http://246b122.mars1.mars-hosting.com/api/workshops", {
+              params: { wrks_id: id, sid: localStorage.getItem("sid") },
+            })
+            .then((res) => {
+              console.log(res);
+              for (let i = 0; i < this.object_array.length; i++) {
+                if (this.object_array[i].wrks_id == id) {
+                  this.object_array.splice(i, 1);
+                  // this.forceRerender();
+                  // this.rerender = true;
+                }
               }
-            }
-          });
+            });
+        };
+        this.checkLanguage();
+        this.modal_type = "delete";
       }
+    },
+
+    editArtworks() {
+      this.type = "artwork";
+      this.edit = true;
+      this.object_array = this.artworks;
+      this.checkLanguage();
+      this.object_array_type = "artworks";
+    },
+    editGroupExh() {
+      this.type = "exhibition";
+      this.edit = true;
+      this.exhibitions = this.group_exhibitions; // BRIŠI???
+      this.object_array = this.group_exhibitions;
+      this.checkLanguage();
+      this.object_array_type = "exh_group";
+    },
+    editSoloExh() {
+      this.type = "exhibition";
+      this.edit = true;
+      this.exhibitions = this.solo_exhibitions; // BRIŠI???
+      this.object_array = this.solo_exhibitions;
+      this.checkLanguage();
+      this.object_array_type = "exh_solo";
     },
     editWorkshopTypes() {
       this.object_array = this.workshops;
       this.edit = true;
       this.type = "workshops";
       this.checkLanguage();
+    },
+    exit() {
+      this.type = "";
+      this.add = false;
+      this.edit = false;
+      this.getAuthor();
+      this.getArtworks();
+      this.getExhibitions();
+    },
+    forceRerender() {
+      this.componentEditKey += 1;
+      this.componentWrkKey += 1;
+    },
+    exitModal() {
+      this.message = "";
+      this.confirm_function = null;
+      this.modal_type = "";
+      this.forceRerender();
+      this.rerender = true;
     },
     getAuthor() {
       axios.get(this.baseUrl + "author").then((res) => {
@@ -436,40 +539,13 @@ export default {
         this.forceRerender();
       });
     },
-    editArtworks() {
-      this.type = "artwork";
-      this.edit = true;
-      this.object_array = this.artworks;
-      this.checkLanguage();
-      this.object_array_type = "artworks";
-    },
-    editGroupExh() {
-      this.type = "exhibition";
-      this.edit = true;
-      this.exhibitions = this.group_exhibitions; // BRIŠI???
-      this.object_array = this.group_exhibitions;
-      this.checkLanguage();
-      this.object_array_type = "exh_group";
-    },
-    editSoloExh() {
-      this.type = "exhibition";
-      this.edit = true;
-      this.exhibitions = this.solo_exhibitions; // BRIŠI???
-      this.object_array = this.solo_exhibitions;
-      this.checkLanguage();
-      this.object_array_type = "exh_solo";
-    },
-    exit() {
-      this.type = "";
-      this.add = false;
-      this.edit = false;
-      this.getAuthor();
-      this.getArtworks();
-      this.getExhibitions();
-    },
-    forceRerender() {
-      this.componentEditKey += 1;
-      this.componentWrkKey += 1;
+
+    scrollToElement(clss) {
+      const el = this.$el.getElementsByClassName(clss)[0];
+      console.log(el);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
     },
     showSelectedWorkshop() {
       this.object_array = this.workshops;
@@ -680,10 +756,20 @@ export default {
       handler() {
         this.checkLanguage();
       },
-      rerender: {
-        handler() {
-          this.checkLanguage();
-        },
+    },
+    rerender: {
+      handler() {
+        this.checkLanguage();
+      },
+    },
+    edit: {
+      handler() {
+        window.scrollTo(0, 0);
+      },
+    },
+    add: {
+      handler() {
+        window.scrollTo(0, 0);
       },
     },
   },

@@ -1,23 +1,39 @@
 <template>
   <div class="workshops">
+  <div class="workshops" :class="{fade: loader}">
     <div class="wrk-details">
-      <div class="wrk" v-for="(wrk, index) in workshops" :key="index">
+      <div
+        class="wrk"
+        :class="{ show: chosen === wrk }"
+        v-for="(wrk, index) in workshops"
+        :key="index"
+      >
         <div class="image" v-lazyload>
           <img
             :data-url="wrk.cover_path"
             src="../../public/images/placeholder.gif"
             alt=""
           />
-          <h1 :class="{ en: curLanguage === 'EN', rs: curLanguage === 'RS' }">
-            {{ wrk.type.toUpperCase() }}
-          </h1>
-          <p :class="{ en: curLanguage === 'EN', rs: curLanguage === 'RS' }">
-            {{ wrk.dsc }}
-          </p>
+          <div class="type-dsc">
+            <h1
+              class="wrk-type-title"
+              :class="{ en: curLanguage === 'EN', rs: curLanguage === 'RS' }"
+            >
+              {{ wrk.type.toUpperCase() }}
+            </h1>
+            <p
+              class="wrk-type-dsc"
+              :class="{ en: curLanguage === 'EN', rs: curLanguage === 'RS' }"
+              v-html="wrk.dsc"
+            ></p>
+          </div>
         </div>
       </div>
     </div>
     <div class="wrk-date-info">
+      <div class="instr-mssg">
+        <p class="chs-date-mssg">{{ $t("workshops.choose_date") }}</p>
+      </div>
       <div class="calendar">
         <calendar
           :key="componentKey"
@@ -27,64 +43,85 @@
         ></calendar>
       </div>
       <div class="wrk-manager">
-      <div
-        class="choose-time"
-        v-if="
-          selected_wrk === null &&
-          selected_date.length > 0 &&
-          success_message === false
-        "
-      >
-        <div class="instr-mssg">
-          <h2>{{ $t("workshops.instr_mssg") }}</h2>
-        </div>
-        <div class="list-time">
-          <p class="orng-txt">
-            {{ selected_date[0].date_day }}.{{ selected_date[0].date_month }}.{{
-              selected_date[0].date_year
-            }}
-          </p>
-          <div
-            class="time"
-            v-for="(time, index) in selected_date"
-            :key="index"
-            @click="chooseWrk(time)"
-          >
-            <p>{{ $t("workshops.time") }}</p>
-            <p class="orng-txt">{{ time.wrk_time }}</p>
-            <p>{{ $t("workshops.info_mssg") }}</p>
-            <p class="orng-txt">{{ time.vacancies }}</p>
+        <div
+          class="choose-time"
+          v-if="
+            selected_wrk === null &&
+            selected_date.length > 0 &&
+            success_message === false
+          "
+        >
+          <div class="instr-mssg">
+            <h2>{{ $t("workshops.instr_mssg") }}</h2>
+          </div>
+          <div class="list-time">
+            <p class="orng-txt">
+              {{ selected_date[0].date_day }}.{{
+                selected_date[0].date_month
+              }}.{{ selected_date[0].date_year }}
+            </p>
+            <div
+              class="time"
+              v-for="(time, index) in selected_date"
+              :key="index"
+              @click="chooseWrk(time)"
+            >
+              <p>{{ $t("workshops.time") }}</p>
+              <p class="orng-txt">{{ time.wrk_time }}</p>
+              <p>{{ $t("workshops.info_mssg") }}</p>
+              <p class="orng-txt">{{ time.vacancies }}</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        class="wrk-info"
-        v-if="
-          selected_wrk !== null &&
-          success_message === false &&
-          error_message === false
-        "
-      >
-        <div class="info-mssg">
-          <p class="vacancies">{{ $t("workshops.info_mssg") }}</p>
-          <p class="vacancies">{{ selected_wrk.vacancies }}</p>
-        </div>
-        <div class="sign-div">
-          <div class="sign-form" v-if="selected_wrk.vacancies > 0">
-            <h2>{{ $t("workshops.sign_mssg") }}</h2>
-            <label>{{plcholder_fname}}</label>
-            <input type="text" v-model="student_fullname" />
-            <label>{{plcholder_mail}}</label>
-            <input type="text" v-model="student_mail" />
-
-            <button class="sbmt" @click="submitSignIn()">
-              {{ $t("button.submit") }}
-            </button>
-            <div class="cancel-div">
-              <p>{{ $t("workshops.cancel_arrvl_mssg") }}</p>
-              <label>{{plcholder_fname}}</label>
+        <div
+          class="wrk-info"
+          v-if="
+            selected_wrk !== null &&
+            success_message === false &&
+            error_message === false
+          "
+        >
+          <div class="info-mssg">
+          <div class="info">
+            <p class="vacancies">{{ $t("workshops.workshop_type") }}</p>
+            <p class="dark-txt" @click="showType()">
+              {{ chosen.type.toUpperCase() }}
+            </p>
+            </div>
+            <div class="info">
+            <p class="vacancies">{{ $t("workshops.info_mssg") }}</p>
+            <p class="vacancies">{{ selected_wrk.vacancies }}</p>
+            </div>
+          </div>
+          <div class="sign-div">
+            <div class="sign-form" v-if="selected_wrk.vacancies > 0">
+              <h2>{{ $t("workshops.sign_mssg") }}</h2>
+              <label>{{ plcholder_fname }}</label>
               <input type="text" v-model="student_fullname" />
-              <label>{{plcholder_mail}}</label>
+              <label>{{ plcholder_mail }}</label>
+              <input type="text" v-model="student_mail" />
+
+              <button class="sbmt" @click="submitSignIn()">
+                {{ $t("button.submit") }}
+              </button>
+              <div class="cancel-div">
+                <p>{{ $t("workshops.cancel_arrvl_mssg") }}</p>
+                <label>{{ plcholder_fname }}</label>
+                <input type="text" v-model="student_fullname" />
+                <label>{{ plcholder_mail }}</label>
+                <input type="text" v-model="student_mail" />
+
+                <button class="cancel" @click="cancelArrival()">
+                  {{ $t("button.cancel_arrival") }}
+                </button>
+              </div>
+            </div>
+            <div class="no-room-mssg" v-if="selected_wrk.vacancies == 0">
+              <h2>{{ $t("workshops.no_room_mssg") }}</h2>
+              <p>{{ $t("workshops.cancel_arrvl_mssg") }}</p>
+              <label>{{ plcholder_fname }}</label>
+              <input type="text" v-model="student_fullname" />
+              <label>{{ plcholder_mail }}</label>
               <input type="text" v-model="student_mail" />
 
               <button class="cancel" @click="cancelArrival()">
@@ -92,51 +129,42 @@
               </button>
             </div>
           </div>
-          <div class="no-room-mssg" v-if="selected_wrk.vacancies == 0">
-            <h2>{{ $t("workshops.no_room_mssg") }}</h2>
-            <p>{{ $t("workshops.cancel_arrvl_mssg") }}</p>
-            <label>{{plcholder_fname}}</label>
-            <input type="text" v-model="student_fullname" />
-            <label>{{plcholder_mail}}</label>
-            <input type="text" v-model="student_mail"/>
-
-            <button class="cancel" @click="cancelArrival()">
-              {{ $t("button.cancel_arrival") }}
-            </button>
-          </div>
+        </div>
+        <div
+          class="sccss-mssg"
+          :class="{
+            'sccss-signin': confirm_index === 1,
+            'sccss-signout': confirm_index === 0,
+          }"
+          v-if="success_message"
+        >
+          <h2>{{ $t(`confirm_mssg[${confirm_index}].mssg`) }}</h2>
+        </div>
+        <div class="error-mssg" v-if="error_message">
+          <h2>{{ $t(`error_mssg[${error_index}].mssg`) }}</h2>
+          <button class="sbmt-error" @click="closeError()">OK</button>
         </div>
       </div>
-      <div
-        class="sccss-mssg"
-        :class="{
-          'sccss-signin': confirm_index === 1,
-          'sccss-signout': confirm_index === 0,
-        }"
-        v-if="success_message"
-      >
-        <h2>{{ $t(`confirm_mssg[${confirm_index}].mssg`) }}</h2>
-      </div>
-      <div class="error-mssg" v-if="error_message">
-        <h2>{{ $t(`error_mssg[${error_index}].mssg`) }}</h2>
-        <button class="sbmt-error" @click="closeError()">OK</button>
-      </div>
     </div>
     </div>
+    <loader v-if="loader"></loader>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import axios from "axios";
 import Calendar from "../components/Calendar.vue";
+import Loader from '../components/Loader.vue';
 export default {
-  components: { Calendar },
+  components: { Calendar, Loader },
   data() {
     return {
       calendar_info: [],
+      chosen: null,
       componentKey: 0,
       selected_wrk: null,
       selected_date: [],
-      student_fullname: "", 
+      student_fullname: "",
       student_mail: "",
       plcholder_fname: "Full name",
       plcholder_mail: "E-mail",
@@ -149,6 +177,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['changeLoader']),
     cancelArrival() {
       axios
         .delete(this.baseUrl + "available_workshops", {
@@ -197,7 +226,11 @@ export default {
       this.selected_wrk = time;
       this.selected_wrk.vacancies =
         time.wrk_max_students - time.wrk_signed_students;
-      console.log(this.selected_wrk);
+      for (let i = 0; i < this.workshops.length; i++) {
+        if (this.selected_wrk.wrks_id === this.workshops[i].wrks_id) {
+          this.chosen = this.workshops[i];
+        }
+      }
     },
     closeError() {
       this.error_message = false;
@@ -206,22 +239,26 @@ export default {
       this.componentKey++;
     },
     getWorkshops() {
+      this.changeLoader(true)
       axios.get(this.baseUrl + "workshops").then((res) => {
         console.log(res);
         this.workshops = res.data.data;
         this.checkLanguage();
+        this.changeLoader(false)
       });
     },
     getWorkshopDateInfo() {
+      this.changeLoader(true)
       axios.get(this.baseUrl + "workshop").then((res) => {
         console.log(res);
         this.calendar_info = res.data.data;
+        this.changeLoader(false)
       });
     },
     showSelected(wrk_day) {
       this.selected_wrk = null;
       this.success_message = false;
-    
+
       axios
         .get(this.baseUrl + "available_workshops", {
           params: { wrk_date: wrk_day.wrk_date },
@@ -236,8 +273,11 @@ export default {
                 this.selected_date[i].wrk_signed_students;
             }
           }
-           this.scrollToElement("wrk-manager");
+          this.scrollToElement("wrk-manager");
         });
+    },
+    showType() {
+      this.scrollToElement("show");
     },
     submitSignIn() {
       let formData = new FormData();
@@ -254,7 +294,8 @@ export default {
           this.selected_date = [];
           this.success_message = true;
           this.confirm_index = 1;
-        }).catch((error) => {
+        })
+        .catch((error) => {
           console.log(error);
           this.error_message = true;
           this.error_index = 0;
@@ -262,14 +303,14 @@ export default {
     },
     scrollToElement(clss) {
       const el = this.$el.getElementsByClassName(clss)[0];
-      console.log(el)
-      if(el) {
-        el.scrollIntoView({behavior: 'smooth'});
+      console.log(el);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
       }
-    }
+    },
   },
   computed: {
-    ...mapState(["baseUrl", "curLanguage"]),
+    ...mapState(["baseUrl", "curLanguage", 'loader']),
   },
   mounted() {
     this.getWorkshops();
@@ -302,7 +343,8 @@ input {
 input:focus {
   outline: none;
 }
-label{
+
+label {
   font-size: 1.2rem;
   font-weight: 600;
   color: #343333;
@@ -323,9 +365,22 @@ label{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 30vw;
+  width: 28vw;
   background-color: #777674;
   margin-top: 5vh;
+}
+.chs-date-mssg {
+  text-align: start;
+  margin-right: 2rem;
+  margin-left: 3rem;
+  color: #343333;
+}
+.dark-txt {
+  color: #343333;
+  font-weight: 800;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  font-size: 1.5rem;
 }
 .error-mssg {
   width: 30vw;
@@ -338,13 +393,22 @@ label{
   height: 30vh;
   margin-top: 5vh;
 }
+.fade{
+opacity: 0.2;
+}
+.info{
+display: flex;
+align-items: center;
+justify-content: center;
+}
 .info-mssg {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   background-color: #a7a6a7;
   width: 30vw;
-  height: 5vh;
+  height: 10vh;
 
   margin-top: 5vh;
   color: white;
@@ -356,8 +420,9 @@ label{
   align-items: center;
   justify-content: flex-start;
   background-color: #a7a6a7;
-  width: 30vw;
+  width: 28vw;
   height: 10vh;
+  
 }
 .list-time {
   margin-top: 1.5rem;
@@ -378,7 +443,7 @@ label{
   font-size: 1.5rem;
 }
 .vacancies {
-  margin-left: 1rem;
+  margin-left: 0.5rem;
 }
 .sbmt {
   font-family: "Open Sans", sans-serif;
@@ -405,7 +470,7 @@ label{
   border: none;
   margin-top: 2rem;
 }
-.sbmt-error:focus{
+.sbmt-error:focus {
   outline: none;
 }
 .sccss-mssg {
@@ -418,6 +483,7 @@ label{
   height: 30vh;
   margin-top: 5vh;
 }
+
 .sign-div {
   width: 30vw;
   background-color: #777674;
@@ -445,6 +511,12 @@ label{
   border-bottom: 2px solid #343333;
   cursor: pointer;
 }
+.type-dsc {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
 .workshops {
   display: flex;
 }
@@ -454,6 +526,7 @@ label{
   align-items: center;
   justify-content: flex-start;
   margin-left: 10vw;
+  margin-top: 10vh;
 }
 .wrk-details {
   display: flex;
@@ -462,5 +535,14 @@ label{
   width: 40vw;
   margin-left: 10vw;
   margin-top: 10vh;
+}
+.wrk-type-dsc {
+  text-align: justify;
+  margin-bottom: 3rem;
+}
+.wrk-type-title {
+  text-align: start;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 </style>

@@ -72,7 +72,7 @@ h1{
 }
 .r-side{
   width: 70vw;
-  height: 85vh;
+  height: 90vh;
   margin-bottom: 5vh;
 }
 .web-title{

@@ -266,6 +266,9 @@ export default {
       if (this.type === "exhibition") {
         this.translate_index = 1;
       }
+       if (this.type === "workshops") {
+        this.translate_index = 2;
+      }
     },
     deleteCover() {
       this.newCover = null;
@@ -506,6 +509,9 @@ p {
   font-size: 4rem;
   color: #343333;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .fake-inpt-div {
   width: 10vw;

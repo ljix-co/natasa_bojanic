@@ -1,6 +1,9 @@
 <template>
   <div class="contact">
     <div class="contact-div">
+      <div class="title-div">
+        <p class="title">{{ $t("contact.title_mssg").toUpperCase() }}</p>
+      </div>
       <div class="info">
         <div class="b-info">
           <i class="far fa-envelope"></i>
@@ -33,7 +36,7 @@ export default {};
 </script>
 <style scoped>
 i {
-  color: #ff6b00;
+  color: #343333;
   font-size: 4rem;
 }
 h1 {
@@ -41,6 +44,8 @@ h1 {
 }
 p {
   font-size: 22.1pt;
+  color: #343333;
+  font-weight: 600;
 }
 .b-info {
   display: flex;
@@ -54,7 +59,6 @@ p {
   align-items: center;
   justify-content: center;
   width: 100vw;
-  
 }
 .contact-div {
   display: flex;
@@ -64,8 +68,8 @@ p {
   width: 50vw;
   gap: 4rem;
   background-color: #777674;
-   margin-top: 20vh;
-   border: 5px solid #d9d9d9;
+  margin-top: 15vh;
+  border: 5px solid #ff6b00;
 }
 .info {
   display: flex;
@@ -75,14 +79,14 @@ p {
   gap: 3rem;
   width: 30vw;
   align-self: center;
-  margin-top: 10vh;
+  
 }
 .links {
   display: flex;
   gap: 3rem;
   align-items: center;
   justify-content: center;
-  align-self: center;
+  align-self: flex-start;
 }
 .soc-contact {
   align-self: center;
@@ -92,6 +96,23 @@ p {
   align-items: flex-start;
   justify-content: center;
   gap: 1rem;
-   margin-bottom: 5vh;
+  margin-bottom: 5vh;
+}
+.title{
+color: #777674;
+width: 40vw;
+font-weight: 800;
+}
+.title-div{
+width: 50vw;
+height: 15vh;
+background-color: #343333;
+display: flex;
+align-items: center;
+justify-content: center;
+align-self: center;
+border: 5px solid #ff6b00;
+border-top: none;
+border-bottom: none;
 }
 </style>

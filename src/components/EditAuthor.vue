@@ -209,7 +209,7 @@ img {
 }
 .btn-bio {
   width: 14vw;
-  color: #ff6b00;
+  color: #343333;
   font-weight: 800;
 }
 .btns {

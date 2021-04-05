@@ -101,17 +101,20 @@
         ></Gallery>
       </div>
     </div>
+    <loader v-if="loader"></loader>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import axios from "axios";
 import PhotoSlider from "../components/PhotoSlider.vue";
 import Gallery from "../components/Gallery.vue";
+import Loader from '../components/Loader.vue';
 export default {
   components: {
     PhotoSlider,
     Gallery,
+    Loader
   },
   data() {
     return {
@@ -126,6 +129,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['changeLoader']),
     checkLanguage() {
       if (this.curLanguage === "RS") {
         for (let i = 0; i < this.solo_exhs.length; i++) {
@@ -161,6 +165,7 @@ export default {
       this.scrollToElement();
     },
     getExhibitions() {
+      this.changeLoader(true)
       axios
         .get(this.baseUrl + "exhibitions", { params: { exh_type: "solo" } })
         .then((res) => {
@@ -174,6 +179,7 @@ export default {
           console.log(res);
           this.group_exhs = res.data.data;
           this.checkLanguage();
+          this.changeLoader(false);
         });
     },
     goBack() {
@@ -184,8 +190,8 @@ export default {
     },
     showExh(exh) {
       this.chosen_exh = exh;
-      // this.checkLanguage();
       let id = exh.exh_id;
+      this.changeLoader(true)
       axios
         .get(this.baseUrl + "exh_images", { params: { exh_id: id } })
         .then((res) => {
@@ -200,6 +206,7 @@ export default {
               cover_path: res.data.data[i].img_path,
             });
           }
+          this.changeLoader(false)
         });
     },
     scrollToElement() {
@@ -212,7 +219,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["baseUrl", "curLanguage"]),
+    ...mapState(["baseUrl", "curLanguage", 'loader']),
   },
   mounted() {
     this.getExhibitions();

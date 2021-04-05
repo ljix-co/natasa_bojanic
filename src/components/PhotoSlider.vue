@@ -7,6 +7,7 @@
       'slider-exh': exh_page,
       'slider-home': home_page,
     }"
+    
   >
     <div><i class="fas fa-chevron-left ctrl left" @click="prevImg()"></i></div>
     <div>
