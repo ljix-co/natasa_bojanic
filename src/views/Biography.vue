@@ -78,5 +78,27 @@ img {
   margin-top: 15vh;
   margin-left: 10vw;
 }
-
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+.bio{
+  font-size: .8rem;
+}
+}
+@media only screen and (max-width: 768px) {
+img{
+  width: 90vw;
+  order: 1;
+}
+.author{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.bio{
+  width: 80vw;
+  margin-top: 10vw;
+  margin-left: 0;
+  order: 2;
+}
+}
 </style>

@@ -92,19 +92,21 @@
             </div>
             <div class="inpt" v-if="type === 'exhibition'">
               <p>{{ $t("frq_words.date") }}:</p>
+              <div class="exh-date">
               <input
                 class="dtl-inpt-date"
                 type="text"
                 placeholder="01.01.2020."
                 v-model="date_start"
               />
-              <p>-</p>
+              <p class="date-dash">-</p>
               <input
                 class="dtl-inpt-date"
                 type="text"
                 placeholder="01.02.2020."
                 v-model="date_finish"
               />
+              </div>
             </div>
             <div class="inpt" v-if="type === 'exhibition'">
               <p>{{ $t("frq_words.type") }}:</p>
@@ -143,16 +145,23 @@
           </div>
         </div>
       </div>
-      <div class="add-rev-des" v-if="type === 'exhibition' || type === 'workshops'">
+      <div
+        class="add-rev-des"
+        v-if="type === 'exhibition' || type === 'workshops'"
+      >
         <button class="btn-rev-des" @click="showDesEditor">
           {{ $t("frq_words.description") }}
         </button>
-        <button class="btn-rev-des" v-if="type === 'exhibition'" @click="showRevEditor">
+        <button
+          class="btn-rev-des"
+          v-if="type === 'exhibition'"
+          @click="showRevEditor"
+        >
           {{ $t("frq_words.review") }}
         </button>
       </div>
       <div class="bottom">
-        <div >
+        <div>
           <div>
             <h2>
               {{ $t("frq_words.add") }}
@@ -160,12 +169,12 @@
             </h2>
           </div>
           <div class="add-img">
-          <div class="fake-inpt-div">
-            <label for="add-img" class="fake-inpt"
-              ><i class="fas fa-plus icon"></i
-            ></label>
-            <input type="file" id="add-img" hidden @change="addImg" />
-          </div>
+            <div class="fake-inpt-div">
+              <label for="add-img" class="fake-inpt"
+                ><i class="fas fa-plus icon"></i
+              ></label>
+              <input type="file" id="add-img" hidden @change="addImg" />
+            </div>
           </div>
         </div>
         <div
@@ -266,7 +275,7 @@ export default {
       if (this.type === "exhibition") {
         this.translate_index = 1;
       }
-       if (this.type === "workshops") {
+      if (this.type === "workshops") {
         this.translate_index = 2;
       }
     },
@@ -339,7 +348,7 @@ export default {
         };
         this.$emit("add-exh", newExh);
       }
-      if(this.type === 'workshops') {
+      if (this.type === "workshops") {
         let newWorkshopType = {
           type_en: this.title_en,
           type_rs: this.title_rs,
@@ -347,7 +356,7 @@ export default {
           dsc_rs: this.dsc_rs,
           price: this.price,
           cover: this.newCover,
-          images: this.newImages
+          images: this.newImages,
         };
         this.$emit("add-workshop-type", newWorkshopType);
       }
@@ -465,7 +474,7 @@ p {
 .btn-rev-des:focus {
   outline: 2px solid #ff6b00;
 }
-.cover-img{
+.cover-img {
   background-color: #343333;
   display: flex;
   flex-direction: column;
@@ -476,6 +485,9 @@ p {
   margin-left: 4rem;
   margin-top: 2rem;
 }
+ .date-dash{
+  text-align: center;
+  }
 .delete {
   cursor: pointer;
   position: absolute;
@@ -484,7 +496,7 @@ p {
 }
 .delete-cover {
   cursor: pointer;
-  position: absolute;  
+  position: absolute;
   margin-left: -2rem;
 }
 .delete-div {
@@ -593,5 +605,212 @@ p {
 .top-title {
   font-weight: 800;
   font-size: 46pt;
+}
+@media screen and (min-width: 992px) and (max-width: 1280px) {
+  
+}
+@media only screen and (min-width: 769px) and (max-width: 991px) {
+h2{
+font-size: 1.5rem;
+}
+p{
+font-size: .8rem;
+}
+select{
+width: 10vw;
+}
+ .btn-rev-des {
+    width: 15vw;
+    font-size: 1rem;
+  }
+  .date-dash{
+  text-align: center;
+  }
+  .delete-img-div{
+  font-size: 1.5rem;
+  }
+  .dtl-inpt-date{
+  margin-left: 0;
+  }
+   .exh-date{
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:  .2rem;
+  }
+.exit{
+ color: #777674;
+  font-size: 2rem;
+}
+ .main {
+    margin-top: 20vh;
+  }
+ .sbmt {
+    font-size: 1rem;
+    background-color: #777674;
+     margin-bottom: 1rem;
+  }
+
+  .top {
+    position: fixed;
+    width: 100vw;
+    background-color: #343333;
+   
+    z-index: 2;
+    margin-top: 1vh;
+  }
+  .top-btn-div {
+    
+     margin-bottom: 1rem;
+  }
+  .top-title {
+    font-size: 2rem;
+   
+    margin-bottom: 1rem;
+     color: #777674;
+  }
+}
+@media only screen and (max-width: 768px) {
+  h2{
+    font-size: 1.5rem;
+  }
+  img{
+    width: 80vw;
+  }
+  select{
+    width: 40vw;
+    margin-left: 4rem;
+  }
+  .add-cover {
+    width: 90vw;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-left: 1rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+  .add-dtls{
+    width: 90vw;
+    height: fit-content;
+    margin-left: 1rem;
+    margin-bottom: 10vh;
+  }
+  .add-img{
+    width: 80vw;
+    height: 80vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: .5rem;
+    margin-top: 2rem;
+  }
+  .add-rev-des{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90vw;
+    margin-bottom: 2rem;
+  }
+  .bottom{
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+   margin-left: 0;
+  }
+  .btn-rev-des{
+    width: 50vw;
+  }
+  .btn-exit {
+    width: 10vw;
+  }
+  .cover-img{
+    width: 80vw;
+    margin-left: 0;
+  }
+  .delete{
+    margin-left: 70vw;
+  }
+  .delete-cover{
+    margin-left: 20vw;
+   margin-top: -1.5rem;
+  }
+  .dtl-inpt{
+    margin-left: 4rem;
+  }
+  .dtl-inpt-date{
+    width: 20vw;
+ 
+    color: #343333;
+  }
+  .exh-date{
+    margin-left: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:  .2rem;
+  }
+  .exit {
+    font-size: 2rem;
+     color: #777674;
+  }
+
+  .fake-inpt-div {
+    width: 60vw;
+    height: 60vw;
+   margin-top: 0;
+  }
+  .icon {
+    font-size: 3rem;
+  }
+  .inpt{
+    width: 80vw;
+  }
+  .inpts{
+    margin-left: 0;
+  }
+  .image{
+    width: 80vw;
+  }
+  .image-div{
+    width: 80vw;
+  }
+  .main {
+    display: flex;
+    flex-direction: column;
+  }
+  .sbmt {
+    width: 25vw;
+    font-size: 1rem;
+    background-color: #777674;
+    color: #343333;
+  }
+  .title {
+    width: 50vw;
+     color: #777674;
+  }
+  .top{
+    position: fixed;
+     width: 90vw;
+    background-color: #343333;
+    color: #777674;
+    z-index: 2;
+    margin-top: 1vh;
+    height: 10vh;
+  }
+  .top-btn-div {
+    width: 25vw;
+  }
+  .top-title {
+    font-size: 1.5rem;
+  }
 }
 </style>

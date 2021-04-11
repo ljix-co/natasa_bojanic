@@ -1,5 +1,8 @@
 <template>
-  <div class="calendar" :class="{'cal-admin': admin_page, 'cal-guest': admin_page === false}">
+  <div
+    class="calendar"
+    :class="{ 'cal-admin': admin_page, 'cal-guest': admin_page === false }"
+  >
     <div class="calendar-dtls">
       <div class="select">
         <div class="month">
@@ -32,7 +35,11 @@
     <div class="list-days">
       <div
         class="day"
-        :class="{ day_now: day.day_now, selected: day.selected, day_admin: admin_page }"
+        :class="{
+          day_now: day.day_now,
+          selected: day.selected,
+          day_admin: admin_page,
+        }"
         v-for="(day, index) in days_show"
         :key="index"
         @click="getSelectedDay(day)"
@@ -66,7 +73,7 @@ export default {
   },
   methods: {
     checkPage() {
-      if(this.$route.name === 'Admin') {
+      if (this.$route.name === "Admin") {
         this.admin_page = true;
       }
     },
@@ -75,7 +82,7 @@ export default {
       this.year_now = this.date.getFullYear();
       this.year = this.year_now;
       this.getDaysMonth();
-       this.getWorkshopDates();
+      this.getWorkshopDates();
     },
     //PRIKAZANI DANI
     getDaysMonth() {
@@ -136,7 +143,6 @@ export default {
           }
         }
       }
-    
     },
     //KRAJ F-JE
     getSelectedDay(day) {
@@ -149,7 +155,11 @@ export default {
         }
         this.$emit("show-selected", wrk_day);
       }
-      if (day.selected === false && this.$route.name === "Admin") {
+      if (
+        day.selected === false &&
+        day.not_curnt === false &&
+        this.$route.name === "Admin"
+      ) {
         let new_wrk_day = new Object();
         new_wrk_day.date =
           this.year + "-" + (this.month_selected + 1) + "-" + day.day;
@@ -213,7 +223,7 @@ export default {
   },
   mounted() {
     this.getDateNow();
-   this.checkPage();
+    this.checkPage();
   },
   watch: {
     year: {
@@ -235,8 +245,6 @@ export default {
   color: #ff6b00;
 }
 .calendar {
-  
-
   width: 30vw;
 
   display: flex;
@@ -244,8 +252,8 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.cal-admin{
-margin-top: 20vh;
+.cal-admin {
+  margin-top: 20vh;
 }
 .calendar-dtls {
   width: 28vw;
@@ -259,12 +267,12 @@ margin-top: 20vh;
   align-items: center;
   justify-content: center;
 }
-.day_admin{
-cursor: pointer;
+.day_admin {
+  cursor: pointer;
 }
 .day_now {
-  color: #a0c1b8;
-  border: 3px solid #a0c1b8;
+  color: white;
+  border: 3px solid #ff6b00;
 }
 .gray {
   opacity: 0.2;
@@ -299,8 +307,8 @@ cursor: pointer;
 }
 .selected {
   color: white;
- /* border: 5px solid #714288;*/
- background-color: #003f5c;
+  /* border: 5px solid #714288;*/
+  background-color: #777674;
   cursor: pointer;
 }
 .week-day {
@@ -313,5 +321,95 @@ cursor: pointer;
   align-items: center;
   justify-content: center;
   gap: 1rem;
+}
+@media screen and (min-width: 992px) and (max-width: 1280px) {
+  h2 {
+    font-size: 0.8rem;
+  }
+  h3 {
+    font-size: 0.8rem;
+  }
+    .cal-admin {
+    margin-top: 10vh;
+  }
+  .num {
+    font-size: 0.8rem;
+  }
+  .month {
+    gap: 0.2rem;
+  }
+  .select {
+    gap: 2vw;
+    
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  h2 {
+    font-size: 0.8rem;
+  }
+  h3 {
+    font-size: 0.7rem;
+  }
+  .cal-admin {
+    margin-top: 10vh;
+  }
+  .calendar-dtls{
+    border:1px solid #777674;
+  }
+  .day{
+  border:1px solid #777674;
+  }
+  .num {
+    font-size: 0.8rem;
+  }
+  .month {
+    gap: 0.2rem;
+  }
+  .select {
+    gap: 2vw;
+    height: 5vh;
+   
+  }
+ 
+}
+@media only screen and (max-width: 768px) {
+  h2 {
+    font-size: 1rem;
+  }
+  h3 {
+    font-size: 0.7rem;
+  }
+  .calendar {
+    width: 90vw;
+  }
+  .cal-admin {
+    margin-top: 0;
+  }
+  .calendar-dtls {
+    width: 91vw;
+  }
+  .day {
+    width: 13vw;
+    height: 13vw;
+  }
+  .list-days {
+    width: 91vw;
+  }
+  .mnth {
+    width: 20vw;
+    font-size: 1rem;
+  }
+  .month {
+    width: 45vw;
+  }
+  .select {
+    width: 91vw;
+  }
+  .week-day {
+    width: 13vw;
+  }
+  .year {
+    width: 45vw;
+  }
 }
 </style>

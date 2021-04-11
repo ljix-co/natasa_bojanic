@@ -29,6 +29,9 @@
           ></gallery>
         </div>
         <div class="side-editor" v-if="edit_object">
+          <button class="btn-exit-side" @click="exitSideEditor()">
+            <i class="fas fa-times exit-side-edit"></i>
+          </button>
           <h2>
             {{ $t("frq_words.change") }}
             {{ $t(`add_edit[${translate_index}].cover`) }}
@@ -531,6 +534,9 @@ export default {
       this.editor_type = "";
       this.add_images = false;
     },
+    exitSideEditor() {
+      this.edit_object = false;
+    },
     scrollToElement(clss) {
       const el = this.$el.getElementsByClassName(clss)[0];
       console.log(el);
@@ -640,6 +646,9 @@ p {
 .btn-exit:focus {
   outline: none;
 }
+.btn-exit-side {
+  visibility: hidden;
+}
 .btn-rev-des {
   font-family: "Open Sans", sans-serif;
   background-color: #777674;
@@ -697,6 +706,9 @@ p {
 .exit {
   color: #777674;
   font-size: 4rem;
+}
+.exit-side-edit {
+  visibility: hidden;
 }
 .fake-inpt-div {
   width: 10vw;
@@ -784,5 +796,145 @@ p {
 .top-title {
   font-weight: 800;
   font-size: 46pt;
+}
+@media only screen and (min-width: 992px) and (max-width: 1280px) {
+.edit{
+border: none;
+}
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  p {
+    font-size: 0.8rem;
+  }
+  input {
+    width: 20vw;
+  }
+  select {
+    width: 10vw;
+  }
+  .btn {
+    width: 10vw;
+    height: 10vh;
+  }
+  .btn-rev-des {
+    width: 15vw;
+  }
+  .delete-img-div {
+    font-size: 1.5rem;
+  }
+  .details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .edit {
+    border: none;
+  }
+  .exit {
+    font-size: 2rem;
+  }
+  .inpts {
+    margin-left: 0;
+  }
+  .main {
+    margin-top: 20vh;
+  }
+  .sbmt {
+    font-size: 1rem;
+  }
+
+  .top {
+    position: fixed;
+    width: 100vw;
+    background-color: #343333;
+    z-index: 2;
+    margin-top: 0;
+  }
+  .top-btn-div {
+    margin-top: 2rem;
+  }
+  .top-title {
+    font-size: 2rem;
+    margin-top: 2rem;
+  }
+}
+@media only screen and (max-width: 768px) {
+  p {
+    width: 20vw;
+  }
+  select {
+    width: 20vw;
+  }
+  .btn {
+    width: 50vw;
+  }
+  .btn-exit-side {
+    visibility: visible;
+    font-size: 2rem;
+    color: #777674;
+    background-color: transparent;
+    border: none;
+    width: 4rem;
+    cursor: pointer;
+  }
+  .btn-exit-side:focus {
+    outline: none;
+  }
+  .cover-img {
+    width: 80vw;
+  }
+  .delete-img-div {
+    width: 80vw;
+  }
+  .edit {
+    border: none;
+    background-color: #343333;
+  }
+  .exit,
+  .exit-side-edit {
+    visibility: visible;
+    font-size: 2rem;
+    color: #777674;
+  }
+
+  .gallery {
+    width: 90vw;
+  }
+  .inpt {
+    width: 80vw;
+  }
+  .inpts {
+    width: 80vw;
+    margin-left: 0;
+  }
+  .sbmt {
+    width: 25vw;
+    font-size: 1rem;
+  }
+  .side-editor {
+    position: absolute;
+    background-color: #343333;
+    width: 100vw;
+    top: 8vh;
+    z-index: 3;
+  }
+  .title {
+    width: 50vw;
+  }
+  .top {
+    position: fixed;
+    width: 100vw;
+    background-color: #343333;
+    z-index: 2;
+    margin-top: 0;
+  }
+  .top-btn-div {
+    width: 25vw;
+  }
+  .top-title {
+    font-size: 1.5rem;
+    color: #777674;
+  }
 }
 </style>

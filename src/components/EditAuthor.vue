@@ -49,17 +49,21 @@
             {{ $t("frq_words.bio") }}(RS)
           </button>
         </div>
-        <div v-if="showEn">
-          <h1>EN</h1>
+        <div class="v-editor">
+        <div  v-if="showEn">
+          <h1 class="editor-title">EN</h1>
           <vue-editor
             class="vue_editor"
             v-model="bio_en"
             :editor-toolbar="customToolbar"
           />
         </div>
-        <div v-if="showRs">
+         </div>
+        <div class="v-editor">
+        <div  v-if="showRs">
           <h1>RS</h1>
-          <vue-editor class="vue_editor" v-model="bio_rs" />
+          <vue-editor class="vue_editor" v-model="bio_rs" :editor-toolbar="customToolbar"/>
+        </div>
         </div>
       </div>
     </div>
@@ -135,25 +139,36 @@ export default {
       this.newImg = e.target.files[0];
       this.url = URL.createObjectURL(this.newImg);
     },
+    scrollToElement(clss) {
+      let el = this.$el.getElementsByClassName(clss)[0];
+      if(el) {
+        el.scrollIntoView({behavior: 'smooth'});
+        console.log('tst')
+      }
+    },
     showBioEn() {
       if (this.showEn === true) {
         this.showEn = false;
       } else {
         this.showEn = true;
+        this.scrollToElement('v-editor');
       }
       if (this.showRs === true) {
         this.showRs = false;
       }
+      
     },
     showBioRs() {
       if (this.showRs === true) {
         this.showRs = false;
       } else {
         this.showRs = true;
+        this.scrollToElement('v-editor');
       }
       if (this.showEn === true) {
         this.showEn = false;
       }
+      
     },
   },
 };
@@ -253,5 +268,86 @@ img {
   font-size: 20pt;
   font-weight: 800;
   margin-top: 20vw;
+}
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+  button{
+    font-size: 1rem;
+  }
+  input{
+    font-size: .8rem;
+  }
+    .btn-bio {
+    width: 20vw;
+   
+  }
+  .delete{
+  font-size: 1.5rem;
+  }
+.title{
+  font-size: 1rem;
+  left: -5rem;
+}
+}
+@media only screen and (max-width: 768px) {
+  button {
+    width: 50vw;
+    position: absolute;
+    top: 150vh;
+  }
+  img {
+    width: 90vw;
+    margin-left: 0;
+  }
+  input {
+    width: 80vw;
+    font-size: 1rem;
+    margin-left: 1rem;
+  }
+  .basic-info {
+    width: 90vw;
+    margin-left: 0;
+  }
+  .bio {
+    width: 90vw;
+    margin-left: 0;
+  }
+  .btns {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 30vh;
+    width: 90vw;
+  }
+  .btn-bio {
+    width: 70vw;
+    margin-top: 0;
+    position: static;
+  }
+  .delete{
+    left: 95vw;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+  }
+  .inpts {
+    width: 90vw;
+  }
+
+  .title {
+    position: static;
+    transform: rotate(0deg);
+    width: 90vw;
+    background-color: #777674;
+    font-size: 1rem;
+    color: #343333;
+  }
+  .v-editor{
+    margin-top: 2rem;
+  }
 }
 </style>

@@ -1,79 +1,82 @@
 <template>
   <div class="login">
-  <div class="login-form" :class="{fade: wrong}">
-  <h1>LOGIN</h1>
-  <h2>E-MAIL</h2>
-    <input type="text" v-model="e_mail" />
-    <h2>{{$t('author.password').toUpperCase()}}</h2>
-    <input type="password" v-model="password" @keyup.enter="login()"/>
-    <button @click="login()">LOGIN</button>
+    <div class="login-form" :class="{ fade: wrong }">
+      <h1>LOGIN</h1>
+      <h2>E-MAIL</h2>
+      <input type="text" v-model="e_mail" />
+      <h2>{{ $t("author.password").toUpperCase() }}</h2>
+      <input type="password" v-model="password" @keyup.enter="login()" />
+      <button @click="login()">LOGIN</button>
     </div>
     <div class="wrong" v-if="wrong">
-    <Modal :modal_type="modal_type" :message="message" @exit-modal="exitWrong"></Modal>
+      <Modal
+        :modal_type="modal_type"
+        :message="message"
+        @exit-modal="exitWrong"
+      ></Modal>
     </div>
   </div>
 </template>
 <script>
-import Modal from '../components/Modal.vue';
+import Modal from "../components/Modal.vue";
 import { mapState, mapActions } from "vuex";
 import axios from "axios";
 export default {
   components: {
-Modal
+    Modal,
   },
   data() {
     return {
       e_mail: "",
       password: "",
-      message: '',
+      message: "",
       wrong: false,
-      modal_type: "wrong"
+      modal_type: "wrong",
     };
   },
   methods: {
-    ...mapActions(['changeLoggedIn']),
+    ...mapActions(["changeLoggedIn"]),
     checkLanguage() {
-      if(this.curLanguage === 'EN') {
-        this.message = "E-mail or password are incorrect.Please try again."
+      if (this.curLanguage === "EN") {
+        this.message = "E-mail or password are incorrect.Please try again.";
       }
-        if(this.curLanguage === 'RS') {
-        this.message = "E-mail ili šifra su neispravni. Molimo Vas pokušajte ponovo."
+      if (this.curLanguage === "RS") {
+        this.message =
+          "E-mail ili šifra su neispravni. Molimo Vas pokušajte ponovo.";
       }
     },
     exitWrong() {
       this.wrong = false;
     },
     login() {
-        
-        let formData = new FormData();
-        formData.append("aut_email", this.e_mail);
-        formData.append("pass", this.password);
+      let formData = new FormData();
+      formData.append("aut_email", this.e_mail);
+      formData.append("pass", this.password);
       axios
         .post(this.baseUrl + "login", formData)
         .then((res) => {
           console.log(res);
           localStorage.setItem("sid", res.data.sid);
           this.changeLoggedIn(true);
-          this.$router.push({name: 'Admin'});
-          
-        }).catch(error => {
+          this.$router.push({ name: "Admin" });
+        })
+        .catch((error) => {
           console.log(error);
           this.wrong = true;
           this.checkLanguage();
-        })
-        
+        });
     },
   },
   computed: {
-    ...mapState(["baseUrl", 'curLanguage']),
+    ...mapState(["baseUrl", "curLanguage"]),
   },
- watch: {
-   curLanguage: {
-     handler(){
-       this.checkLanguage();
-     }
-   }
- }
+  watch: {
+    curLanguage: {
+      handler() {
+        this.checkLanguage();
+      },
+    },
+  },
 };
 </script>
 <style scoped>
@@ -93,13 +96,13 @@ button {
 button:focus {
   outline: 3px solid #ff6b00;
 }
-h1{
-font-weight: 800;
-margin-top: 2rem;
-color: #343333;
+h1 {
+  font-weight: 800;
+  margin-top: 2rem;
+  color: #343333;
 }
-h2{
-margin-top: 2rem;
+h2 {
+  margin-top: 2rem;
 }
 input {
   font-family: "Open Sans", sans-serif;
@@ -115,30 +118,65 @@ input {
 input:focus {
   outline: none;
 }
-.fade{
-opacity: 0.2;
+.fade {
+  opacity: 0.2;
 }
+.login {
+  width: 100vw;
+  height: 90vh;
+}
+.login-form {
+  position: absolute;
+  top: 20vh;
+  left: 35vw;
+  width: 30vw;
+  background-color: #777674;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #ff6b00;
+}
+.wrong {
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  position: fixed;
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+ input {
+    width: 30vw;
+    font-size: 1rem;
+  }
 .login{
-width: 100vw;
-height: 90vh;
-}
-.login-form{
-position: absolute;
-top: 20vh;
-left: 35vw;
-width: 30vw;
-background-color: #777674;
-display: flex;
-flex-direction: column;
-gap: 1rem;
-align-items: center;
-justify-content: center;
-border: 3px solid #ff6b00;
-}
-.wrong{
-width: 100vw;
 height: 100vh;
-z-index: 1;
-position: fixed;
+}
+  .login-form {
+    width: 50vw;
+    left: 25vw;
+  }
+  
+}
+@media only screen and (max-width: 768px) {
+  button {
+    width: 50vw;
+    margin-top: 5vh;
+  }
+  h1 {
+    margin-top: 1rem;
+  }
+  h2 {
+    margin-top: 1rem;
+  }
+  input {
+    width: 80vw;
+  }
+  .login-form {
+    width: 90vw;
+    left: 1rem;
+    margin-bottom: 10vh;
+    height: 70vh;
+  }
 }
 </style>

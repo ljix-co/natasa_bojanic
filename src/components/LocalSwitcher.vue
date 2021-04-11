@@ -9,7 +9,7 @@
     >
     <div class="lang" v-if="currentLang !== lang.lang">
       <img :src="lang.flag" alt="" />
-      <h1>{{ lang.lang }}</h1>
+     
       </div>
     </div>
   </div>
@@ -64,7 +64,34 @@ img {
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 4vh;
+  top: 2rem;
   left: 85vw;
+}
+@media screen and (min-width: 992px) and (max-width: 1280px) {
+.lang-title{
+display: none;
+}
+.locale-switcher{
+top: 1.5rem;
+
+}
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  img{
+    width: 30px;
+    height: 20px;
+  }
+.lang-title{
+display: none;
+}
+.locale-switcher{
+top: 2rem;
+margin-left: 1rem;
+}
+}
+@media only screen and (max-width: 768px) {
+.lang-title{
+display: none;
+}
 }
 </style>

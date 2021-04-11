@@ -131,7 +131,7 @@
     }
   ],
   "home": {
-    "subtitle": "Vizuelna umetnica i keramičarka"
+    "subtitle": "Vizuelni umetnik i keramičar"
   },
   "links": [
     {
@@ -153,6 +153,9 @@
       "title": "KONTAKT"
     }
   ],
+  "tooltips": {
+        "gallery": "KLIKNITE ZA PRIKAZ SVIH FOTOGRAFIJA"
+  },
   "week_days": [
     {
       "day": "NED"

@@ -307,33 +307,35 @@ export default {
               i
             ].art_material_rs;
             this.object_array[i].technique = this.object_array[i].art_tech_rs;
-            if (this.modal_type === "delete") {
-              this.message =
-                "Da li ste sigurni da želite da izbrišete ovaj rad?";
-            }
           }
           if (this.type === "exhibition") {
             this.object_array[i].title = this.object_array[i].exh_title_rs;
             this.object_array[i].place = this.object_array[i].exh_place_rs;
             this.object_array[i].dsc = this.object_array[i].exh_dsc_rs;
             this.object_array[i].rev = this.object_array[i].exh_rev_rs;
-            if (this.modal_type === "delete") {
-              this.message =
-                "Da li ste sigurni da želite da izbrišete ovu izložbu?";
-            }
           }
           if (this.type === "workshops") {
             this.object_array[i].wrks_type = this.object_array[i].wrks_type_rs;
             this.object_array[i].dsc = this.object_array[i].wrks_dsc_rs;
             this.object_array[i].title = this.object_array[i].wrks_type_rs;
-            if (this.modal_type === "delete") {
-              this.message =
-                "Da li ste sigurni da želite da izbrišete ovaj tip radionice?";
-            }
           }
         }
         if (this.modal_type === "wrong") {
-          this.message = "Neka polja su ostala prazna. Molimo Vas pokušajte ponovo.";
+          this.message =
+            "Neka polja su ostala prazna. Molimo Vas pokušajte ponovo.";
+        }
+        if (this.modal_type === "delete") {
+          if (this.type === "artwork") {
+            this.message = "Da li ste sigurni da želite da izbrišete ovaj rad?";
+          }
+          if (this.type === "exhibition") {
+            this.message =
+              "Da li ste sigurni da želite da izbrišete ovu izložbu?";
+          }
+          if (this.type === "workshops") {
+            this.message =
+              "Da li ste sigurni da želite da izbrišete ovaj tip radionice?";
+          }
         }
       }
       if (this.curLanguage === "EN") {
@@ -344,9 +346,6 @@ export default {
               i
             ].art_material_en;
             this.object_array[i].technique = this.object_array[i].art_tech_en;
-            if (this.modal_type === "delete") {
-              this.message = "Are you sure you want to delete this artwork?";
-            }
           }
 
           if (this.type === "exhibition") {
@@ -354,22 +353,27 @@ export default {
             this.object_array[i].place = this.object_array[i].exh_place_en;
             this.object_array[i].dsc = this.object_array[i].exh_dsc_en;
             this.object_array[i].rev = this.object_array[i].exh_rev_en;
-            if (this.modal_type === "delete") {
-              this.message = "Are you sure you want to delete this exhibition?";
-            }
           }
           if (this.type === "workshops") {
             this.object_array[i].wrks_type = this.object_array[i].wrks_type_en;
             this.object_array[i].dsc = this.object_array[i].wrks_dsc_en;
             this.object_array[i].title = this.object_array[i].wrks_type_en;
-            if (this.modal_type === "delete") {
-              this.message =
-                "Are you sure you want to delete this workshop type?";
-            }
           }
         }
         if (this.modal_type === "wrong") {
           this.message = "Some fields are left empty. Please try again.";
+        }
+        if (this.modal_type === "delete") {
+          if (this.type === "artwork") {
+            this.message = "Are you sure you want to delete this artwork?";
+          }
+          if (this.type === "exhibition") {
+            this.message = "Are you sure you want to delete this exhibition?";
+          }
+          if (this.type === "workshops") {
+            this.message =
+              "Are you sure you want to delete this workshop type?";
+          }
         }
       }
     },
@@ -393,8 +397,8 @@ export default {
               }
             });
         };
-        this.checkLanguage();
         this.modal_type = "delete";
+        this.checkLanguage();
       }
       if (this.type === "exhibition") {
         let id = object.exh_id;
@@ -414,8 +418,8 @@ export default {
               }
             });
         };
-        this.checkLanguage();
         this.modal_type = "delete";
+        this.checkLanguage();
       }
       if (this.type === "workshops") {
         let id = object.wrks_id;
@@ -435,8 +439,8 @@ export default {
               }
             });
         };
-        this.checkLanguage();
         this.modal_type = "delete";
+        this.checkLanguage();
       }
     },
 
@@ -550,7 +554,7 @@ export default {
     showSelectedWorkshop() {
       this.object_array = this.workshops;
       this.type = "workshops";
-      console.log(this.object_array);
+      console.log(this.object_array[0].wrks_type_en);
       this.checkLanguage();
     },
     submitAut(chndAut) {

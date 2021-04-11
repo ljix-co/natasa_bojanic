@@ -5,6 +5,7 @@
       'gallery-admin': admin_page,
       'gallery-artworks': art_page,
       'gallery-exh': exh_page,
+      'gallery-wrkshops': work_page,
     }"
   >
     <div
@@ -13,9 +14,14 @@
         'list-items-admin': admin_page,
         'list-items-artworks': art_page,
         'list-items-exh': exh_page,
+        'list-items-wrkshops': work_page,
       }"
     >
-      <div class="item" v-for="(object, index) in object_array" :key="'item' + index">
+      <div
+        class="item"
+        v-for="(object, index) in object_array"
+        :key="'item' + index"
+      >
         <div class="delete-img-div" v-if="admin_page">
           <i class="far fa-trash-alt delete" @click="deleteObject(object)"></i>
         </div>
@@ -27,10 +33,10 @@
             @click="chooseObject(object)"
           />
         </div>
-        <div class="item-dtls" v-if="exh_page === false">
+        <div class="item-dtls" v-if="exh_page === false && work_page === false">
           <!-- <div class="dtl"> -->
-            <!-- <p>{{ $t("frq_words.title") }}:</p> -->
-            <h2 class="dtl-txt-title">{{ object.title }}</h2>
+          <!-- <p>{{ $t("frq_words.title") }}:</p> -->
+          <h2 class="dtl-txt-title">{{ object.title }}</h2>
           <!-- </div> -->
           <div class="dtl" v-if="type === 'artwork'">
             <p>{{ $t("frq_words.dimensions") }}:</p>
@@ -68,12 +74,11 @@
           <div class="dtl" v-if="type === 'exhibition'">
             <p>{{ $t("frq_words.date") }}:</p>
             <div class="date">
-            <p class="dtl-date">{{ object.exh_date_start }} </p>
-          
-            <p class="dtl-date">{{ object.exh_date_finish }}</p>
+              <p class="dtl-date">{{ object.exh_date_start }}</p>
+
+              <p class="dtl-date">{{ object.exh_date_finish }}</p>
             </div>
           </div>
-        
         </div>
       </div>
     </div>
@@ -100,6 +105,7 @@ export default {
       admin_page: false,
       exh_page: false,
       art_page: false,
+      work_page: false,
     };
   },
   methods: {
@@ -113,6 +119,9 @@ export default {
       if (this.$route.name === "Artworks") {
         this.art_page = true;
       }
+      if (this.$route.name === "Workshops") {
+        this.work_page = true;
+      }
     },
 
     chooseObject(object) {
@@ -123,7 +132,7 @@ export default {
         if (this.type === "exhibition") {
           this.$emit("choose-exh", object);
         }
-        if(this.type === "workshops") {
+        if (this.type === "workshops") {
           this.$emit("choose-workshop", object);
         }
       } else {
@@ -151,14 +160,14 @@ img {
   background-color: #474646;
   cursor: pointer;
 }
-p{
-width: 5vw;
-text-align: start;
+p {
+  width: 5vw;
+  text-align: start;
 }
-.date{
-display: flex;
-flex-direction: column;
-align-items: center;
+.date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .delete {
   cursor: pointer;
@@ -169,7 +178,6 @@ align-items: center;
   margin-left: -5rem;
   width: 25vw;
   text-align: end;
-  
 }
 .dtl {
   display: flex;
@@ -183,18 +191,17 @@ align-items: center;
   color: #343333;
   width: 10vw;
   text-align: start;
-  
 }
-.dtl-txt-title{
-font-size: 2rem;
-font-weight: 800;
-color: #474646;
-width: 20vw;
-text-align: center;
-display: flex;
-align-items: center;
-justify-content: center;
-margin-bottom: 2rem;
+.dtl-txt-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #474646;
+  width: 20vw;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
 }
 .gallery {
   display: flex;
@@ -205,6 +212,10 @@ margin-bottom: 2rem;
   width: 50vw;
 }
 .gallery-artworks {
+  width: 80vw;
+  margin-left: 10vw;
+}
+.gallery-wrkshops {
   width: 80vw;
   margin-left: 10vw;
 }
@@ -225,7 +236,7 @@ margin-bottom: 2rem;
   justify-content: flex-start;
   color: #d9d9d9;
   font-weight: 300;
-  
+
   margin-top: 2rem;
   margin-bottom: 2rem;
   width: 20vw;
@@ -254,11 +265,120 @@ margin-bottom: 2rem;
   gap: 2rem;
   align-items: center;
   justify-content: center;
- 
+}
+.list-items-wrkshops {
+  width: 80vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
 }
 .photo-slider {
   top: 10vh;
   margin-left: -10vw;
   width: 30vw;
+}
+@media screen and (min-width: 992px) and (max-width: 1280px) {
+  p {
+    font-size: 0.8rem;
+  }
+  .dtl {
+    margin-left: 1rem;
+  }
+  .dtl-txt {
+    font-size: 0.8rem;
+    margin-left: 1rem;
+    width: 15vw;
+  }
+  .dtl-txt-title {
+    font-size: 1.5rem;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+img{
+height: 20vh;
+}
+  p {
+    font-size: 0.5rem;
+  }
+  .delete-img-div {
+    font-size: 1.5rem;
+  }
+  .dtl {
+    margin-left: 1rem;
+  }
+  .dtl-txt {
+    font-size: 0.5rem;
+    margin-left: 0.5rem;
+    width: 15vw;
+  }
+  .dtl-txt-title {
+    font-size: 1.5rem;
+  }
+}
+@media only screen and (max-width: 768px) {
+  img {
+    width: 90vw;
+    height: 50vh;
+    object-fit: contain;
+  }
+  p {
+    width: 20vw;
+    text-align: start;
+  }
+  .delete-img-div {
+    width: 85vw;
+    margin-left: 0;
+    position: absolute;
+    margin-top: -80vh;
+  }
+  .dtl-txt {
+    width: 50vw;
+  }
+  .dtl-txt-title {
+    font-size: 2rem;
+    font-weight: 800;
+
+    width: 90vw;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .gallery-admin {
+    width: 90vw;
+  }
+  .item {
+    width: 90vw;
+    height: fit-content;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .item-dtls {
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    width: 90vw;
+  }
+  .list-items-artworks,
+  .list-items-exh,
+  .list-items-wrkshops,
+  .list-items-admin {
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+  }
 }
 </style>

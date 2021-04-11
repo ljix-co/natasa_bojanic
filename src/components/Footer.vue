@@ -35,10 +35,21 @@ img{
   justify-content: center;
   width: 100vw;
 }
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+p{
+  font-size: .9rem;
+}
+}
 @media only screen and (max-width: 768px) {
+.footer{
+width: 100vw;
+height: 10vh;
+margin-top: 5vh;
+}
   .footer-content{
     width: 90vw;
     margin-left: 1rem;
+    height: 5vh;
   }
 }
 </style>

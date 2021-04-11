@@ -79,7 +79,6 @@ p {
   gap: 3rem;
   width: 30vw;
   align-self: center;
-  
 }
 .links {
   display: flex;
@@ -98,21 +97,77 @@ p {
   gap: 1rem;
   margin-bottom: 5vh;
 }
-.title{
-color: #777674;
-width: 40vw;
-font-weight: 800;
+.title {
+  color: #777674;
+  width: 40vw;
+  font-weight: 800;
 }
-.title-div{
-width: 50vw;
-height: 15vh;
-background-color: #343333;
-display: flex;
-align-items: center;
-justify-content: center;
-align-self: center;
-border: 5px solid #ff6b00;
-border-top: none;
-border-bottom: none;
+.title-div {
+  width: 50vw;
+  height: 15vh;
+  background-color: #343333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  border: 5px solid #ff6b00;
+  border-top: none;
+  border-bottom: none;
+}
+@media screen and (min-width: 992px) and (max-width: 1280px) {
+  i{
+    font-size: 2rem;
+  }
+  p{
+    font-size: 1.5rem;
+  }
+
+.title{
+  font-size: 1rem;
+}
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  i{
+    font-size: 2rem;
+  }
+  p{
+    font-size: 1rem;
+  }
+
+.title{
+  font-size: 1rem;
+}
+}
+@media only screen and (max-width: 768px) {
+  i {
+    font-size: 2rem;
+  }
+  p {
+    font-size: 1rem;
+  }
+  .b-info {
+    margin-left: 1rem;
+  }
+  .contact-div {
+    width: 90vw;
+  }
+  .info {
+    width: 85vw;
+    gap: 2rem;
+  }
+  .links {
+    gap: 1.5rem;
+  }
+  .soc-contact {
+    width: 80vw;
+    margin-left: 1rem;
+  }
+  .title {
+    width: 85vw;
+    font-size: 1rem;
+  }
+  .title-div {
+    width: 90vw;
+  }
 }
 </style>

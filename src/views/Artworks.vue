@@ -90,7 +90,7 @@ export default {
           id: id,
           path: res.data.data[0].cover_path,
         });
-        // console.log(this.images)
+    
         axios
           .get(this.baseUrl + "dtls_images", { params: { img_id: id } })
           .then((res) => {
@@ -109,7 +109,6 @@ export default {
       const el = this.$el.getElementsByClassName("photo-slider")[0];
 
       if (el) {
-        // Use el.scrollIntoView() to instantly scroll to the element
         el.scrollIntoView({ behavior: "smooth" });
       }
     },

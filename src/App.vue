@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
-      <div class="nav">
+    <img class="logo" src="./../public/images/logo_d.png" alt="">
+      <div class="menu">
+        <i class="fas fa-ellipsis-h menu-bar" @click="showMenu"></i>
+      </div>
+      <LocalSwitcher />
+      <div :class="{ nav: show_menu, hide: hide_menu }">
         <router-link class="link" to="/">{{
           $t("links[0].title")
         }}</router-link>
@@ -20,7 +25,7 @@
         <router-link class="link" to="/contact">{{
           $t("links[5].title")
         }}</router-link>
-        <LocalSwitcher />
+
         <div class="admin-links" v-if="loggedIn">
           <router-link class="icon" to="/admin"
             ><i class="fas fa-pen icon"></i
@@ -44,14 +49,15 @@ export default {
     Footer,
   },
   data() {
-    return {};
+    return {
+      show_menu: false,
+      hide_menu: true,
+    };
   },
   methods: {
     ...mapActions(["changeLoggedIn"]),
     checkLogin() {
-       
       if (localStorage.getItem("sid")) {
-      
         axios
           .get(this.baseUrl + "login", {
             params: { sid: localStorage.getItem("sid") },
@@ -59,12 +65,13 @@ export default {
           .then((res) => {
             console.log(res);
             this.changeLoggedIn(true);
-            console.log(this.loggedIn)
-          }).catch(error => {
+            console.log(this.loggedIn);
+          })
+          .catch((error) => {
             console.log(error);
             this.changeLoggedIn(false);
             localStorage.removeItem("sid");
-          })
+          });
       }
     },
     logout() {
@@ -85,6 +92,15 @@ export default {
           this.$router.go(); //NIJE DOBRO
         });
     },
+    showMenu() {
+      if (this.hide_menu === true) {
+        this.show_menu = true;
+        this.hide_menu = false;
+      } else if (this.show_menu === true) {
+        this.hide_menu = true;
+        this.show_menu = false;
+      }
+    },
   },
   computed: {
     ...mapState(["loggedIn", "baseUrl"]),
@@ -93,12 +109,16 @@ export default {
     this.checkLogin();
   },
   watch: {
-    route: {
+    $route: {
       handler() {
         this.checkLogin();
-      }
-    }
-  }
+        if (this.show_menu === true) {
+          this.hide_menu = true;
+          this.show_menu = false;
+        }
+      },
+    },
+  },
 };
 </script>
 <style>
@@ -107,6 +127,7 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
 }
 button {
   cursor: pointer;
@@ -136,7 +157,7 @@ button {
 #nav a {
   font-weight: 800;
   color: #d9d9d9;
-  font-size: 19.9pt;
+  font-size: 1.5rem;
   text-decoration: none;
 }
 
@@ -171,7 +192,109 @@ button {
 .link {
   margin-left: 1.5rem;
 }
+.logo{
+  width: 10vw;
+  height: 3rem;
+  object-fit: cover;
+  position: absolute;
+  left: 2rem;
+  top: 2vh;
+}
+.menu {
+  visibility: hidden;
+  position: absolute;
+}
 .view {
   min-height: 70vh;
+}
+@media screen and (min-width: 992px) and (max-width: 1280px) {
+#nav a {
+  font-size: 1rem;
+} 
+.admin-links{
+ top: 1vh;
+  left: 91vw;
+  gap: .5rem;
+  flex-direction: column;;
+}
+.btn{
+width: 7vw;
+}
+.logo{
+  top: 1rem;
+  margin-left: -1rem;
+}
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+#nav a {
+  font-size: .8rem;
+}
+.admin-links{
+  top: 1vh;
+  left: 91vw;
+  gap: .5rem;
+  flex-direction: column;
+}
+.btn{
+  width: 5vw;
+ font-size: .5rem;
+}
+.icon{
+  font-size: 1rem;
+}
+.logo{
+  top: 1.5vh;
+  margin-left: -1rem;
+}
+}
+@media only screen and (max-width: 768px) {
+  .admin-links{
+    position: static;
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+  }
+  .btn{
+    width: 40vw;
+    height: 7vh;
+    font-size: 1.5rem;
+  }
+  .hide {
+    visibility: hidden;
+  }
+  .link {
+    margin-left: 0;
+    margin-bottom: 2rem;
+   
+  }
+  .logo{
+    width: 40vw;
+    height: 5vh;
+    object-fit: cover;
+    position: absolute;
+    left: 30vw;
+  }
+  .menu {
+    visibility: visible;
+  }
+  .menu-bar {
+    font-size: 2rem;
+    color: #ff6b00;
+  
+  }
+  .nav {
+    visibility: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    width: 100vw;
+    z-index: 3;
+    background-color: #343333;
+    position: absolute;
+    left: 0;
+    top: 4rem;
+  }
 }
 </style>

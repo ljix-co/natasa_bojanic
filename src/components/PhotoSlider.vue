@@ -3,11 +3,10 @@
     class="photo-slider"
     :class="{
       'slider-admin': admin_route,
-      'slider-artworks': artworks_page,
+      'slider-artworks': artworks_page || workshop_page,
       'slider-exh': exh_page,
       'slider-home': home_page,
     }"
-    
   >
     <div><i class="fas fa-chevron-left ctrl left" @click="prevImg()"></i></div>
     <div>
@@ -16,7 +15,7 @@
       </div>
       <img
         :class="{
-          artwork_img: artworks_page,
+          artwork_img: artworks_page || workshop_page,
           admin_img: admin_route,
           home_img: home_page,
           exh_img: exh_page,
@@ -34,7 +33,7 @@
 export default {
   props: {
     images: Array,
-    chosen_image: Object
+    chosen_image: Object,
   },
   data() {
     return {
@@ -44,6 +43,7 @@ export default {
       home_page: true,
       artworks_page: false,
       exh_page: false,
+      workshop_page: false,
     };
   },
   methods: {
@@ -56,7 +56,7 @@ export default {
       }
     },
     checkPage() {
-      console.log(this.$route.name)
+      console.log(this.$route.name);
       if (this.$route.name === "Admin") {
         this.admin_route = true;
       }
@@ -69,10 +69,12 @@ export default {
       if (this.$route.name === "Exhibitions") {
         this.exh_page = true;
       }
+      if (this.$route.name === "Workshops") {
+        this.workshop_page = true;
+      }
     },
     firstImage() {
       this.image = this.images[0].path;
-      
     },
     nextImg() {
       if (this.index != this.images.length - 1) {
@@ -92,13 +94,14 @@ export default {
       this.image = this.images[this.index].path;
     },
     showChosenImg() {
-        for(let i = 0; i < this.images.length; i++) {
-          if(this.chosen_image.cover_path === this.images[i].path) {
-            this.image = this.images[i].path;
-            this.index = i;
-          }
+      for (let i = 0; i < this.images.length; i++) {
+        if (this.chosen_image.cover_path === this.images[i].path) {
+          this.image = this.images[i].path;
+          this.index = i;
+          console.log(this.chosen_image);
         }
-    }
+      }
+    },
   },
   mounted() {
     this.firstImage();
@@ -109,9 +112,9 @@ export default {
       deep: true,
       handler() {
         this.showChosenImg();
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 <style scoped>
@@ -177,10 +180,81 @@ export default {
 }
 .slider-exh {
   width: 45vw;
-
 }
-.slider-home{
+.slider-home {
   width: 70vw;
   margin-top: 10vh;
+}
+@media only screen and (min-width: 992px) and (max-width: 1280px) {
+  .home_img {
+    width: 90vw;
+    height: 50vh;
+    object-fit: contain;
+  }
+ 
+  .slider-home{
+  margin-top: 5vh;
+  width: 90vw;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+.ctrl{
+font-size: 1.5rem;
+}
+  .home_img {
+    width: 90vw;
+    height: 50vh;
+    object-fit: contain;
+  }
+   .exh_img{
+  height: 30vh;
+  }
+  .slider-home{
+  margin-top: 5vh;
+  width: 90vw;
+  }
+  
+  .delete-img-div {
+    font-size: 1.5rem;
+    margin-top: 0;
+  }
+  
+}
+@media only screen and (max-width: 768px) {
+  .admin_img {
+    width: 80vw;
+  }
+  .artwork_img,
+  .exh_img {
+    width: 90vw;
+    height: 70vh;
+    object-fit: contain;
+    background-color: #474646;
+    margin-top: 10vh;
+    margin-bottom: 5vh;
+  }
+  .delete-img-div {
+    width: 80vw;
+  }
+  .home_img {
+    width: 90vw;
+    height: 60vh;
+    object-fit: contain;
+  }
+  .left {
+    visibility: hidden;
+  }
+  .right {
+    visibility: hidden;
+  }
+  .slider-artworks,
+  .slider-exh {
+    width: 90vw;
+    margin-left: 1rem;
+  }
+  .slider-home {
+    width: 100vw;
+    margin-top: 0;
+  }
 }
 </style>

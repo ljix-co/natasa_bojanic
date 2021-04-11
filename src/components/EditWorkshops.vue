@@ -25,7 +25,7 @@
       <div class="section" v-if="show_selected">
         <div class="show-selected">
           <div class="date">
-            <h1>{{ day }}.{{ month }}.{{ year }}</h1>
+            <h1 class="date-title">{{ day }}.{{ month }}.{{ year }}</h1>
             <i class="fas fa-times exit" @click="exitSelected"></i>
           </div>
           <div class="add-new-wrk-day" v-if="new_date !== null">
@@ -98,7 +98,7 @@
             </div>
             <div class="inpts" v-if="chosen_time !== null">
               <div class="time-title">
-                <h1>{{ $t("workshops.admin_time_title") }}</h1>
+                <h1 class="admin_time_title">{{ $t("workshops.admin_time_title") }}</h1>
                 <p class="orng-txt">
                   {{ chosen_time }}
                 </p>
@@ -177,6 +177,7 @@ export default {
       this.year = new_wrk_day.year;
       this.new_date = new_wrk_day.date;
       this.show_selected = true;
+      this.$emit("show_selected_wrk");
     },
     addTime() {
       let time = this.hours + ":" + this.minutes + ":" + this.seconds;
@@ -334,7 +335,19 @@ input {
 input:focus {
   outline: none;
 }
-
+select {
+  width: 50vw;
+  border: none;
+  background-color: transparent;
+  font-family: "Open Sans", sans-serif;
+}
+select:focus {
+  outline: 2px solid #ff6b00;
+}
+option {
+  background-color: #777674;
+ 
+}
 .btns {
   display: flex;
   align-items: center;
@@ -365,7 +378,6 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  
 }
 .edit-add-btn {
   font-family: "Open Sans", sans-serif;
@@ -398,12 +410,12 @@ input:focus {
   align-items: center;
   justify-content: center;
 }
-.exit{
-font-size: 2rem;
-color: #343333;
-position: absolute;
-left: 92vw;
-cursor: pointer;
+.exit {
+  font-size: 2rem;
+  color: #343333;
+  position: absolute;
+  left: 92vw;
+  cursor: pointer;
 }
 .icon {
   font-size: 1.5rem;
@@ -454,7 +466,7 @@ cursor: pointer;
   outline: 3px solid #ff6b00;
 }
 .section {
- /* height: 100vh;*/
+  /* height: 100vh;*/
   display: flex;
   align-items: center;
   justify-content: center;
@@ -478,7 +490,7 @@ cursor: pointer;
   margin-left: 30vw;
   align-items: flex-start;
   justify-content: flex-start;
- /* margin-top: 20vh;*/
+  /* margin-top: 20vh;*/
 }
 .time {
   display: flex;
@@ -497,5 +509,128 @@ cursor: pointer;
   font-size: 20pt;
   font-weight: 800;
   margin-top: 20vw;
+}
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+
+  h3{
+    font-size: .8rem;
+    width: 20vw;
+  }
+  input{
+    font-size: .8rem;
+  }
+  p{
+    font-size: .8rem;
+   
+  }
+  select{
+    width: 15vw;
+  }
+  .admin_time_title{
+    font-size: 1rem;
+  }
+  .date-title{
+    font-size: 1.2rem;
+  }
+.edit-add-btn{
+  font-size: .8rem;
+}
+.edit-wrk-day{
+  width: 25vw;
+}
+.exit{
+  font-size: 1.2rem;
+  left: 95vw;
+}
+.icon{
+font-size: 1rem;
+}
+.orng-txt{
+  font-size: 1rem;
+}
+.sbmt, .cancel{
+  font-size: 1rem;
+  width: 20vw;
+}
+.show-selected{
+  margin-top: 0;
+}
+.time-inpt{
+  width: 2vw;
+}
+.title{
+  font-size: 1rem;
+   left: -5rem;
+}
+}
+@media only screen and (max-width: 768px) {
+  button {
+    width: 50vw;
+  }
+  .btns {
+    width: 90vw;
+    height: 20vh;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .cancel, .sbmt{
+    width: 50vw;
+  }
+  .date{
+    width: 90vw;
+  }
+  .edit {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .edit-add-btn {
+    width: 50vw;
+    font-size: 1rem;
+    height: 10vh;
+  }
+  .edit-types-btns{
+    margin-top: 0;
+  }
+  .exit{
+    left: 85vw;
+  }
+  .inner-sqr {
+    width: 30vw;
+    height: 30vw;
+  }
+  .list-time{
+    width: 85vw;
+  }
+  .show-selected{
+    width: 90vw;
+    margin-top: 0;
+  }
+  .sqr {
+    width: 60vw;
+    height: 60vw;
+  }
+  .sqrs {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-left: 0;
+  }
+  .time-inpt{
+    width: 10vw;
+  }
+  .title {
+    position: static;
+    transform: rotate(0deg);
+    width: 90vw;
+    background-color: #777674;
+    font-size: 1rem;
+    color: #343333;
+  }
 }
 </style>

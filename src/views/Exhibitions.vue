@@ -35,6 +35,9 @@
           </div>
         </div>
       </div>
+      <div class="r-title">
+        <h1>{{ $t("exhibitions[1].title") }}</h1>
+      </div>
       <div class="list-exh">
         <div
           class="exh"
@@ -60,9 +63,7 @@
           </div>
         </div>
       </div>
-      <div class="r-title">
-        <h1>{{ $t("exhibitions[1].title") }}</h1>
-      </div>
+      
     </div>
     <div class="exhibition" v-if="chosen_exh !== null">
       <button class="btn-back" @click="goBack()">
@@ -109,12 +110,12 @@ import { mapState, mapActions } from "vuex";
 import axios from "axios";
 import PhotoSlider from "../components/PhotoSlider.vue";
 import Gallery from "../components/Gallery.vue";
-import Loader from '../components/Loader.vue';
+import Loader from "../components/Loader.vue";
 export default {
   components: {
     PhotoSlider,
     Gallery,
-    Loader
+    Loader,
   },
   data() {
     return {
@@ -129,7 +130,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['changeLoader']),
+    ...mapActions(["changeLoader"]),
     checkLanguage() {
       if (this.curLanguage === "RS") {
         for (let i = 0; i < this.solo_exhs.length; i++) {
@@ -165,7 +166,7 @@ export default {
       this.scrollToElement();
     },
     getExhibitions() {
-      this.changeLoader(true)
+      this.changeLoader(true);
       axios
         .get(this.baseUrl + "exhibitions", { params: { exh_type: "solo" } })
         .then((res) => {
@@ -184,14 +185,14 @@ export default {
     },
     goBack() {
       this.chosen_exh = null;
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
       this.images = [];
       this.object_array = [];
     },
     showExh(exh) {
       this.chosen_exh = exh;
       let id = exh.exh_id;
-      this.changeLoader(true)
+      this.changeLoader(true);
       axios
         .get(this.baseUrl + "exh_images", { params: { exh_id: id } })
         .then((res) => {
@@ -206,7 +207,7 @@ export default {
               cover_path: res.data.data[i].img_path,
             });
           }
-          this.changeLoader(false)
+          this.changeLoader(false);
         });
     },
     scrollToElement() {
@@ -219,7 +220,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["baseUrl", "curLanguage", 'loader']),
+    ...mapState(["baseUrl", "curLanguage", "loader"]),
   },
   mounted() {
     this.getExhibitions();
@@ -273,7 +274,7 @@ img {
 }
 .exh {
   background-color: #777674;
-  height: 45vh;
+ /* height: 45vh;*/
   width: 20vw;
 }
 
@@ -355,5 +356,108 @@ img {
   font-size: 26pt;
   font-weight: 400;
   margin-bottom: 5vh;
+}
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+h1{
+  font-size: 2.5rem;
+}
+.btn-back{
+  font-size: 2rem;
+}
+.exh-txt{
+  font-size: .8rem;
+}
+.txt-title{
+  font-size: 1.5rem;
+}
+}
+@media only screen and (max-width: 768px) {
+h1{
+font-size: 2.5rem;
+}
+img{
+width: 90vw;
+} 
+  .btn-back{
+    font-size: 2rem;
+    top: 10vh;
+    left: 8vw;
+    background-color: #343333;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+  }
+.des-rev{
+  width: 95vw;
+  margin-left: 0;
+  margin-top: 2rem;
+  background-color: #777674;
+
+}
+  .exhibition{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  }
+  .exhibitions {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+  }
+  .exh{
+  width: 90vw;
+  height: fit-content;
+  }
+  .l-title {
+    position: static;
+    transform: rotate(0deg);
+    margin-top: 10vh;
+  }
+  .l-title-en {
+    width: 90vw;
+  }
+  .l-title-rs {
+    width: 90vw;
+  }
+  .l-title-exh{
+  position: static;
+  transform: rotate(0deg);
+  margin-top: 20vh;
+  width: 90vw;
+  text-align: center;
+  
+  }
+  .list-exh {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100vw;
+  min-height: 50vh;
+  margin-top: 0;
+}
+  .r-title {
+    position: static;
+    transform: rotate(0deg);
+    margin-top: 0;
+   width: 90vw;
+   
+  }
+  .txt{
+    width: 85vw;
+    
+  }
+  .txt-title{
+    width: 95vw;
+    margin-left: 0;
+    background-color: #555;
+    text-align: center;
+    font-size: 1.5rem;
+  }
 }
 </style>

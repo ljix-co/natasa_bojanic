@@ -98,4 +98,56 @@ button:focus {
   font-weight: 800;
   margin-top: 20vw;
 }
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+  button{
+    font-size: 1rem;
+    width: 20vw;
+  }
+.title{
+  font-size: 1rem;
+   left: -5rem;
+}
+}
+@media only screen and (max-width: 768px) {
+  button{
+    width: 50vw;
+  }
+  .btns{
+    width: 90vw;
+    height: 30vh;
+  }
+  .edit{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .inner-sqr{
+    width: 30vw;
+    height: 30vw;
+  }
+  .sqr{
+    width: 60vw;
+    height: 60vw;
+    
+  }
+  .sqrs{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-left: 0;
+  }
+ .title {
+    position: static;
+    transform: rotate(0deg);
+    width: 90vw;
+    background-color: #777674;
+    font-size: 1rem;
+    color: #343333;
+  }
+}
 </style>

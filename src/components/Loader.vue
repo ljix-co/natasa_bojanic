@@ -1,51 +1,15 @@
 <template>
   <div class="loader">
     <div>
-      <div
-        class="spiner-dark"
-        :class="{ 'spiner-dark-full': full_dark_circle }"
-      ></div>
-      <div
-        class="spiner-dark spiner-orng"
-        :class="{
-          'spiner-orng-full': full_circle,
-          'spiner-start-orng': start_orng,
-        }"
-      ></div>
+      <div class="spiner-dark"></div>
+      <div class="spiner-dark spiner-orng"></div>
     </div>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {
-      full_circle: false,
-      full_dark_circle: false,
-      start_orng: true,
-    };
-  },
-  methods: {
-    // fullCircle() {
-    //   setInterval(() => {
-    //     this.full_dark_circle = false;
-    //     this.full_circle = false;
-
-    //     setTimeout(() => {
-    //       this.full_circle = true;
-    //       setTimeout(() => {
-    //         this.full_dark_circle = true;
-    //         setTimeout(() => {
-    //           this.start_orng = true;
-    //           this.full_dark_circle = false;
-    //           this.full_circle = false;
-    //         }, 1000);
-    //       }, 1000);
-    //     }, 1000);
-    //   }, 5000);
-    // },
-  },
-  mounted() {
-    // this.fullCircle();
+    return {};
   },
 };
 </script>
@@ -59,13 +23,12 @@ export default {
   }
 }
 @keyframes spinBack {
- from {
+  from {
     transform: rotate(0deg);
   }
- to {
+  to {
     transform: rotate(360deg);
   }
-
 }
 .loader {
   width: 100vw;
@@ -92,26 +55,58 @@ export default {
   border-bottom: 10px dashed #ff6b00;
   border-right: 10px dashed #ff6b00;
   border-radius: 50%;
- 
+
   left: 50vw;
   top: 40vh;
 
   animation: 1s spinBack linear infinite;
 }
-/*.spiner-orng div:nth-child(1) {
-  animation-delay: -0.45s;
+@media only screen and (min-width: 992px) and (max-width: 1280px) {
+  .spiner-dark {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    left: 45vw;
+    border: 5px solid transparent;
+    border-top: 5px dashed #343333;
+    border-left: 5px dashed #343333;
+  }
+  .spiner-orng {
+    left: 45vw;
+    border-bottom: 5px dashed #ff6b00;
+    border-right: 5px dashed #ff6b00;
+  }
 }
-.spiner-orng div:nth-child(2) {
-  animation-delay: -0.3s;
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .spiner-dark {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    left: 45vw;
+    border: 5px solid transparent;
+    border-top: 5px dashed #343333;
+    border-left: 5px dashed #343333;
+  }
+  .spiner-orng {
+    left: 45vw;
+    border-bottom: 5px dashed #ff6b00;
+    border-right: 5px dashed #ff6b00;
+  }
 }
-.spiner-orng div:nth-child(3) {
-  animation-delay: -0.15s;
-}*/
-.spiner-dark-full {
-  border: 10px solid #343333;
-  z-index: 5;
-}
-.spiner-orng-full {
-  border: 10px solid #ff6b00;
+@media only screen and (max-width: 768px) {
+  .spiner-dark {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    left: 45vw;
+    border: 5px solid transparent;
+    border-top: 5px dashed #343333;
+    border-left: 5px dashed #343333;
+  }
+  .spiner-orng {
+    left: 45vw;
+    border-bottom: 5px dashed #ff6b00;
+    border-right: 5px dashed #ff6b00;
+  }
 }
 </style>

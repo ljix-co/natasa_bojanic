@@ -153,6 +153,9 @@
       "title": "CONTACT"
     }
   ],
+  "tooltips": {
+        "gallery": "CLICK TO SEE ALL IMAGES"
+  },
   "week_days": [
     {
       "day": "SUN"

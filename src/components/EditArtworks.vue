@@ -1,6 +1,6 @@
 <template>
     <div class="edit">
-    <div>
+    <div class="edit-artworks">
      <div class="title">
         <h1>{{ $t("admin[1].title") }}</h1>
       </div>
@@ -83,5 +83,51 @@ margin-top: 5vh;
   font-size: 20pt;
   font-weight: 800;
   margin-top: 20vw;
+}
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+  .inner-sqr{
+    width: 15vw;
+    height: 15vw;
+  }
+.title{
+  font-size: 1rem;
+   left: -5rem;
+}
+}
+@media only screen and (max-width: 768px) {
+  .edit-artworks{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .inner-sqr{
+    width: 30vw;
+    height: 30vw;
+  }
+  .sqr{
+    width: 60vw;
+    height: 60vw;
+    margin-left: 0;
+    margin-top: 0;
+  }
+  .sqrs{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-left: 0;
+  }
+ .title {
+    position: static;
+    transform: rotate(0deg);
+    width: 90vw;
+    background-color: #777674;
+    font-size: 1rem;
+    color: #343333;
+  }
 }
 </style>
