@@ -269,7 +269,7 @@ width: 7vw;
   }
   .logo{
     width: 40vw;
-    height: 5vh;
+    height: 4rem;
     object-fit: cover;
     position: absolute;
     left: 30vw;

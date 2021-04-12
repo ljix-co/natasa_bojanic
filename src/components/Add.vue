@@ -513,6 +513,11 @@ p {
 .dtl-inpt-date {
   width: 5vw;
 }
+.exh-date{
+display: flex;
+align-items: center;
+justify-content: center;
+}
 .exit {
   color: #343333;
   font-size: 4rem;

@@ -6,12 +6,17 @@
       'slider-artworks': artworks_page || workshop_page,
       'slider-exh': exh_page,
       'slider-home': home_page,
+      'slider-mob-hide': show_slider === false && home_page === false,
+      'slider-mob-show': show_slider,
     }"
   >
     <div><i class="fas fa-chevron-left ctrl left" @click="prevImg()"></i></div>
     <div>
       <div class="delete-img-div" v-if="admin_route">
         <i class="far fa-trash-alt delete" @click="deleteImg()"></i>
+      </div>
+      <div class="exit-div" :class="{ 'show-exit': show_slider }">
+        <i class="fas fa-times exit" @click="exitSlider"></i>
       </div>
       <img
         :class="{
@@ -22,6 +27,7 @@
         }"
         :src="image"
         alt=""
+        v-hammer:swipe.left.right="swipeFunction"
       />
     </div>
     <div>
@@ -34,6 +40,8 @@ export default {
   props: {
     images: Array,
     chosen_image: Object,
+    mob_slider: Boolean,
+    mob_width: Boolean,
   },
   data() {
     return {
@@ -44,6 +52,8 @@ export default {
       artworks_page: false,
       exh_page: false,
       workshop_page: false,
+      show_slider: false,
+      // elementKey: 0
     };
   },
   methods: {
@@ -56,7 +66,6 @@ export default {
       }
     },
     checkPage() {
-      console.log(this.$route.name);
       if (this.$route.name === "Admin") {
         this.admin_route = true;
       }
@@ -73,8 +82,15 @@ export default {
         this.workshop_page = true;
       }
     },
+    exitSlider() {
+      this.show_slider = false;
+      this.$emit("exit-mob-slider");
+    },
     firstImage() {
       this.image = this.images[0].path;
+    },
+    forceRerender() {
+      this.elementKey++;
     },
     nextImg() {
       if (this.index != this.images.length - 1) {
@@ -98,8 +114,20 @@ export default {
         if (this.chosen_image.cover_path === this.images[i].path) {
           this.image = this.images[i].path;
           this.index = i;
-          console.log(this.chosen_image);
         }
+      }
+    },
+    showSlider() {
+      if (this.mob_slider === true) {
+        this.show_slider = true;
+      }
+    },
+    swipeFunction(event) {
+      if (event.type === "swipeleft") {
+        this.nextImg();
+      }
+      if (event.type === "swiperight") {
+        this.prevImg();
       }
     },
   },
@@ -110,8 +138,21 @@ export default {
   watch: {
     chosen_image: {
       deep: true,
+      
       handler() {
-        this.showChosenImg();
+        if (this.chosen_image !== null) {
+          this.showChosenImg();
+          this.showSlider();
+        }
+      },
+    },
+    mob_slider: {
+      immediate: true,
+      handler() {
+        
+        if (this.mob_slider === true && this.artworks_page === true) {
+          this.showSlider();
+        }
       },
     },
   },
@@ -157,6 +198,9 @@ export default {
   margin-top: 10vh;
   margin-bottom: 5vh;
 }
+.exit-div {
+  visibility: hidden;
+}
 .home_img {
   width: 70vw;
   height: 85vh;
@@ -191,34 +235,33 @@ export default {
     height: 50vh;
     object-fit: contain;
   }
- 
-  .slider-home{
-  margin-top: 5vh;
-  width: 90vw;
+
+  .slider-home {
+    margin-top: 5vh;
+    width: 90vw;
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-.ctrl{
-font-size: 1.5rem;
-}
+  .ctrl {
+    font-size: 1.5rem;
+  }
   .home_img {
     width: 90vw;
     height: 50vh;
     object-fit: contain;
   }
-   .exh_img{
-  height: 30vh;
+  .exh_img {
+    height: 30vh;
   }
-  .slider-home{
-  margin-top: 5vh;
-  width: 90vw;
+  .slider-home {
+    margin-top: 5vh;
+    width: 90vw;
   }
-  
+
   .delete-img-div {
     font-size: 1.5rem;
     margin-top: 0;
   }
-  
 }
 @media only screen and (max-width: 768px) {
   .admin_img {
@@ -236,6 +279,11 @@ font-size: 1.5rem;
   .delete-img-div {
     width: 80vw;
   }
+  .exit {
+    font-size: 2rem;
+    color: #ff6b00;
+  }
+
   .home_img {
     width: 90vw;
     height: 60vh;
@@ -244,13 +292,38 @@ font-size: 1.5rem;
   .left {
     visibility: hidden;
   }
+
   .right {
     visibility: hidden;
+  }
+  .show-exit {
+    visibility: visible;
+
+    width: 90vw;
+    margin-top: 4.5rem;
+    text-align: end;
   }
   .slider-artworks,
   .slider-exh {
     width: 90vw;
     margin-left: 1rem;
+  }
+  .slider-mob-hide {
+    visibility: hidden;
+    height: 10vh;
+  }
+  .slider-mob-show {
+    visibility: visible;
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #474646;
+    margin-left: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
   }
   .slider-home {
     width: 100vw;

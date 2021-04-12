@@ -351,6 +351,9 @@ height: 20vh;
   .gallery-admin {
     width: 90vw;
   }
+  .gallery-wrkshops{
+  margin-left: 0;
+  }
   .item {
     width: 90vw;
     height: fit-content;

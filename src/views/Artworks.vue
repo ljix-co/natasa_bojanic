@@ -1,10 +1,11 @@
 <template>
   <div class="artworks">
-    <PhotoSlider 
+    <PhotoSlider
       :key="componentKey"
       class="photo-slider"
       v-if="images.length > 0"
       :images="images"
+      :mob_slider="mob_slider"
     ></PhotoSlider>
     <Gallery
       :type="type"
@@ -20,12 +21,12 @@ import { mapState, mapActions } from "vuex";
 import axios from "axios";
 import PhotoSlider from "../components/PhotoSlider.vue";
 import Gallery from "../components/Gallery.vue";
-import Loader from '../components/Loader.vue';
+import Loader from "../components/Loader.vue";
 export default {
   components: {
     PhotoSlider,
     Gallery,
-    Loader
+    Loader,
   },
   data() {
     return {
@@ -33,10 +34,11 @@ export default {
       images: [],
       type: "artwork",
       componentKey: 0,
+      mob_slider: false,
     };
   },
   methods: {
-    ...mapActions(['changeLoader']),
+    ...mapActions(["changeLoader"]),
     checkLanguage() {
       if (this.curLanguage === "RS") {
         for (let i = 0; i < this.object_array.length; i++) {
@@ -54,13 +56,14 @@ export default {
       }
     },
     chooseObject(object) {
+      this.mob_slider = false;
       let id = object.img_id;
       this.images = [];
       this.images[0] = {
         id: id,
         path: object.cover_path,
       };
-      console.log(this.images);
+
       axios
         .get(this.baseUrl + "dtls_images", { params: { img_id: id } })
         .then((res) => {
@@ -70,17 +73,23 @@ export default {
               id: res.data.data[i].dimg_id,
               path: res.data.data[i].img_path,
             });
-            this.forceRerender();
+            if(window.innerWidth < 769) {
+               this.mob_slider = true;
+            }
+           
           }
         });
+
       this.forceRerender();
-      this.scrollToElement();
+      if (window.innerWidth > 769) {
+        this.scrollToElement();
+      }
     },
     forceRerender() {
       this.componentKey += 1;
     },
     getArtworks() {
-      this.changeLoader(true)
+      this.changeLoader(true);
       axios.get(this.baseUrl + "artworks").then((res) => {
         console.log(res.data.data);
         this.object_array = res.data.data;
@@ -90,7 +99,7 @@ export default {
           id: id,
           path: res.data.data[0].cover_path,
         });
-    
+
         axios
           .get(this.baseUrl + "dtls_images", { params: { img_id: id } })
           .then((res) => {
@@ -117,7 +126,7 @@ export default {
     this.getArtworks();
   },
   computed: {
-    ...mapState(["baseUrl", "curLanguage", 'loader']),
+    ...mapState(["baseUrl", "curLanguage", "loader"]),
   },
   watch: {
     curLanguage: {

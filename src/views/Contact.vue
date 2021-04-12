@@ -143,7 +143,7 @@ p {
     font-size: 2rem;
   }
   p {
-    font-size: 1rem;
+    font-size: .8rem;
   }
   .b-info {
     margin-left: 1rem;

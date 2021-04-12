@@ -163,6 +163,8 @@
         v-if="images.length > 0"
         :images="images"
         :chosen_image="chosen_image"
+        :mob_slider="mob_slider"
+       
       ></photo-slider>
       <gallery
         :object_array="object_array"
@@ -202,6 +204,7 @@ export default {
       images: [],
       object_array: [],
       chosen_image: null,
+      mob_slider: false,
     };
   },
   methods: {
@@ -258,7 +261,15 @@ export default {
     },
     chooseObject(object) {
       this.chosen_image = object;
-      this.scrollToElement("photo-slider");
+
+      if (window.innerWidth > 769) {
+        this.scrollToElement("photo-slider");
+      }
+      if (window.innerWidth < 769) {
+        this.mob_slider = true;
+       console.log(this.chosen_image);
+        
+      }
     },
     chooseWrk(time) {
       this.selected_wrk = time;
@@ -273,6 +284,7 @@ export default {
     closeError() {
       this.error_message = false;
     },
+   
     forceRerender() {
       this.componentKey++;
     },
@@ -285,7 +297,7 @@ export default {
       });
     },
     getWorkshopDateInfo() {
-      // this.changeLoader(true)
+      
       axios.get(this.baseUrl + "workshop").then((res) => {
         console.log(res);
         this.calendar_info = res.data.data;
@@ -511,7 +523,6 @@ label {
 }
 .no-room-mssg,
 .cancel-div {
-  
   width: 25vw;
   display: flex;
   flex-direction: column;
@@ -702,24 +713,23 @@ label {
     width: 25vw;
   }
   label {
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
-  .chs-date-mssg{
-  width: 25vw;
-  font-size: .7rem;
- 
+  .chs-date-mssg {
+    width: 25vw;
+    font-size: 0.6rem;
   }
   .dark-txt {
     font-size: 0.7rem;
   }
-  .info-mssg{
-  height: 5vh;
+  .info-mssg {
+    height: 5vh;
   }
-  .instr-mssg{
-   height: 7vh;
+  .instr-mssg {
+    height: 7vh;
   }
   .orng-txt {
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
   .sbmt,
   .cancel,
@@ -727,8 +737,8 @@ label {
     font-size: 1rem;
     height: 5vh;
   }
-  .time{
-  width: 25vw;
+  .time {
+    width: 25vw;
   }
   .tooltip:hover .tooltiptext {
     visibility: hidden;
@@ -746,6 +756,9 @@ label {
   }
   input {
     width: 85vw;
+  }
+  .btn-back{
+  font-size: 2.5rem;
   }
   .cancel {
     width: 50vw;
@@ -765,6 +778,10 @@ label {
   .error-mssg {
     width: 90vw;
   }
+  .gallery{
+  width: 100vw;
+  }
+  
   .info-mssg {
     width: 91vw;
   }

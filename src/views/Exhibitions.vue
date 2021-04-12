@@ -63,7 +63,6 @@
           </div>
         </div>
       </div>
-      
     </div>
     <div class="exhibition" v-if="chosen_exh !== null">
       <button class="btn-back" @click="goBack()">
@@ -94,6 +93,7 @@
           v-if="images.length > 0"
           :images="images"
           :chosen_image="chosen_image"
+          :mob_slider="mob_slider"
         ></PhotoSlider>
         <Gallery
           v-if="object_array.length > 0"
@@ -127,6 +127,8 @@ export default {
       solo_exhs: [],
       chosen_exh: null,
       chosen_image: null,
+      mob_slider: false,
+      mob_width: false,
     };
   },
   methods: {
@@ -161,10 +163,29 @@ export default {
         }
       }
     },
-    chooseImage(object) {
-      this.chosen_image = object;
-      this.scrollToElement();
+    checkWindowWidth() {
+      if (window.innerWidth < 769) {
+        this.mob_width = true;
+      }
     },
+    chooseImage(object) {
+     
+      this.chosen_image = object;
+
+      if (window.innerWidth > 769) {
+        this.scrollToElement();
+      }
+      if (this.mob_width) {
+        this.mob_slider = true;
+  
+      }
+    },
+    exitMobSlider() {
+      this.mob_slider = false;
+      this.chosen_image = null;
+      
+    },
+   
     getExhibitions() {
       this.changeLoader(true);
       axios
@@ -190,6 +211,7 @@ export default {
       this.object_array = [];
     },
     showExh(exh) {
+      this.mob_slider = false;
       this.chosen_exh = exh;
       let id = exh.exh_id;
       this.changeLoader(true);
@@ -198,6 +220,7 @@ export default {
         .then((res) => {
           console.log(res);
           for (let i = 0; i < res.data.data.length; i++) {
+            
             this.images.push({
               id: res.data.data[i].img_id,
               path: res.data.data[i].img_path,
@@ -224,6 +247,7 @@ export default {
   },
   mounted() {
     this.getExhibitions();
+    this.checkWindowWidth();
   },
   watch: {
     curLanguage: {
@@ -274,7 +298,7 @@ img {
 }
 .exh {
   background-color: #777674;
- /* height: 45vh;*/
+  /* height: 45vh;*/
   width: 20vw;
 }
 
@@ -358,47 +382,46 @@ img {
   margin-bottom: 5vh;
 }
 @media only screen and (min-width: 768px) and (max-width: 1280px) {
-h1{
-  font-size: 2.5rem;
-}
-.btn-back{
-  font-size: 2rem;
-}
-.exh-txt{
-  font-size: .8rem;
-}
-.txt-title{
-  font-size: 1.5rem;
-}
+  h1 {
+    font-size: 2.5rem;
+  }
+  .btn-back {
+    font-size: 2rem;
+  }
+  .exh-txt {
+    font-size: 0.8rem;
+  }
+  .txt-title {
+    font-size: 1.5rem;
+  }
 }
 @media only screen and (max-width: 768px) {
-h1{
-font-size: 2.5rem;
-}
-img{
-width: 90vw;
-} 
-  .btn-back{
+  h1 {
+    font-size: 2.5rem;
+  }
+  img {
+    width: 90vw;
+  }
+  .btn-back {
     font-size: 2rem;
     top: 10vh;
     left: 8vw;
-    background-color: #343333;
+    background-color: #474646;
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
   }
-.des-rev{
-  width: 95vw;
-  margin-left: 0;
-  margin-top: 2rem;
-  background-color: #777674;
-
-}
-  .exhibition{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  .des-rev {
+    width: 95vw;
+    margin-left: 0;
+    margin-top: 2rem;
+    background-color: #777674;
+  }
+  .exhibition {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   .exhibitions {
     display: flex;
@@ -408,13 +431,16 @@ width: 90vw;
     align-items: center;
     justify-content: center;
   }
-  .exh{
-  width: 90vw;
-  height: fit-content;
+  .exh {
+    width: 90vw;
+    height: fit-content;
+  }
+  .gallery {
+    width: 100vw;
   }
   .l-title {
     position: static;
-    transform: rotate(0deg);
+    transform: none;
     margin-top: 10vh;
   }
   .l-title-en {
@@ -423,36 +449,34 @@ width: 90vw;
   .l-title-rs {
     width: 90vw;
   }
-  .l-title-exh{
-  position: static;
-  transform: rotate(0deg);
-  margin-top: 20vh;
-  width: 90vw;
-  text-align: center;
-  
+  .l-title-exh {
+    position: static;
+    transform: none;
+    margin-top: 20vh;
+    width: 90vw;
+    text-align: center;
   }
   .list-exh {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  width: 100vw;
-  min-height: 50vh;
-  margin-top: 0;
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100vw;
+    min-height: 50vh;
+    margin-top: 0;
+  }
+
   .r-title {
     position: static;
-    transform: rotate(0deg);
+    transform: none;
     margin-top: 0;
-   width: 90vw;
-   
+    width: 90vw;
   }
-  .txt{
+  .txt {
     width: 85vw;
-    
   }
-  .txt-title{
+  .txt-title {
     width: 95vw;
     margin-left: 0;
     background-color: #555;
