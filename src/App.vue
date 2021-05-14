@@ -43,35 +43,41 @@ import Footer from "./components/Footer.vue";
 import LocalSwitcher from "./components/LocalSwitcher.vue";
 import { mapActions, mapState } from "vuex";
 import axios from "axios";
-let ROOTH_PATH = "https://natasabojanic.com"
+let ROOTH_PATH = "https://natasabojanic.com";
 export default {
-    data() {
+  data() {
     return {
       show_menu: false,
       hide_menu: true,
       link_img: ROOTH_PATH + require("./../public/images/kamenje.jpg"),
-    }
+    };
   },
-  metaInfo: {
-    title: "Nataša Bojanić",
-    meta: [
-      {
-        name: "description",
-        content:
-          "Nataša Bojanić is a professional artist whose main medium is ceramics, and a private teacher of arts. In her studio, she creates the magic, astonishing art pieces mainly produced in clay, but the doors of her studio are open for all curious creatives during organized workshops.",
-      },
+  metaInfo() {
+    return {
+      title: "Nataša Bojanić",
+      meta: [
+        {
+          name: "description",
+          content:
+            "Nataša Bojanić is a professional artist whose main medium is ceramics, and a private teacher of arts. In her studio, she creates the magic, astonishing art pieces mainly produced in clay, but the doors of her studio are open for all curious creatives during organized workshops.",
+        },
 
-      //FB
-      { property: "og:title", content: "Nataša Bojanić" },
-      { property: "og:site_name", content: "Nataša Bojanić" },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: ROOTH_PATH + require("./../public/images/kamenje.jpg") },
-       {
-        property: "og:description",
-        content:
-          "Nataša Bojanić is a professional artist whose main medium is ceramics, and a private teacher of arts. In her studio, she creates the magic, astonishing art pieces mainly produced in clay, but the doors of her studio are open for all curious creatives during organized workshops.",
-      }
-    ],
+        //FB
+        { property: "og:title", content: "Nataša Bojanić" },
+        { property: "og:site_name", content: "Nataša Bojanić" },
+        { property: "og:url", content: "https://natasabojanic.com" },
+        { property: "og:type", content: "website" },
+        {
+          property: "og:image",
+          content: this.link_img,
+        },
+        {
+          property: "og:description",
+          content:
+            "Nataša Bojanić is a professional artist whose main medium is ceramics, and a private teacher of arts. In her studio, she creates the magic, astonishing art pieces mainly produced in clay, but the doors of her studio are open for all curious creatives during organized workshops.",
+        },
+      ],
+    };
   },
   components: {
     LocalSwitcher,
@@ -131,12 +137,12 @@ export default {
   },
   mounted() {
     this.checkLogin();
-    // 
+    //
     // console.log(this.logo)
   },
-//   beforeMount() {
-// this.link_img = this.root_path + require("./../public/images/kamenje.jpg");
-//   },
+  //   beforeMount() {
+  // this.link_img = this.root_path + require("./../public/images/kamenje.jpg");
+  //   },
   watch: {
     $route: {
       handler() {
