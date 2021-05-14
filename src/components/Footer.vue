@@ -41,10 +41,13 @@ p{
 }
 }
 @media only screen and (max-width: 768px) {
+  p{
+    font-size: .8rem;
+  }
 .footer{
 width: 100vw;
 height: 10vh;
-margin-top: 5vh;
+margin-top: 15vh;
 }
   .footer-content{
     width: 90vw;

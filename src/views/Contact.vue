@@ -11,7 +11,7 @@
         </div>
         <div class="b-info">
           <i class="fas fa-home"></i>
-          <p>Beogradska 8, Zemun</p>
+          <p>Beogradska 11, Zemun</p>
         </div>
         <div class="b-info">
           <i class="fas fa-phone-alt"></i>

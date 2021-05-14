@@ -11,7 +11,7 @@
     }"
   >
     <div><i class="fas fa-chevron-left ctrl left" @click="prevImg()"></i></div>
-    <div>
+    <div class="img-content">
       <div class="delete-img-div" v-if="admin_route">
         <i class="far fa-trash-alt delete" @click="deleteImg()"></i>
       </div>
@@ -29,6 +29,14 @@
         alt=""
         v-hammer:swipe.left.right="swipeFunction"
       />
+      <div class="num-imgs">
+        <div
+          class="circle"
+          v-for="(image, index) in images"
+          :key="'c' + index"
+          :class="{'circle-active': image.active === true}"
+        ></div>
+      </div>
     </div>
     <div>
       <i class="fas fa-chevron-right ctrl right" @click="nextImg()"></i>
@@ -87,6 +95,7 @@ export default {
       this.$emit("exit-mob-slider");
     },
     firstImage() {
+      this.images[0].active = true;
       this.image = this.images[0].path;
     },
     forceRerender() {
@@ -98,7 +107,12 @@ export default {
       } else {
         this.index = 0;
       }
-
+      for(let i = 0; i < this.images.length; i++) {
+        if(this.images[i].active === true) {
+          this.images[i].active = false;
+        }
+      }
+      this.images[this.index].active = true;
       this.image = this.images[this.index].path;
     },
     prevImg() {
@@ -107,6 +121,12 @@ export default {
       } else {
         this.index = this.images.length - 1;
       }
+       for(let i = 0; i < this.images.length; i++) {
+        if(this.images[i].active === true) {
+          this.images[i].active = false;
+        }
+      }
+      this.images[this.index].active = true;
       this.image = this.images[this.index].path;
     },
     showChosenImg() {
@@ -138,7 +158,7 @@ export default {
   watch: {
     chosen_image: {
       deep: true,
-      
+
       handler() {
         if (this.chosen_image !== null) {
           this.showChosenImg();
@@ -149,7 +169,6 @@ export default {
     mob_slider: {
       immediate: true,
       handler() {
-        
         if (this.mob_slider === true && this.artworks_page === true) {
           this.showSlider();
         }
@@ -273,8 +292,18 @@ export default {
     height: 70vh;
     object-fit: contain;
     background-color: #474646;
-    margin-top: 10vh;
-    margin-bottom: 5vh;
+    margin-top: 2rem;
+    margin-bottom: 2vh;
+  }
+  .circle {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #ff6b00;
+    
+  }
+  .circle-active {
+    background-color: gray;
   }
   .delete-img-div {
     width: 80vw;
@@ -286,21 +315,32 @@ export default {
 
   .home_img {
     width: 90vw;
-    height: 60vh;
+    height: 40vh;
     object-fit: contain;
   }
+
   .left {
     visibility: hidden;
   }
-
+  .num-imgs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    width: 90vw;
+    position: absolute;
+  
+   
+  }
   .right {
     visibility: hidden;
   }
   .show-exit {
     visibility: visible;
 
-    width: 90vw;
-    margin-top: 4.5rem;
+    width: 89vw;
+    margin-top: 2rem;
+    margin-bottom: .5rem;
     text-align: end;
   }
   .slider-artworks,
@@ -315,13 +355,13 @@ export default {
   .slider-mob-show {
     visibility: visible;
     position: fixed;
-    top: 0;
+    top: 5vh;
     height: 100vh;
     width: 100vw;
     background-color: #474646;
     margin-left: 0%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     z-index: 1;
   }

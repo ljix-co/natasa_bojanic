@@ -103,26 +103,13 @@ h1 {
     width: 90vw;
     height: 60vh;
   }
-  .web-title {
-  }
+ 
   .web-subtitle {
     width: 80vw;
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-  /* .l-side{
-    width: 25vw;
-  }
-  .r-side{
-    width: 70vw;
-  }
-.web-title{
-  font-size: 1.8rem;
-}
-.web-subtitle{
-  font-size: 1.5rem;
- 
-}*/
+
   .home {
     display: flex;
     flex-direction: column;
@@ -131,6 +118,7 @@ h1 {
     gap: 0;
     width: 100vw;
     overflow: hidden;
+   
   }
   .l-side {
     width: 90vw;
