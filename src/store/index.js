@@ -5,8 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    baseUrl: "http://246b122.mars1.mars-hosting.com/api/",
-    curLanguage: "EN",
+    baseUrl: "https://natasabojanic.com/api/",
+    curLanguage: "RS",
     loggedIn: false,
     loader: true
   },

@@ -64,7 +64,7 @@
           </h2>
           <div v-if="images.length > 0">
             <photo-slider
-              :key="componentKey"
+              :key="'p' + componentKey"
               class="photo-slider"
               :images="images"
               @delete-img="deleteImage"

@@ -244,7 +244,17 @@ export default {
       formData.append("wrks_image", newWorkshopType.cover);
       axios.post(this.baseUrl + "workshops", formData).then((res) => {
         console.log(res);
-        this.$router.go();
+        let wrks_id = res.data.wrks_id;
+        for (let i = 0; i < newWorkshopType.images.length; i++) {
+          let imgFormData = new FormData();
+          imgFormData.append("sid", localStorage.getItem("sid"));
+          imgFormData.append("wrks_id", wrks_id);
+          imgFormData.append("img_image", newWorkshopType.images[i].image);
+          axios.post(this.baseUrl + "main_images", imgFormData).then((res) => {
+            console.log(res);
+            // this.$router.go();
+          });
+        }
       });
     },
     addWorkshopType() {
@@ -264,36 +274,32 @@ export default {
       });
     },
     changeWorkshopDtls(changedWorkDay) {
+      console.log(changedWorkDay.max_students);
+      console.log(changedWorkDay.signed_students);
       let formData = new FormData();
       formData.append("sid", localStorage.getItem("sid"));
       for (let i = 0; i < this.calendar_info.length; i++) {
         if (changedWorkDay.wrk_id === this.calendar_info[i].wrk_id) {
           formData.append("wrk_id", changedWorkDay.wrk_id);
-          if (
-            changedWorkDay.max_students !=
-            this.calendar_info[i].wrk_max_students
-          ) {
-            formData.append("wrk_max_students", changedWorkDay.max_students);
-          }
-          if (
-            changedWorkDay.signed_students !=
-            this.calendar_info[i].wrk_signed_students
-          ) {
-            formData.append(
-              "wrk_signed_students",
-              changedWorkDay.signed_students
-            );
-          }
           if (changedWorkDay.time !== this.calendar_info[i].wrk_time) {
             formData.append("wrk_time", changedWorkDay.time);
+         
+              formData.append("wrk_max_students", changedWorkDay.max_students);
+              // console.log(changedWorkDay.max_students);
+     
+              formData.append(
+                "wrk_signed_students",
+                changedWorkDay.signed_students
+              );
+              // console.log(changedWorkDay.signed_students);
+          
+              formData.append("wrks_id", changedWorkDay.wrks_id);
+           
+            axios.patch(this.baseUrl + "workshop", formData).then((res) => {
+              console.log(res);
+              // this.forceRerender();
+            });
           }
-          if (changedWorkDay.wrks_id !== this.calendar_info[i].wrks_id) {
-            formData.append("wrks_id", changedWorkDay.wrks_id);
-          }
-          axios.patch(this.baseUrl + "workshop", formData).then((res) => {
-            console.log(res);
-            this.forceRerender();
-          });
         }
       }
     },
@@ -723,9 +729,11 @@ export default {
         }
         if (editedObject.dsc_en !== wrks.wrks_dsc_en) {
           formData.append("wrks_dsc_en", editedObject.dsc_en);
+          console.log(wrks.wrks_dsc_en);
         }
         if (editedObject.dsc_rs !== wrks.wrks_dsc_rs) {
           formData.append("wrks_dsc_rs", editedObject.dsc_rs);
+          console.log(wrks.wrks_dsc_rs);
         }
         if (editedObject.price !== wrks.wrks_price_mnth) {
           formData.append("wrks_price_mnth", editedObject.price);

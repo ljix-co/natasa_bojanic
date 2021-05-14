@@ -20,7 +20,8 @@
       <div
         class="item"
         v-for="(object, index) in object_array"
-        :key="'item' + index"
+        :key="'item' + index + elementKey"
+        :class="{ 'chosen-obj': object.chosen === true }"
       >
         <div class="delete-img-div" v-if="admin_page">
           <i class="far fa-trash-alt delete" @click="deleteObject(object)"></i>
@@ -106,6 +107,7 @@ export default {
       exh_page: false,
       art_page: false,
       work_page: false,
+      elementKey: 0
     };
   },
   methods: {
@@ -136,6 +138,17 @@ export default {
           this.$emit("choose-workshop", object);
         }
       } else {
+        for (let i = 0; i < this.object_array.length; i++) {
+         
+          if (object === this.object_array[i]) {
+            this.object_array[i].chosen = true;
+            console.log(this.object_array[i].chosen);
+          }
+          else if(object !== this.object_array[i]){
+             this.object_array[i].chosen = false;
+          }
+        }
+        this.elementKey += 1;
         this.$emit("choose-object", object);
       }
     },
@@ -163,6 +176,10 @@ img {
 p {
   width: 5vw;
   text-align: start;
+  font-weight: 600;
+}
+.chosen-obj {
+  border-bottom: 5px solid #ff6b00;
 }
 .date {
   display: flex;
@@ -184,13 +201,15 @@ p {
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
-  margin-left: 3rem;
+  margin-left: 1rem;
 }
 .dtl-txt {
   font-size: 1rem;
-  color: #343333;
-  width: 10vw;
+  font-weight: 800;
+  color: #474646;
+  width: 12vw;
   text-align: start;
+  margin-left: 1rem;
 }
 .dtl-txt-title {
   font-size: 2rem;
@@ -284,7 +303,7 @@ p {
     font-size: 0.8rem;
   }
   .dtl {
-    margin-left: 1rem;
+    margin-left: .5rem;
   }
   .dtl-txt {
     font-size: 0.8rem;
@@ -296,9 +315,9 @@ p {
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-img{
-height: 20vh;
-}
+  img {
+    height: 20vh;
+  }
   p {
     font-size: 0.5rem;
   }
@@ -306,7 +325,7 @@ height: 20vh;
     font-size: 1.5rem;
   }
   .dtl {
-    margin-left: 1rem;
+    margin-left: .5rem;
   }
   .dtl-txt {
     font-size: 0.5rem;
@@ -326,6 +345,9 @@ height: 20vh;
   p {
     width: 20vw;
     text-align: start;
+  }
+  .chosen-obj{
+  border-bottom: none;
   }
   .delete-img-div {
     width: 85vw;
@@ -351,8 +373,8 @@ height: 20vh;
   .gallery-admin {
     width: 90vw;
   }
-  .gallery-wrkshops{
-  margin-left: 0;
+  .gallery-wrkshops {
+    margin-left: 0;
   }
   .item {
     width: 90vw;

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-    <img class="logo" src="./../public/images/logo_d.png" alt="">
+    <img class="logo" src="./../public/images/transparent_logo.png" alt="">
       <div class="menu">
         <i class="fas fa-ellipsis-h menu-bar" @click="showMenu"></i>
       </div>
@@ -193,12 +193,12 @@ button {
   margin-left: 1.5rem;
 }
 .logo{
-  width: 10vw;
+  width: 15vw;
   height: 3rem;
-  object-fit: cover;
+  object-fit: contain;
   position: absolute;
-  left: 2rem;
-  top: 2vh;
+  left: 0;
+  top: 2.5vh;
 }
 .menu {
   visibility: hidden;
@@ -221,8 +221,9 @@ button {
 width: 7vw;
 }
 .logo{
+width: 12vw;
   top: 1rem;
-  margin-left: -1rem;
+ left: 1rem;
 }
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -243,8 +244,9 @@ width: 7vw;
   font-size: 1rem;
 }
 .logo{
-  top: 1.5vh;
-  margin-left: -1rem;
+width: 12vw;
+  top: 2.5vh;
+  margin-left: 1rem;
 }
 }
 @media only screen and (max-width: 768px) {
@@ -269,8 +271,8 @@ width: 7vw;
   }
   .logo{
     width: 40vw;
-    height: 4rem;
-    object-fit: cover;
+    height: 3rem;
+    object-fit: contain;
     position: absolute;
     left: 30vw;
   }

@@ -153,6 +153,10 @@
       "title": "CONTACT"
     }
   ],
+  "nav": {
+    "scroll": "SCROLL FOR MORE",
+    "go_to_dtls": "GO TO DETAILS" 
+  },
   "tooltips": {
         "gallery": "CLICK TO SEE ALL IMAGES"
   },

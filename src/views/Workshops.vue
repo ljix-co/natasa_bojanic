@@ -325,6 +325,7 @@ export default {
               this.selected_date[i].vacancies =
                 this.selected_date[i].wrk_max_students -
                 this.selected_date[i].wrk_signed_students;
+                console.log(this.selected_date[i].vacancies)
             }
           }
           this.scrollToElement("wrk-manager");
@@ -605,19 +606,20 @@ label {
 }
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 20vw;
+  width: 25vw;
   background-color: #555;
   color: #fff;
   text-align: center;
   position: absolute;
   z-index: 1;
   font-size: 1rem;
-  left: 20%;
+  left: 18%;
   height: 5vh;
   opacity: 0;
   transition: opacity 0.3s;
   padding: 10px;
   font-weight: 800;
+  font-size: .9rem;
 }
 .tooltip .tooltiptext::after {
   position: absolute;
@@ -694,9 +696,7 @@ label {
   .sbmt-error {
     font-size: 1rem;
   }
-  .tooltip:hover .tooltiptext {
-    visibility: hidden;
-  }
+
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   h1 {
@@ -740,6 +740,7 @@ label {
   .time {
     width: 25vw;
   }
+
   .tooltip:hover .tooltiptext {
     visibility: hidden;
   }

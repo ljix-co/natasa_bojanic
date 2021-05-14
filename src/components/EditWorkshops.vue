@@ -201,6 +201,7 @@ export default {
           newTime.max_students = this.max_students;
           newTime.signed_students = this.signed_students;
           newTime.date = this.date;
+          console.log(newTime.max_students)
           this.$emit("add-time", newTime);
         });
       }
@@ -306,6 +307,7 @@ export default {
       changedWorkDay.wrk_id = this.wrk_id;
       changedWorkDay.wrks_id = this.wrks_id;
       this.$emit("submit-change-workshop", changedWorkDay);
+      this.chosen_time = null;
     },
   },
   computed: {
@@ -336,7 +338,7 @@ input:focus {
   outline: none;
 }
 select {
-  width: 50vw;
+  width: 10vw;
   border: none;
   background-color: transparent;
   font-family: "Open Sans", sans-serif;

@@ -153,6 +153,10 @@
       "title": "KONTAKT"
     }
   ],
+  "nav": {
+    "scroll": "SKROL ZA VIŠE",
+    "go_to_dtls": "IDI DO DETALJA" 
+  },
   "tooltips": {
         "gallery": "KLIKNITE ZA PRIKAZ SVIH FOTOGRAFIJA"
   },

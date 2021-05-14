@@ -321,7 +321,7 @@ img {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 2rem;
+  gap: 10vw;
 }
 .gallery {
   display: flex;
@@ -358,7 +358,7 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1rem;
   width: 20vw;
   min-height: 100vh;
@@ -385,11 +385,18 @@ img {
   h1 {
     font-size: 2.5rem;
   }
+  h2{
+  font-size: .8rem;
+  width: 15vw;
+  }
+  p{
+  font-size: .6rem;
+  }
   .btn-back {
     font-size: 2rem;
   }
   .exh-txt {
-    font-size: 0.8rem;
+    height: 15vh;
   }
   .txt-title {
     font-size: 1.5rem;

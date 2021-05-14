@@ -1,5 +1,11 @@
 <template>
-  <div class="artworks">
+  <div class="artworks" v-scroll="checkPosition">
+    <div class="nav-scroll" :class="{'hide': hideNav}">
+      <p>{{ $t("nav.scroll") }}</p>
+    </div>
+    <div class="nav-go-to" >
+      <p @click="goToDtls">{{ $t("nav.go_to_dtls") }}</p>
+    </div>
     <PhotoSlider
       :key="componentKey"
       class="photo-slider"
@@ -35,6 +41,7 @@ export default {
       type: "artwork",
       componentKey: 0,
       mob_slider: false,
+      hideNav: false
     };
   },
   methods: {
@@ -55,6 +62,14 @@ export default {
         }
       }
     },
+    checkPosition() {
+      if(window.scrollY > 300) {
+        this.hideNav = true;
+      }
+      else{
+        this.hideNav = false;
+      }
+    },
     chooseObject(object) {
       this.mob_slider = false;
       let id = object.img_id;
@@ -73,10 +88,9 @@ export default {
               id: res.data.data[i].dimg_id,
               path: res.data.data[i].img_path,
             });
-            if(window.innerWidth < 769) {
-               this.mob_slider = true;
+            if (window.innerWidth < 769) {
+              this.mob_slider = true;
             }
-           
           }
         });
 
@@ -93,6 +107,7 @@ export default {
       axios.get(this.baseUrl + "artworks").then((res) => {
         console.log(res.data.data);
         this.object_array = res.data.data;
+        this.object_array[0].chosen = true;
         this.checkLanguage();
         let id = res.data.data[0].img_id;
         this.images.push({
@@ -113,6 +128,13 @@ export default {
             this.changeLoader(false);
           });
       });
+    },
+    goToDtls() {
+      const el = this.$el.getElementsByClassName("chosen-obj")[0];
+      console.log(el)
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
     },
     scrollToElement() {
       const el = this.$el.getElementsByClassName("photo-slider")[0];
@@ -138,4 +160,38 @@ export default {
 };
 </script>
 <style scoped>
+p {
+  color: #ff6b00;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.hide{
+opacity: .1;
+
+}
+.nav-scroll {
+  position: absolute;
+  left: 2rem;
+  top: 90vh;
+  width: 10vw;
+  border-bottom: 5px solid white;
+}
+.nav-go-to {
+  position: absolute;
+  left: 87vw;
+  top: 90vh;
+  width: 10vw;
+  border-bottom: 5px solid white;
+  cursor: pointer;
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+p{
+font-size: .7rem;
+}
+}
+@media only screen and (max-width: 768px) {
+.nav-scroll, .nav-go-to{
+visibility: hidden;
+}  
+}
 </style>

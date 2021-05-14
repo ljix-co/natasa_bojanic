@@ -24,7 +24,7 @@ export default {
         { lang: "EN", flag: require("../../public/images/en.png") },
         { lang: "RS", flag: require("../../public/images/rs.png") },
       ],
-      currentLang: "EN"
+      currentLang: "RS"
     };
   },
   methods: {
@@ -39,7 +39,8 @@ export default {
   },
   computed: {
     ...mapState(["curLanguage"])
-  }
+  },
+
 };
 </script>
 <style scoped>
