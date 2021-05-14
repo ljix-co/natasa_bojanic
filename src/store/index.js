@@ -8,7 +8,8 @@ export default new Vuex.Store({
     baseUrl: "https://natasabojanic.com/api/",
     curLanguage: "RS",
     loggedIn: false,
-    loader: true
+    loader: true,
+    root_path: "https://natasabojanic.com"
   },
   mutations: {
     CHANGE_CURLANGUAGE(state, payload) {

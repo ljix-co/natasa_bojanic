@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-    <img class="logo" src="./../public/images/transparent_logo.png" alt="">
+      <img class="logo" src="./../public/images/transparent_logo.png" alt="" />
       <div class="menu">
         <i class="fas fa-ellipsis-h menu-bar" @click="showMenu"></i>
       </div>
@@ -43,17 +43,41 @@ import Footer from "./components/Footer.vue";
 import LocalSwitcher from "./components/LocalSwitcher.vue";
 import { mapActions, mapState } from "vuex";
 import axios from "axios";
+let ROOTH_PATH = "https://natasabojanic.com"
 export default {
+    data() {
+    return {
+      show_menu: false,
+      hide_menu: true,
+      link_img: ROOTH_PATH + require("./../public/images/kamenje.jpg"),
+    }
+  },
+  metaInfo: {
+    title: "Nataša Bojanić",
+    meta: [
+      {
+        name: "description",
+        content:
+          "Nataša Bojanić is a professional artist whose main medium is ceramics, and a private teacher of arts. In her studio, she creates the magic, astonishing art pieces mainly produced in clay, but the doors of her studio are open for all curious creatives during organized workshops.",
+      },
+
+      //FB
+      { property: "og:title", content: "Nataša Bojanić" },
+      { property: "og:site_name", content: "Nataša Bojanić" },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: ROOTH_PATH + require("./../public/images/kamenje.jpg") },
+       {
+        property: "og:description",
+        content:
+          "Nataša Bojanić is a professional artist whose main medium is ceramics, and a private teacher of arts. In her studio, she creates the magic, astonishing art pieces mainly produced in clay, but the doors of her studio are open for all curious creatives during organized workshops.",
+      }
+    ],
+  },
   components: {
     LocalSwitcher,
     Footer,
   },
-  data() {
-    return {
-      show_menu: false,
-      hide_menu: true,
-    };
-  },
+
   methods: {
     ...mapActions(["changeLoggedIn"]),
     checkLogin() {
@@ -103,11 +127,16 @@ export default {
     },
   },
   computed: {
-    ...mapState(["loggedIn", "baseUrl"]),
+    ...mapState(["loggedIn", "baseUrl", "root_path"]),
   },
   mounted() {
     this.checkLogin();
+    // 
+    // console.log(this.logo)
   },
+//   beforeMount() {
+// this.link_img = this.root_path + require("./../public/images/kamenje.jpg");
+//   },
   watch: {
     $route: {
       handler() {
@@ -127,7 +156,6 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
 }
 button {
   cursor: pointer;
@@ -192,7 +220,7 @@ button {
 .link {
   margin-left: 1.5rem;
 }
-.logo{
+.logo {
   width: 15vw;
   height: 3rem;
   object-fit: contain;
@@ -208,55 +236,55 @@ button {
   min-height: 70vh;
 }
 @media screen and (min-width: 992px) and (max-width: 1280px) {
-#nav a {
-  font-size: 1rem;
-} 
-.admin-links{
- top: 1vh;
-  left: 91vw;
-  gap: .5rem;
-  flex-direction: column;;
-}
-.btn{
-width: 7vw;
-}
-.logo{
-width: 12vw;
-  top: 1rem;
- left: 1rem;
-}
+  #nav a {
+    font-size: 1rem;
+  }
+  .admin-links {
+    top: 1vh;
+    left: 91vw;
+    gap: 0.5rem;
+    flex-direction: column;
+  }
+  .btn {
+    width: 7vw;
+  }
+  .logo {
+    width: 12vw;
+    top: 1rem;
+    left: 1rem;
+  }
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-#nav a {
-  font-size: .8rem;
-}
-.admin-links{
-  top: 1vh;
-  left: 91vw;
-  gap: .5rem;
-  flex-direction: column;
-}
-.btn{
-  width: 5vw;
- font-size: .5rem;
-}
-.icon{
-  font-size: 1rem;
-}
-.logo{
-width: 12vw;
-  top: 2.5vh;
-  margin-left: 1rem;
-}
+  #nav a {
+    font-size: 0.8rem;
+  }
+  .admin-links {
+    top: 1vh;
+    left: 91vw;
+    gap: 0.5rem;
+    flex-direction: column;
+  }
+  .btn {
+    width: 5vw;
+    font-size: 0.5rem;
+  }
+  .icon {
+    font-size: 1rem;
+  }
+  .logo {
+    width: 12vw;
+    top: 2.5vh;
+    margin-left: 1rem;
+  }
 }
 @media only screen and (max-width: 768px) {
-  .admin-links{
+  .admin-links {
     position: static;
     width: 40vw;
     display: flex;
     flex-direction: column;
   }
-  .btn{
+  .btn {
     width: 40vw;
     height: 7vh;
     font-size: 1.5rem;
@@ -267,9 +295,8 @@ width: 12vw;
   .link {
     margin-left: 0;
     margin-bottom: 2rem;
-   
   }
-  .logo{
+  .logo {
     width: 40vw;
     height: 3rem;
     object-fit: contain;
@@ -282,7 +309,6 @@ width: 12vw;
   .menu-bar {
     font-size: 2rem;
     color: #ff6b00;
-  
   }
   .nav {
     visibility: visible;

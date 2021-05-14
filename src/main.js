@@ -7,11 +7,15 @@ import i18n from './i18n'
 import Vue2Editor from "vue2-editor"
 import LazyLoadDirective from './directives/LazyLoadDIrective.js';
 import onScroll from './directives/onScroll';
-import {VueHammer} from 'vue2-hammer';
+import { VueHammer } from 'vue2-hammer';
+import VueMeta from 'vue-meta';
 
 Vue.use(VueI18n);
 Vue.use(Vue2Editor);
 Vue.use(VueHammer);
+Vue.use(VueMeta, {
+  keyName: 'head'
+});
 Vue.directive("lazyload", LazyLoadDirective);
 Vue.directive("scroll", onScroll);
 

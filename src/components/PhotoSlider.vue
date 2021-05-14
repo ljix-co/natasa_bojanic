@@ -316,6 +316,7 @@ export default {
   .home_img {
     width: 90vw;
     height: 40vh;
+    margin-top: 5vh;
     object-fit: contain;
   }
 

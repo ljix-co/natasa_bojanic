@@ -8,9 +8,10 @@ import Contact from '../views/Contact.vue';
 import Admin from '../views/Admin.vue';
 import Login from '../views/Login.vue';
 // import store from '../store';
-
+import VueMeta from 'vue-meta';
 
 Vue.use(VueRouter)
+Vue.use(VueMeta);
 
 const routes = [
   {
